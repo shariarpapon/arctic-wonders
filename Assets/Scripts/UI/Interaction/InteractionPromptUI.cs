@@ -17,8 +17,8 @@ namespace Arctic.UI.Interaction
         {
             canvasGroup.blocksRaycasts = false;
             canvasGroup.alpha = 0;
-            interactionHandler.scanner.OnInteractableTargetFound += OnFound;
-            interactionHandler.scanner.OnTargetLost += OnLost;
+            interactionHandler.InteractableTracker.OnNewTargetFound += OnFound;
+            interactionHandler.InteractableTracker.OnTargetLost += OnLost;
         }
 
         private void Update()
@@ -27,8 +27,9 @@ namespace Arctic.UI.Interaction
                 promptText.text = focusedInteractable.Prompt;
         }
 
-        private void OnFound(IInteractable target)
+        private void OnFound(GameObject newTarget)
         {
+            newTarget.TryGetComponent(out IInteractable target);
             if (target == null || string.IsNullOrEmpty(target.Prompt))
                 return;
 

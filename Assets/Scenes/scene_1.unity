@@ -20856,23 +20856,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1833970382160700038, guid: 7fec1f6eef13af34c919066208914816, type: 3}
   m_PrefabInstance: {fileID: 1681054658}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2082064017
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1398904547017190}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f624216da8b1b24f876ae4ef2c737d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Arctic.Player.PlayerInteractionTargetTracker
-  playerReach: 3
-  interactionLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  viewCamera: {fileID: 20127478314715879}
 --- !u!4 &2087597758 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4137104612946305234, guid: 8329679a18bdbf0408d985a4d44b2ce1, type: 3}
@@ -21610,7 +21593,6 @@ GameObject:
   - component: {fileID: 114565867365606164}
   - component: {fileID: 114967587910983316}
   - component: {fileID: 6177337246075506778}
-  - component: {fileID: 2082064017}
   - component: {fileID: 6177337246075506779}
   m_Layer: 0
   m_Name: Player
@@ -22393,7 +22375,7 @@ PrefabInstance:
     - target: {fileID: 17039186253618292, guid: 6b4685e056c38dd49a175af889c29bfb, type: 3}
       propertyPath: targetTracker
       value: 
-      objectReference: {fileID: 2082064017}
+      objectReference: {fileID: 0}
     - target: {fileID: 17039186253618292, guid: 6b4685e056c38dd49a175af889c29bfb, type: 3}
       propertyPath: interactionHandler
       value: 
@@ -22628,11 +22610,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Arctic.Player.PlayerInteractionHandler
   interactionSource: {fileID: 1398904547017190}
-  scanner:
-    maxReach: 3
-    interactableLayers:
+  tracker:
+    targetLayers:
       serializedVersion: 2
       m_Bits: 4294967295
+    maxReach: 3
     viewCamera: {fileID: 20127478314715879}
 --- !u!114 &6427615520694938834
 MonoBehaviour:
