@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Arctic.Utilities.Trackers
 {
-    public interface ITrackerBehaviour<T> 
+    public interface ITrackerBehaviour<T> where T : class
     {
         public abstract event System.Action<T> OnNewTargetFound;
         public abstract event System.Action<T> OnTargetLost;

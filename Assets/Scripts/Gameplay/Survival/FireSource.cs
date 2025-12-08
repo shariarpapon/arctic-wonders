@@ -24,14 +24,11 @@ namespace Arctic.Gameplay.Survival
         [Header("Audio")]
         [SerializeField] private bool updateAudio = true;
         [SerializeField] private AudioSource audioSource;
-        [SerializeField] private Animation volumeOverFuel;
-        [SerializeField] private Animation pitchOverFuel;
+        [SerializeField] private AnimationCurve volumeOverFuel;
 
         private void Awake()
         {
             Assert.IsNotNull(fuelBurner);
-            if (overwriteToBurnerMax)
-                maxInterpolationFuel = fuelBurner.MaxFuel;
             fuelBurner.OnUpdate += OnFuelUpdate;
         }
 
@@ -57,6 +54,7 @@ namespace Arctic.Gameplay.Survival
         private void UpdateAudio(float normFuel)
         {
             if (!updateAudio || audioSource == null) return;
+            audioSource.volume = volumeOverFuel.Evaluate(normFuel);
         }
 
         private void UpdateLight(float normFuel)
@@ -74,7 +72,10 @@ namespace Arctic.Gameplay.Survival
 
         private void OnValidate()
         {
-            maxInterpolationFuel = Mathf.Max(0.01f, maxInterpolationFuel);
+            if (overwriteToBurnerMax)
+                maxInterpolationFuel = Mathf.Max(0.01f, fuelBurner.MaxFuel);
+            else
+                maxInterpolationFuel = Mathf.Max(0.01f, maxInterpolationFuel);
         }
     }
 }

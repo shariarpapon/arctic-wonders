@@ -1,7 +1,6 @@
 using Arctic.Gameplay.Interaction;
-using Arctic.Player.Interaction;
-using TMPro;
 using UnityEngine;
+using TMPro;
 
 namespace Arctic.UI.Interaction
 {
@@ -9,16 +8,15 @@ namespace Arctic.UI.Interaction
     {
         [SerializeField] private CanvasGroup canvasGroup;
         [SerializeField] private TextMeshProUGUI promptText;
-        [SerializeField] private PlayerInteractionInvoker interactionHandler;
-
+        [SerializeField] private InteractionInvoker interactionInvoker;
         private IInteractable focusedInteractable;
 
         private void Awake()
         {
             canvasGroup.blocksRaycasts = false;
             canvasGroup.alpha = 0;
-            interactionHandler.InteractableTracker.OnNewTargetFound += OnFound;
-            interactionHandler.InteractableTracker.OnTargetLost += OnLost;
+            interactionInvoker.InteractableTracker.OnNewTargetFound += OnFound;
+            interactionInvoker.InteractableTracker.OnTargetLost += OnLost;
         }
 
         private void Update()

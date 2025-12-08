@@ -6,11 +6,14 @@ namespace Arctic.Utilities
     {
         public static T Instance { get; private set; }
 
-        protected virtual void OnPreAwake() { }
+        /// <summary>
+        /// Called before the singleton evaluation. Will be called once on Awake regardless of singleton status.
+        /// </summary>
+        protected virtual void OnPreSingletonEvaluation() { }
 
         protected virtual void Awake()
         {
-            OnPreAwake();
+            OnPreSingletonEvaluation();
             if (Instance == null)
             {
                 Instance = this as T;
@@ -21,14 +24,14 @@ namespace Arctic.Utilities
                 Destroy(gameObject);
                 return;
             }
-            OnPostAwake();
+            OnSingletonEvaluated();
         }
 
         /// <summary>
-        /// Called once the singleton instance is successfully awakened.
+        /// Called once the singleton instance finishes succesfully evaluates .
         /// <br>It's only called once in the lifetime of the singleton.</br>
         /// </summary>
-        protected virtual void OnPostAwake() { }
+        protected virtual void OnSingletonEvaluated() { }
 
     }
 }

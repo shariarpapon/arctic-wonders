@@ -16951,6 +16951,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1833970382160700038, guid: 7fec1f6eef13af34c919066208914816, type: 3}
   m_PrefabInstance: {fileID: 207282281}
   m_PrefabAsset: {fileID: 0}
+--- !u!82 &1707914290 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 1628598320657846032, guid: 9186b27543291fc4ab1969a8e9d7feea, type: 3}
+  m_PrefabInstance: {fileID: 1761073286048750745}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1709590770 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7872376264464125327, guid: 91a885007faaad847be10122a4b324ed, type: 3}
@@ -22153,10 +22158,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: StatsCanvas
       objectReference: {fileID: 0}
-    - target: {fileID: 6437428398115336593, guid: 0fd48488ac73f9b478640451265906ee, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -22215,6 +22216,10 @@ PrefabInstance:
       value: campfire_1
       objectReference: {fileID: 0}
     - target: {fileID: 2068959970950380417, guid: 9186b27543291fc4ab1969a8e9d7feea, type: 3}
+      propertyPath: audioSource
+      value: 
+      objectReference: {fileID: 1707914290}
+    - target: {fileID: 2068959970950380417, guid: 9186b27543291fc4ab1969a8e9d7feea, type: 3}
       propertyPath: maxVisualFuel
       value: 100
       objectReference: {fileID: 0}
@@ -22260,11 +22265,35 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2068959970950380417, guid: 9186b27543291fc4ab1969a8e9d7feea, type: 3}
       propertyPath: overwriteToBurnerMax
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2068959970950380417, guid: 9186b27543291fc4ab1969a8e9d7feea, type: 3}
+      propertyPath: volumeOverFuel.m_Curve.Array.size
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2068959970950380417, guid: 9186b27543291fc4ab1969a8e9d7feea, type: 3}
       propertyPath: scaleOverFuel.m_Curve.Array.data[1].value
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2068959970950380417, guid: 9186b27543291fc4ab1969a8e9d7feea, type: 3}
+      propertyPath: volumeOverFuel.m_Curve.Array.data[1].time
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2068959970950380417, guid: 9186b27543291fc4ab1969a8e9d7feea, type: 3}
+      propertyPath: volumeOverFuel.m_Curve.Array.data[2].time
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2068959970950380417, guid: 9186b27543291fc4ab1969a8e9d7feea, type: 3}
+      propertyPath: volumeOverFuel.m_Curve.Array.data[0].value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2068959970950380417, guid: 9186b27543291fc4ab1969a8e9d7feea, type: 3}
+      propertyPath: volumeOverFuel.m_Curve.Array.data[1].value
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2068959970950380417, guid: 9186b27543291fc4ab1969a8e9d7feea, type: 3}
+      propertyPath: volumeOverFuel.m_Curve.Array.data[2].value
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 2068959970950380417, guid: 9186b27543291fc4ab1969a8e9d7feea, type: 3}
       propertyPath: scaleOverFuel.m_Curve.Array.data[0].inSlope
@@ -22275,8 +22304,48 @@ PrefabInstance:
       value: 1.4295746
       objectReference: {fileID: 0}
     - target: {fileID: 2068959970950380417, guid: 9186b27543291fc4ab1969a8e9d7feea, type: 3}
+      propertyPath: volumeOverFuel.m_Curve.Array.data[0].inSlope
+      value: 0.10874152
+      objectReference: {fileID: 0}
+    - target: {fileID: 2068959970950380417, guid: 9186b27543291fc4ab1969a8e9d7feea, type: 3}
+      propertyPath: volumeOverFuel.m_Curve.Array.data[1].inSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2068959970950380417, guid: 9186b27543291fc4ab1969a8e9d7feea, type: 3}
+      propertyPath: volumeOverFuel.m_Curve.Array.data[2].inSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2068959970950380417, guid: 9186b27543291fc4ab1969a8e9d7feea, type: 3}
       propertyPath: scaleOverFuel.m_Curve.Array.data[0].outWeight
       value: 0.035264485
+      objectReference: {fileID: 0}
+    - target: {fileID: 2068959970950380417, guid: 9186b27543291fc4ab1969a8e9d7feea, type: 3}
+      propertyPath: volumeOverFuel.m_Curve.Array.data[0].outSlope
+      value: 0.10874152
+      objectReference: {fileID: 0}
+    - target: {fileID: 2068959970950380417, guid: 9186b27543291fc4ab1969a8e9d7feea, type: 3}
+      propertyPath: volumeOverFuel.m_Curve.Array.data[1].inWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 2068959970950380417, guid: 9186b27543291fc4ab1969a8e9d7feea, type: 3}
+      propertyPath: volumeOverFuel.m_Curve.Array.data[1].outSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2068959970950380417, guid: 9186b27543291fc4ab1969a8e9d7feea, type: 3}
+      propertyPath: volumeOverFuel.m_Curve.Array.data[2].inWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2068959970950380417, guid: 9186b27543291fc4ab1969a8e9d7feea, type: 3}
+      propertyPath: volumeOverFuel.m_Curve.Array.data[2].outSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2068959970950380417, guid: 9186b27543291fc4ab1969a8e9d7feea, type: 3}
+      propertyPath: volumeOverFuel.m_Curve.Array.data[0].outWeight
+      value: 0.11020151
+      objectReference: {fileID: 0}
+    - target: {fileID: 2068959970950380417, guid: 9186b27543291fc4ab1969a8e9d7feea, type: 3}
+      propertyPath: volumeOverFuel.m_Curve.Array.data[1].outWeight
+      value: 0.33333334
       objectReference: {fileID: 0}
     - target: {fileID: 2068959970950380417, guid: 9186b27543291fc4ab1969a8e9d7feea, type: 3}
       propertyPath: intensityOverFuel.m_Curve.Array.data[0].inSlope
@@ -22285,6 +22354,18 @@ PrefabInstance:
     - target: {fileID: 2068959970950380417, guid: 9186b27543291fc4ab1969a8e9d7feea, type: 3}
       propertyPath: intensityOverFuel.m_Curve.Array.data[0].outSlope
       value: 11.109589
+      objectReference: {fileID: 0}
+    - target: {fileID: 2068959970950380417, guid: 9186b27543291fc4ab1969a8e9d7feea, type: 3}
+      propertyPath: volumeOverFuel.m_Curve.Array.data[0].tangentMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2068959970950380417, guid: 9186b27543291fc4ab1969a8e9d7feea, type: 3}
+      propertyPath: volumeOverFuel.m_Curve.Array.data[1].tangentMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2068959970950380417, guid: 9186b27543291fc4ab1969a8e9d7feea, type: 3}
+      propertyPath: volumeOverFuel.m_Curve.Array.data[2].tangentMode
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2068959970950380417, guid: 9186b27543291fc4ab1969a8e9d7feea, type: 3}
       propertyPath: intensityOverFuel.m_Curve.Array.data[0].outWeight
@@ -22373,60 +22454,16 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 17039186253618292, guid: 6b4685e056c38dd49a175af889c29bfb, type: 3}
-      propertyPath: targetTracker
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 17039186253618292, guid: 6b4685e056c38dd49a175af889c29bfb, type: 3}
-      propertyPath: interactionHandler
+      propertyPath: interactionInvoker
       value: 
       objectReference: {fileID: 6177337246075506779}
     - target: {fileID: 1335481710564454617, guid: 6b4685e056c38dd49a175af889c29bfb, type: 3}
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 20127478314715879}
-    - target: {fileID: 2637618051343016197, guid: 6b4685e056c38dd49a175af889c29bfb, type: 3}
-      propertyPath: m_Pivot.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2637618051343016197, guid: 6b4685e056c38dd49a175af889c29bfb, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2637618051343016197, guid: 6b4685e056c38dd49a175af889c29bfb, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2637618051343016197, guid: 6b4685e056c38dd49a175af889c29bfb, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3592000270291691204, guid: 6b4685e056c38dd49a175af889c29bfb, type: 3}
       propertyPath: m_Name
       value: InteractionCanvas
-      objectReference: {fileID: 0}
-    - target: {fileID: 3592000270291691204, guid: 6b4685e056c38dd49a175af889c29bfb, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4321812138876672525, guid: 6b4685e056c38dd49a175af889c29bfb, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4321812138876672525, guid: 6b4685e056c38dd49a175af889c29bfb, type: 3}
-      propertyPath: m_Color.a
-      value: 0.84705883
-      objectReference: {fileID: 0}
-    - target: {fileID: 4321812138876672525, guid: 6b4685e056c38dd49a175af889c29bfb, type: 3}
-      propertyPath: m_Color.b
-      value: 0.8784314
-      objectReference: {fileID: 0}
-    - target: {fileID: 4321812138876672525, guid: 6b4685e056c38dd49a175af889c29bfb, type: 3}
-      propertyPath: m_Color.g
-      value: 0.62352943
-      objectReference: {fileID: 0}
-    - target: {fileID: 4321812138876672525, guid: 6b4685e056c38dd49a175af889c29bfb, type: 3}
-      propertyPath: m_Color.r
-      value: 0.77743006
       objectReference: {fileID: 0}
     - target: {fileID: 8549309022109655401, guid: 6b4685e056c38dd49a175af889c29bfb, type: 3}
       propertyPath: m_Pivot.x
@@ -22608,9 +22645,10 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ce1f4aa26b090a443bd25fd970b5dcc1, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Arctic.Player.PlayerInteractionHandler
-  interactionSource: {fileID: 1398904547017190}
-  tracker:
+  m_EditorClassIdentifier: Assembly-CSharp::Arctic.Player.Interaction.PlayerInteractionInvoker
+  invokeKey: 323
+  invoker: {fileID: 1398904547017190}
+  interactableTracker:
     targetLayers:
       serializedVersion: 2
       m_Bits: 4294967295

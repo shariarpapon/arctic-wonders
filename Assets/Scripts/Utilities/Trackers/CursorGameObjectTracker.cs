@@ -41,7 +41,7 @@ namespace Arctic.Utilities.Trackers
 
         public void SetViewCamera(Camera camera) => viewCamera = camera;
 
-        public void Update()
+        public virtual void Update()
         {
             if (RaycastUtils.TryRaycastFromMousePoint(viewCamera, targetLayers, maxReach, out hitInfo))
                 SetTarget(hitInfo.transform.gameObject);
@@ -49,7 +49,7 @@ namespace Arctic.Utilities.Trackers
                 SetTarget(default);
         }
 
-        public void SetTarget(GameObject newTarget)
+        public virtual void SetTarget(GameObject newTarget)
         {
             if (currentTarget == newTarget) return;
             //if current target isnt null, invoke OnTargetLost with it before asigning the new target.
@@ -60,5 +60,13 @@ namespace Arctic.Utilities.Trackers
                 OnNewTargetFound?.Invoke(newTarget);
             currentTarget = newTarget;
         }
+
+        public bool TryGetComponent<T>(out T component) where T : class 
+        {
+            component = null;
+            if (currentTarget == null)
+                return false;
+            return currentTarget.TryGetComponent(out component);
+        }  
     }
 }

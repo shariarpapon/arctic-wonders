@@ -4,15 +4,15 @@ using UnityEngine;
 namespace Arctic.Gameplay.Interaction.Interactables
 {
     [RequireComponent(typeof(FireSource))]
-    public sealed class CampfireInteractable : InteractableBase
+    public sealed class FireSourceInteractable : InteractableBase
     {
-        public override string Prompt => "Fuel: " + Mathf.RoundToInt(campfire.fuelBurner.CurrentFuel);
+        public override string Prompt => "Fuel: " + Mathf.RoundToInt(fuelBurner.fuelBurner.CurrentFuel);
 
-        private FireSource campfire;
+        private FireSource fuelBurner;
 
         private void Awake()
         {
-            campfire = GetComponent<FireSource>();
+            fuelBurner = GetComponent<FireSource>();
         }
 
         public override void Interact(GameObject source)
