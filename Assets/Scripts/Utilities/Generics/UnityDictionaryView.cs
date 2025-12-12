@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Arctic.Utilities.Generics
 {
     [System.Serializable]
-    public sealed class UnityDictionarySerializer<TKey, TValue>
+    public sealed class UnityDictionaryView<TKey, TValue>
     {
         [System.Serializable]
         public struct SerializedKeyValuePair
@@ -27,7 +27,7 @@ namespace Arctic.Utilities.Generics
 
         private Dictionary<TKey, TValue> sourceDictionary;
 
-        public static implicit operator Dictionary<TKey, TValue> (UnityDictionarySerializer<TKey, TValue> serializedDict) 
+        public static implicit operator Dictionary<TKey, TValue> (UnityDictionaryView<TKey, TValue> serializedDict) 
         {
             Dictionary<TKey, TValue> converted = new Dictionary<TKey, TValue>();
             foreach (var kv in serializedDict.keyValues)
@@ -35,9 +35,9 @@ namespace Arctic.Utilities.Generics
             return converted;
         }
 
-        public static implicit operator UnityDictionarySerializer<TKey, TValue>(Dictionary<TKey, TValue> dict)
+        public static implicit operator UnityDictionaryView<TKey, TValue>(Dictionary<TKey, TValue> dict)
         {
-            UnityDictionarySerializer<TKey, TValue> converted = new UnityDictionarySerializer<TKey, TValue>();
+            UnityDictionaryView<TKey, TValue> converted = new UnityDictionaryView<TKey, TValue>();
             if (dict == null || dict.Count <= 0)
                 return converted;
             foreach (var kv in dict)
@@ -45,9 +45,9 @@ namespace Arctic.Utilities.Generics
             return converted;
         }
 
-        public static implicit operator UnityDictionarySerializer<TKey, TValue>(List<SerializedKeyValuePair> serializedKeyValues) 
+        public static implicit operator UnityDictionaryView<TKey, TValue>(List<SerializedKeyValuePair> serializedKeyValues) 
         {
-            UnityDictionarySerializer<TKey, TValue> converted = new UnityDictionarySerializer<TKey, TValue>();
+            UnityDictionaryView<TKey, TValue> converted = new UnityDictionaryView<TKey, TValue>();
             foreach (var kv in serializedKeyValues)
                 converted.TryAdd(kv.key, kv.value);
             return converted;

@@ -4,9 +4,9 @@ namespace Arctic.Utilities.Serialization
     {
         public readonly T Object;
         public readonly SerializerStatus Status;
-        public SerializerOutput(T Object, SerializerStatus status) 
+        public SerializerOutput(T outputObject, SerializerStatus status) 
         {
-            this.Object = Object;
+            this.Object = outputObject;
             this.Status = status;
         }
     }

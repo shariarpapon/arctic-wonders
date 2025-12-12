@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEditor;
 
-namespace Arctic.Gameplay.Items.Editor
+namespace Arctic.Utilities.Editor
 {
-    public static class Helper
+    public static class GuiHelper
     {
         public struct GuiAccumulatedSpacer
         {
@@ -92,6 +92,7 @@ namespace Arctic.Gameplay.Items.Editor
             return height;
         }
 
+        /// <returns>Accumulated vertical height of the drawn elements.</returns>
         public static float DrawTextEditorWindowArea(ref string text, float paddingX = 4f, float paddingY = 4f)
         {
             Rect fullArea = GUILayoutUtility.GetRect(

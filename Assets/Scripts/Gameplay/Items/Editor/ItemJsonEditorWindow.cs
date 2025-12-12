@@ -1,5 +1,6 @@
 using UnityEditor;
 using UnityEngine;
+using Arctic.Utilities.Editor;
 
 namespace Arctic.Gameplay.Items.Editor
 {
@@ -8,7 +9,7 @@ namespace Arctic.Gameplay.Items.Editor
         private const string MENU_PATH = "Tools/Item Editor";
         private static ItemJsonEditorWindow Instance;
 
-        private ItemDefinition itemDefinition;
+        private ItemDefinition target;
         private string text;
 
         [MenuItem(MENU_PATH)]
@@ -22,20 +23,27 @@ namespace Arctic.Gameplay.Items.Editor
 
         private void OnGUI()
         {
-            Helper.DrawObjectField(nameof(ItemDefinition), ref itemDefinition);
-            if (itemDefinition != null)
-                DrawMainSection($"Item Editor<{itemDefinition.GUID}>");
-            else Warn("Must asign a valid ItemDefinition scriptable object.");
+            GuiHelper.DrawObjectField("Target " + nameof(ItemDefinition), ref target);
+            GuiHelper.DrawHorizontalLine(height: 1, spaceAbove: 3.5f);
+
+            if (target != null)
+                DrawTextEditor($"Item Editor<{target.GUID}>");
+            else GuiWarn("Must asign a valid ItemDefinition scriptable object.");
         }
 
-        private void DrawMainSection(string title) 
+        private void DrawTextEditor(string title) 
         {
-            Helper.DrawHorizontalLine(height: 1, spaceAbove: 3.5f);
-            Helper.DrawHeaderLabel(title, fontSize: 11);
-            Helper.DrawTextEditorWindowArea(ref text);
+            GuiHelper.DrawHeaderLabel(title, fontSize: 11);
+            GuiHelper.DrawTextEditorWindowArea(ref text);
         }
 
-        private void Warn(string message) => Helper.DrawText(message, Color.orange);
+        private string GetJsonItemData() 
+        {
+            SerializableItemDefinition data = new SerializableItemDefinition(target);
+            return null;   
+        }
+
+        private void GuiWarn(string message) => GuiHelper.DrawText(message, Color.orange);
 
     }
 }   

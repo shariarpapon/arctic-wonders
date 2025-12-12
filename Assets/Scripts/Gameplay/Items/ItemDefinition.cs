@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityObject = UnityEngine.Object;
@@ -21,6 +22,38 @@ namespace Arctic.Gameplay.Items
         [SerializeField] private List<ItemProperty<float>> floatProperties;
         [SerializeField] private List<ItemProperty<GameObject>> gameObjectProperties;
         [SerializeField] private List<ItemProperty<UnityObject>> unityObjectProperties;
+
+        private Dictionary<System.Type, System.Type> propertyTypeInterpretation;
+        private Dictionary<System.Type, object> propertyTypeListLookup;
+        private Dictionary<string, object> propertyLookup;
+
+        public Dictionary<System.Type, System.Type> PropertyTypeInterpretation 
+        {
+            get 
+            {
+                if (propertyTypeInterpretation == null)
+                    propertyTypeInterpretation = CreateItemPropertyTypeInterpretation();
+                return propertyTypeInterpretation;
+            }
+        }
+        public Dictionary<System.Type, object> PropertyTypeListLookup
+        {
+            get
+            {
+                if (propertyTypeListLookup == null)
+                    propertyTypeListLookup = CreatePropertyTypeListLookup();
+                return propertyTypeListLookup;
+            }
+        }
+        public Dictionary<string, object> PropertyLookup 
+        {
+            get 
+            {
+                if (propertyLookup == null)
+                    propertyLookup = CreatePropertyLookup();
+                return propertyLookup;
+            }
+        }
 
 
         protected virtual void OnValidate()
@@ -59,26 +92,72 @@ namespace Arctic.Gameplay.Items
 
         public ItemProperty<TValue> GetProperty<TValue>(string key)
         {
-            System.Type valueType = typeof(TValue);
-            object outputProperty = default;
-            if (valueType == typeof(string))
-                outputProperty = stringProperties?.Find(c => c.Key == key);
-            else if (valueType == typeof(bool))
-                outputProperty = boolProperties?.Find(c => c.Key == key);
-            else if (valueType == typeof(int))
-                outputProperty = intProperties?.Find(c => c.Key == key);
-            else if (valueType == typeof(float))
-                outputProperty = floatProperties?.Find(c => c.Key == key);
-            else if (valueType == typeof(GameObject))
-                outputProperty = gameObjectProperties.Find(c => c.Key == key);
-            else if (typeof(UnityObject).IsAssignableFrom(valueType))
-                outputProperty = unityObjectProperties?.Find(c => c.Key == key);
+            var list = GetPropertyListByType<TValue>();
+            if (list != null)
+                return list.Find(c => c.Key == key);
+            return null;
+        }
+
+        private List<ItemProperty<TValue>> GetPropertyListByType<TValue>()
+        {
+            var type = typeof(TValue);
+            if (PropertyTypeListLookup.ContainsKey(type))
+                return PropertyTypeListLookup[type] as List<ItemProperty<TValue>>;
             else 
             {
                 Debug.LogError("Could not find a list for specified property type in ItemDefinition.");
                 return null;
             }
-            return outputProperty as ItemProperty<TValue>; 
         }
+
+        private Dictionary<System.Type, object> CreatePropertyTypeListLookup()
+        {
+            return new()
+            {
+                { typeof(string), stringProperties },
+                { typeof(bool), boolProperties },
+                { typeof(int), intProperties},
+                { typeof(float), floatProperties },
+                { typeof(GameObject), gameObjectProperties },
+                { typeof(UnityObject), unityObjectProperties }
+            };
+        }
+
+        private Dictionary<System.Type, System.Type> CreateItemPropertyTypeInterpretation()
+        {
+            return new()
+            {
+                { typeof(string),  typeof(ItemProperty<string>) },
+                { typeof(bool), typeof(ItemProperty<bool>) },
+                { typeof(int), typeof(ItemProperty<int>)},
+                { typeof(float), typeof(ItemProperty<float>)},
+                { typeof(GameObject), typeof(ItemProperty<GameObject>) },
+                { typeof(UnityObject), typeof(ItemProperty<UnityObject>) }
+            };
+        }
+
+
+        private Dictionary<string, object> CreatePropertyLookup() 
+        {
+            try
+            {
+                Dictionary<string, object> lookup = new Dictionary<string, object>();
+                foreach (var listKV in PropertyTypeListLookup) 
+                {
+                    IEnumerable listEnum = (IEnumerable)listKV.Value;
+                    foreach (var propKv in listEnum)
+                    {
+                    }
+                }
+
+                return lookup;
+            }
+            catch(System.Exception e)
+            {
+                Debug.LogException(e);
+                return null;
+            }
+        }
+
     }
 }
