@@ -13,7 +13,7 @@ namespace Arctic.Utilities.Trackers
         public abstract Camera ViewCamera { get; }
         public abstract RaycastHit LastRayHitInfo { get; }
 
-        public abstract void Update();
+        public abstract void Tick();
         public abstract void SetMaxReach(float maxReach);
         public abstract void SetTargetLayers(LayerMask layers);
         public abstract void SetViewCamera(Camera camera);

@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace Arctic.Gameplay.Interaction
 {
     /// <summary>
@@ -7,7 +5,8 @@ namespace Arctic.Gameplay.Interaction
     /// </summary>
     public interface IInteractable
     {
-        public virtual string Prompt => "Interact";
-        public abstract void Interact(GameObject source);
+        string Prompt => "Interact";
+        void Interact(InteractionInvoker invoker);
+        virtual void Interact(InteractionInvoker invoker, System.Action<bool> callback) { }
     }
 }

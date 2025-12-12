@@ -1,14 +1,12 @@
 using UnityEngine;
-using UnityEngine.Assertions;
 
 namespace Arctic.Gameplay.Survival
 {
-    public sealed class FireSource : MonoBehaviour
+    public sealed class FireSource : FuelBurner
     {
-        public FuelBurner fuelBurner;
         [Space]
         [SerializeField] private float maxInterpolationFuel = 100.0f;
-        [SerializeField] private bool overwriteToBurnerMax = false;
+        [SerializeField] private bool overwriteToBurnerMax = true;
 
         [Header("Light")]
         [SerializeField] private bool updateLight = true;
@@ -26,25 +24,10 @@ namespace Arctic.Gameplay.Survival
         [SerializeField] private AudioSource audioSource;
         [SerializeField] private AnimationCurve volumeOverFuel;
 
-        private void Awake()
-        {
-            Assert.IsNotNull(fuelBurner);
-            fuelBurner.OnUpdate += OnFuelUpdate;
-        }
 
-        private void OnDestroy()
+        protected override void OnFuelUpdated(float fuel)
         {
-            fuelBurner.OnUpdate -= OnFuelUpdate;
-        }
-
-        private void Update()
-        {
-            fuelBurner.Burn(Time.deltaTime);
-        }
-
-        private void OnFuelUpdate(float currentFuel)
-        {
-            float normalizedFuel = currentFuel / maxInterpolationFuel;
+            float normalizedFuel = fuel / maxInterpolationFuel;
             float clampedNormFuel = Mathf.Clamp01(normalizedFuel);
             UpdateLight(clampedNormFuel);
             UpdateParticle(clampedNormFuel);
@@ -73,7 +56,7 @@ namespace Arctic.Gameplay.Survival
         private void OnValidate()
         {
             if (overwriteToBurnerMax)
-                maxInterpolationFuel = Mathf.Max(0.01f, fuelBurner.MaxFuel);
+                maxInterpolationFuel = Mathf.Max(0.01f, MaxFuel);
             else
                 maxInterpolationFuel = Mathf.Max(0.01f, maxInterpolationFuel);
         }

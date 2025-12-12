@@ -41,7 +41,7 @@ namespace Arctic.Utilities.Trackers
 
         public void SetViewCamera(Camera camera) => viewCamera = camera;
 
-        public virtual void Update()
+        public virtual void Tick()
         {
             if (RaycastUtils.TryRaycastFromMousePoint(viewCamera, targetLayers, maxReach, out hitInfo))
                 SetTarget(hitInfo.transform.gameObject);

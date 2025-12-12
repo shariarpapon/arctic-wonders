@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Arctic.Gameplay.Interaction.Interactables
 {
-    public class DoorInteractable : InteractableBase
+    public class DoorInteractable : InteractableBehavior
     {
         [System.Serializable]
         public enum DoorState { Locked, Closed, Open }
@@ -42,7 +42,7 @@ namespace Arctic.Gameplay.Interaction.Interactables
             openRotation = closedRotation * Quaternion.Euler(swingAngle, 0f, 0f);
         }
 
-        public override void Interact(GameObject source)
+        public override void Interact(InteractionInvoker invoker)
         {
             switch (state) 
             {

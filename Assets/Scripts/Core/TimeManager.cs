@@ -1,4 +1,4 @@
-using Arctic.Utilities;
+using Arctic.Utilities.Generics;
 using UnityEngine;
 
 namespace Arctic.Core

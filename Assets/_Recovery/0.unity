@@ -22647,7 +22647,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Arctic.Player.Interaction.PlayerInteractionInvoker
   invokeKey: 323
-  invoker: {fileID: 1398904547017190}
   interactableTracker:
     targetLayers:
       serializedVersion: 2

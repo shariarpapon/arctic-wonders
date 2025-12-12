@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Arctic.Utilities
+namespace Arctic.Utilities.Generics
 {
     public class PersistentSingletonMonobehaviour<T> : MonoBehaviour where T : Component
     {

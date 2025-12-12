@@ -6,9 +6,9 @@ namespace Arctic.Gameplay.Interaction
     /// <summary>
     /// Any interactable object should inherit from this.
     /// </summary>
-    public abstract class InteractableBase : MonoBehaviour, IInteractable
+    public abstract class InteractableBehavior : MonoBehaviour, IInteractable
     {
         public virtual string Prompt => "Interact";
-        public abstract void Interact(GameObject source);
+        public virtual void Interact(InteractionInvoker source) { }
     }
 }

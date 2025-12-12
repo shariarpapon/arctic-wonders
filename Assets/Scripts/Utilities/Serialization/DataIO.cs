@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 using UnityEngine;
 #endif
 
-namespace Arctic.Utilities
+namespace Arctic.Utilities.Serialization
 {
     /// <summary>
     /// Contains helper methods for de/serializing objects.
