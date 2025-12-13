@@ -13,5 +13,10 @@ namespace Arctic.Utilities.Serialization.Json
             this.value = value;
             this.type = type;
         }
+
+        public T ValueAs<T>() 
+        {
+            return (T)value;
+        }
     }
 }

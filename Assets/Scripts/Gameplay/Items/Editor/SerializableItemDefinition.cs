@@ -1,5 +1,4 @@
 using Arctic.Utilities.Serialization;
-using Arctic.Utilities.Serialization.Json;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -23,8 +22,6 @@ namespace Arctic.Gameplay.Items.Editor
         private List<SerializableKeyValue> KeyValuesFromLookup(Dictionary<string, object> lookup) 
         {
             List<SerializableKeyValue> list = new List<SerializableKeyValue>();
-            JsonKeyValueSerializer serializer = new JsonKeyValueSerializer();
-
             foreach (var kv in lookup) 
                 list.Add(new SerializableKeyValue(kv.Key, kv.Value));
             return list;
