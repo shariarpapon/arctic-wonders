@@ -45,7 +45,6 @@ namespace Arctic.Gameplay.Items.Editor
                         Debug.LogError($"Unable to parse item property from deserialized wrapper (key: {prop.id}) (type: {prop.type.FullName})");
                         return false;
                     }
-                    return true;
                 }
                 return true;
             }
