@@ -37,8 +37,9 @@ namespace Arctic.Gameplay.Items.Editor
         {
             GuiHelper.DrawHeaderLabel(title, fontSize: 11);
 
-            SerializableItemDefinition serItemDef = new SerializableItemDefinition(target);
-            text = serItemDef.ToJsonString();
+            DeserializableItemDefintion deserialized = new DeserializableItemDefintion(target);
+            JsonItemDefinitionSerializer serializer = new JsonItemDefinitionSerializer();
+            text = serializer.Serialize(deserialized).Object;
 
             GuiHelper.DrawTextEditorWindowArea(ref text);
         }
