@@ -1,8 +1,8 @@
 namespace Arctic.Utilities.Serialization
 {
-    public abstract class KeyValueSerializer : ISerializer<SerializableKeyValueData, string>
+    public abstract class KeyValueSerializer : ISerializationService<SerializableKeyValue, string>
     {
-        public abstract SerializerOutput<string> Serialize(SerializableKeyValueData deserialized);
-        public abstract SerializerOutput<SerializableKeyValueData> Deserialize(string jsonData);
+        public abstract SerializerOutput<string> Serialize(SerializableKeyValue deserialized);
+        public abstract SerializerOutput<SerializableKeyValue> Deserialize(string jsonData);
     }
 }

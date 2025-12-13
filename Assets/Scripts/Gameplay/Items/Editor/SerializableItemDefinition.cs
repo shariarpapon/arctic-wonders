@@ -1,4 +1,5 @@
 using Arctic.Utilities.Serialization;
+using Arctic.Utilities.Serialization.Json;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,18 +9,24 @@ namespace Arctic.Gameplay.Items.Editor
     public class SerializableItemDefinition
     {
         public string guid;
-        public List<SerializableKeyValueData> properties;
-        public SerializableItemDefinition(ItemDefinition itemDef)
+
+        [System.NonSerialized] public readonly ItemDefinition source;
+        [System.NonSerialized] public readonly List<SerializableKeyValue> keyValues;
+
+        public SerializableItemDefinition(ItemDefinition source)
         {
-            this.guid = itemDef.GUID;
-            this.properties = CreatePropertyListFromDictionary(itemDef.ItemPropertyLookup);
+            this.guid = source.GUID;
+            this.source = source;
+            this.keyValues = KeyValuesFromLookup(source.UnifiedPropertyValueLookup);
         }
 
-        private List<SerializableKeyValueData> CreatePropertyListFromDictionary(Dictionary<string, object> dictionary) 
+        private List<SerializableKeyValue> KeyValuesFromLookup(Dictionary<string, object> lookup) 
         {
-            List<SerializableKeyValueData> list = new List<SerializableKeyValueData>();
-            foreach (var kv in dictionary) 
-                list.Add(new SerializableKeyValueData(kv.Key, kv.Value));
+            List<SerializableKeyValue> list = new List<SerializableKeyValue>();
+            JsonKeyValueSerializer serializer = new JsonKeyValueSerializer();
+
+            foreach (var kv in lookup) 
+                list.Add(new SerializableKeyValue(kv.Key, kv.Value));
             return list;
         }
 

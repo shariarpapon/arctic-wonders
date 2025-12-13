@@ -66,6 +66,13 @@ public static class __ScriptMaker_DynamicAssetMenuItems_ID0__
     //Menu item for creating Abstract script.
   }
 
+  [MenuItem("Assets/Create/Scripts//Abstract/Arctic.Utilities.Editor", priority=-9999)]
+  public static void MENUITEM_Abstract_ArcticUtilitiesEditor()
+  {
+    ScriptMaker.OnClickAction(3, "Arctic.Utilities.Editor");
+    //Menu item for creating Abstract script.
+  }
+
   [MenuItem("Assets/Create/Scripts//Abstract/Arctic.Utilities.Generics", priority=-9999)]
   public static void MENUITEM_Abstract_ArcticUtilitiesGenerics()
   {
@@ -91,6 +98,20 @@ public static class __ScriptMaker_DynamicAssetMenuItems_ID0__
   public static void MENUITEM_Abstract_ArcticGameplayInteractionInteractables()
   {
     ScriptMaker.OnClickAction(3, "Arctic.Gameplay.Interaction.Interactables");
+    //Menu item for creating Abstract script.
+  }
+
+  [MenuItem("Assets/Create/Scripts//Abstract/Arctic.Gameplay.Items.Editor", priority=-9999)]
+  public static void MENUITEM_Abstract_ArcticGameplayItemsEditor()
+  {
+    ScriptMaker.OnClickAction(3, "Arctic.Gameplay.Items.Editor");
+    //Menu item for creating Abstract script.
+  }
+
+  [MenuItem("Assets/Create/Scripts//Abstract/Arctic.Utilities.Serialization.Json", priority=-9999)]
+  public static void MENUITEM_Abstract_ArcticUtilitiesSerializationJson()
+  {
+    ScriptMaker.OnClickAction(3, "Arctic.Utilities.Serialization.Json");
     //Menu item for creating Abstract script.
   }
 
@@ -157,6 +178,13 @@ public static class __ScriptMaker_DynamicAssetMenuItems_ID0__
     //Menu item for creating Interface script.
   }
 
+  [MenuItem("Assets/Create/Scripts//Interface/Arctic.Utilities.Editor", priority=-9999)]
+  public static void MENUITEM_Interface_ArcticUtilitiesEditor()
+  {
+    ScriptMaker.OnClickAction(4, "Arctic.Utilities.Editor");
+    //Menu item for creating Interface script.
+  }
+
   [MenuItem("Assets/Create/Scripts//Interface/Arctic.Utilities.Generics", priority=-9999)]
   public static void MENUITEM_Interface_ArcticUtilitiesGenerics()
   {
@@ -182,6 +210,20 @@ public static class __ScriptMaker_DynamicAssetMenuItems_ID0__
   public static void MENUITEM_Interface_ArcticGameplayInteractionInteractables()
   {
     ScriptMaker.OnClickAction(4, "Arctic.Gameplay.Interaction.Interactables");
+    //Menu item for creating Interface script.
+  }
+
+  [MenuItem("Assets/Create/Scripts//Interface/Arctic.Gameplay.Items.Editor", priority=-9999)]
+  public static void MENUITEM_Interface_ArcticGameplayItemsEditor()
+  {
+    ScriptMaker.OnClickAction(4, "Arctic.Gameplay.Items.Editor");
+    //Menu item for creating Interface script.
+  }
+
+  [MenuItem("Assets/Create/Scripts//Interface/Arctic.Utilities.Serialization.Json", priority=-9999)]
+  public static void MENUITEM_Interface_ArcticUtilitiesSerializationJson()
+  {
+    ScriptMaker.OnClickAction(4, "Arctic.Utilities.Serialization.Json");
     //Menu item for creating Interface script.
   }
 
@@ -248,6 +290,13 @@ public static class __ScriptMaker_DynamicAssetMenuItems_ID0__
     //Menu item for creating Struct script.
   }
 
+  [MenuItem("Assets/Create/Scripts//Struct/Arctic.Utilities.Editor", priority=-9999)]
+  public static void MENUITEM_Struct_ArcticUtilitiesEditor()
+  {
+    ScriptMaker.OnClickAction(2, "Arctic.Utilities.Editor");
+    //Menu item for creating Struct script.
+  }
+
   [MenuItem("Assets/Create/Scripts//Struct/Arctic.Utilities.Generics", priority=-9999)]
   public static void MENUITEM_Struct_ArcticUtilitiesGenerics()
   {
@@ -273,6 +322,20 @@ public static class __ScriptMaker_DynamicAssetMenuItems_ID0__
   public static void MENUITEM_Struct_ArcticGameplayInteractionInteractables()
   {
     ScriptMaker.OnClickAction(2, "Arctic.Gameplay.Interaction.Interactables");
+    //Menu item for creating Struct script.
+  }
+
+  [MenuItem("Assets/Create/Scripts//Struct/Arctic.Gameplay.Items.Editor", priority=-9999)]
+  public static void MENUITEM_Struct_ArcticGameplayItemsEditor()
+  {
+    ScriptMaker.OnClickAction(2, "Arctic.Gameplay.Items.Editor");
+    //Menu item for creating Struct script.
+  }
+
+  [MenuItem("Assets/Create/Scripts//Struct/Arctic.Utilities.Serialization.Json", priority=-9999)]
+  public static void MENUITEM_Struct_ArcticUtilitiesSerializationJson()
+  {
+    ScriptMaker.OnClickAction(2, "Arctic.Utilities.Serialization.Json");
     //Menu item for creating Struct script.
   }
 
@@ -339,6 +402,13 @@ public static class __ScriptMaker_DynamicAssetMenuItems_ID0__
     //Menu item for creating Class script.
   }
 
+  [MenuItem("Assets/Create/Scripts//Class/Arctic.Utilities.Editor", priority=-9999)]
+  public static void MENUITEM_Class_ArcticUtilitiesEditor()
+  {
+    ScriptMaker.OnClickAction(1, "Arctic.Utilities.Editor");
+    //Menu item for creating Class script.
+  }
+
   [MenuItem("Assets/Create/Scripts//Class/Arctic.Utilities.Generics", priority=-9999)]
   public static void MENUITEM_Class_ArcticUtilitiesGenerics()
   {
@@ -364,6 +434,20 @@ public static class __ScriptMaker_DynamicAssetMenuItems_ID0__
   public static void MENUITEM_Class_ArcticGameplayInteractionInteractables()
   {
     ScriptMaker.OnClickAction(1, "Arctic.Gameplay.Interaction.Interactables");
+    //Menu item for creating Class script.
+  }
+
+  [MenuItem("Assets/Create/Scripts//Class/Arctic.Gameplay.Items.Editor", priority=-9999)]
+  public static void MENUITEM_Class_ArcticGameplayItemsEditor()
+  {
+    ScriptMaker.OnClickAction(1, "Arctic.Gameplay.Items.Editor");
+    //Menu item for creating Class script.
+  }
+
+  [MenuItem("Assets/Create/Scripts//Class/Arctic.Utilities.Serialization.Json", priority=-9999)]
+  public static void MENUITEM_Class_ArcticUtilitiesSerializationJson()
+  {
+    ScriptMaker.OnClickAction(1, "Arctic.Utilities.Serialization.Json");
     //Menu item for creating Class script.
   }
 
@@ -430,6 +514,13 @@ public static class __ScriptMaker_DynamicAssetMenuItems_ID0__
     //Menu item for creating Enum script.
   }
 
+  [MenuItem("Assets/Create/Scripts//Enum/Arctic.Utilities.Editor", priority=-9999)]
+  public static void MENUITEM_Enum_ArcticUtilitiesEditor()
+  {
+    ScriptMaker.OnClickAction(5, "Arctic.Utilities.Editor");
+    //Menu item for creating Enum script.
+  }
+
   [MenuItem("Assets/Create/Scripts//Enum/Arctic.Utilities.Generics", priority=-9999)]
   public static void MENUITEM_Enum_ArcticUtilitiesGenerics()
   {
@@ -455,6 +546,20 @@ public static class __ScriptMaker_DynamicAssetMenuItems_ID0__
   public static void MENUITEM_Enum_ArcticGameplayInteractionInteractables()
   {
     ScriptMaker.OnClickAction(5, "Arctic.Gameplay.Interaction.Interactables");
+    //Menu item for creating Enum script.
+  }
+
+  [MenuItem("Assets/Create/Scripts//Enum/Arctic.Gameplay.Items.Editor", priority=-9999)]
+  public static void MENUITEM_Enum_ArcticGameplayItemsEditor()
+  {
+    ScriptMaker.OnClickAction(5, "Arctic.Gameplay.Items.Editor");
+    //Menu item for creating Enum script.
+  }
+
+  [MenuItem("Assets/Create/Scripts//Enum/Arctic.Utilities.Serialization.Json", priority=-9999)]
+  public static void MENUITEM_Enum_ArcticUtilitiesSerializationJson()
+  {
+    ScriptMaker.OnClickAction(5, "Arctic.Utilities.Serialization.Json");
     //Menu item for creating Enum script.
   }
 
@@ -521,6 +626,13 @@ public static class __ScriptMaker_DynamicAssetMenuItems_ID0__
     //Menu item for creating MonoBehaviour script.
   }
 
+  [MenuItem("Assets/Create/Scripts//MonoBehaviour/Arctic.Utilities.Editor", priority=-9999)]
+  public static void MENUITEM_MonoBehaviour_ArcticUtilitiesEditor()
+  {
+    ScriptMaker.OnClickAction(0, "Arctic.Utilities.Editor");
+    //Menu item for creating MonoBehaviour script.
+  }
+
   [MenuItem("Assets/Create/Scripts//MonoBehaviour/Arctic.Utilities.Generics", priority=-9999)]
   public static void MENUITEM_MonoBehaviour_ArcticUtilitiesGenerics()
   {
@@ -546,6 +658,20 @@ public static class __ScriptMaker_DynamicAssetMenuItems_ID0__
   public static void MENUITEM_MonoBehaviour_ArcticGameplayInteractionInteractables()
   {
     ScriptMaker.OnClickAction(0, "Arctic.Gameplay.Interaction.Interactables");
+    //Menu item for creating MonoBehaviour script.
+  }
+
+  [MenuItem("Assets/Create/Scripts//MonoBehaviour/Arctic.Gameplay.Items.Editor", priority=-9999)]
+  public static void MENUITEM_MonoBehaviour_ArcticGameplayItemsEditor()
+  {
+    ScriptMaker.OnClickAction(0, "Arctic.Gameplay.Items.Editor");
+    //Menu item for creating MonoBehaviour script.
+  }
+
+  [MenuItem("Assets/Create/Scripts//MonoBehaviour/Arctic.Utilities.Serialization.Json", priority=-9999)]
+  public static void MENUITEM_MonoBehaviour_ArcticUtilitiesSerializationJson()
+  {
+    ScriptMaker.OnClickAction(0, "Arctic.Utilities.Serialization.Json");
     //Menu item for creating MonoBehaviour script.
   }
 

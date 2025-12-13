@@ -22,25 +22,33 @@ namespace Arctic.Gameplay.Items
         [SerializeField] private List<ItemProperty<GameObject>> prefabProperties;
         [SerializeField] private List<ItemProperty<UnityObject>> unityObjectProperties;
 
-        private Dictionary<System.Type, object> itemPropertyListLookup;
-        private Dictionary<string, object> itemPropertyLookup;
+        private Dictionary<System.Type, object> propertyListLookup;
+        private Dictionary<string, object> unifiedPropertyValueLookup;
 
+
+        /// <summary>
+        /// Lookup dictionary for retrieving the property list given the value-type.
+        /// </summary>
         public Dictionary<System.Type, object> PropertyListLookup
         {
             get
             {
-                if (itemPropertyListLookup == null)
-                    itemPropertyListLookup = BuildPropretyListLookup();
-                return itemPropertyListLookup;
+                if (propertyListLookup == null)
+                    propertyListLookup = BuildPropretyListLookup();
+                return propertyListLookup;
             }
         }
-        public Dictionary<string, object> ItemPropertyLookup 
+
+        /// <summary>
+        /// Property lists for all types unified into a single lookup dictionary.
+        /// </summary>
+        public Dictionary<string, object> UnifiedPropertyValueLookup 
         {
             get 
             {
-                if (itemPropertyLookup == null)
-                    itemPropertyLookup = BuildItemPropertyLookup();
-                return itemPropertyLookup;
+                if (unifiedPropertyValueLookup == null)
+                    unifiedPropertyValueLookup = BuildUnifiedPropertyLookup();
+                return unifiedPropertyValueLookup;
             }
         }
 
@@ -56,15 +64,15 @@ namespace Arctic.Gameplay.Items
         /// <returns>True if a valid output value was retrived from the property with the given key, false otherwise.</returns>
         public bool TryGetPropertyValue<TValue>(string key, out TValue propertyValue) 
         {
-            propertyValue = GetValue<TValue>(key);
+            propertyValue = GetPropertyValue<TValue>(key);
             return propertyValue != null;
         }
 
-        public TValue GetValue<TValue>(string key)
+        public TValue GetPropertyValue<TValue>(string key)
         {
             try 
             {
-                if (ItemPropertyLookup.TryGetValue(key, out var prop))
+                if (UnifiedPropertyValueLookup.TryGetValue(key, out var prop))
                     return (TValue)prop;
                 else
                     return default;
@@ -90,19 +98,19 @@ namespace Arctic.Gameplay.Items
             };
         }
 
-        private Dictionary<string, object> BuildItemPropertyLookup() 
+        private Dictionary<string, object> BuildUnifiedPropertyLookup() 
         {
             Dictionary<string, object> lookup = new();
-            AddPropretyListToLookup<string>(ref lookup);
-            AddPropretyListToLookup<bool>(ref lookup);
-            AddPropretyListToLookup<int>(ref lookup);
-            AddPropretyListToLookup<float>(ref lookup);
-            AddPropretyListToLookup<GameObject>(ref lookup);
-            AddPropretyListToLookup<UnityObject>(ref lookup);
+            AddPropertyListToLookup<string>(ref lookup);
+            AddPropertyListToLookup<bool>(ref lookup);
+            AddPropertyListToLookup<int>(ref lookup);
+            AddPropertyListToLookup<float>(ref lookup);
+            AddPropertyListToLookup<GameObject>(ref lookup);
+            AddPropertyListToLookup<UnityObject>(ref lookup);
             return lookup;
         }
 
-        private void AddPropretyListToLookup<TValue>(ref Dictionary<string, object> lookup) 
+        private void AddPropertyListToLookup<TValue>(ref Dictionary<string, object> lookup) 
         {
             if(lookup == null)
                 lookup = new();
