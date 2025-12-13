@@ -1,7 +1,7 @@
 namespace Arctic.Utilities.Serialization
 {
     [System.Serializable]
-    public struct SerializableKeyValueData
+    public class SerializableKeyValueData
     {
         public object key;
         public object value;

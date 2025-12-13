@@ -1,6 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityObject = UnityEngine.Object;
 
 namespace Arctic.Gameplay.Items
@@ -13,48 +13,36 @@ namespace Arctic.Gameplay.Items
         [Header("Identity")]
         [SerializeField] private bool randomGuid;
         [SerializeField] private string guid;
-        [SerializeField] private string displayName;
 
         [Header("Item Propeties")]
         [SerializeField] private List<ItemProperty<string>> stringProperties;
         [SerializeField] private List<ItemProperty<bool>> boolProperties;
         [SerializeField] private List<ItemProperty<int>> intProperties;
         [SerializeField] private List<ItemProperty<float>> floatProperties;
-        [SerializeField] private List<ItemProperty<GameObject>> gameObjectProperties;
+        [SerializeField] private List<ItemProperty<GameObject>> prefabProperties;
         [SerializeField] private List<ItemProperty<UnityObject>> unityObjectProperties;
 
-        private Dictionary<System.Type, System.Type> propertyTypeInterpretation;
-        private Dictionary<System.Type, object> propertyTypeListLookup;
-        private Dictionary<string, object> propertyLookup;
+        private Dictionary<System.Type, object> itemPropertyListLookup;
+        private Dictionary<string, object> itemPropertyLookup;
 
-        public Dictionary<System.Type, System.Type> PropertyTypeInterpretation 
-        {
-            get 
-            {
-                if (propertyTypeInterpretation == null)
-                    propertyTypeInterpretation = CreateItemPropertyTypeInterpretation();
-                return propertyTypeInterpretation;
-            }
-        }
-        public Dictionary<System.Type, object> PropertyTypeListLookup
+        public Dictionary<System.Type, object> PropertyListLookup
         {
             get
             {
-                if (propertyTypeListLookup == null)
-                    propertyTypeListLookup = CreatePropertyTypeListLookup();
-                return propertyTypeListLookup;
+                if (itemPropertyListLookup == null)
+                    itemPropertyListLookup = BuildPropretyListLookup();
+                return itemPropertyListLookup;
             }
         }
-        public Dictionary<string, object> PropertyLookup 
+        public Dictionary<string, object> ItemPropertyLookup 
         {
             get 
             {
-                if (propertyLookup == null)
-                    propertyLookup = CreatePropertyLookup();
-                return propertyLookup;
+                if (itemPropertyLookup == null)
+                    itemPropertyLookup = BuildItemPropertyLookup();
+                return itemPropertyLookup;
             }
         }
-
 
         protected virtual void OnValidate()
         {
@@ -66,51 +54,30 @@ namespace Arctic.Gameplay.Items
         }
 
         /// <returns>True if a valid output value was retrived from the property with the given key, false otherwise.</returns>
-        public bool TryGetValue<TValue>(string key, out TValue value) 
+        public bool TryGetPropertyValue<TValue>(string key, out TValue propertyValue) 
         {
-            value = default;
-            if (!TryGetProperty(key, out ItemProperty<TValue> property))
-                return false;
+            propertyValue = GetValue<TValue>(key);
+            return propertyValue != null;
+        }
 
-            try
+        public TValue GetValue<TValue>(string key)
+        {
+            try 
             {
-                value = property.Value;
-                return true;
+                if (ItemPropertyLookup.TryGetValue(key, out var prop))
+                    return (TValue)prop;
+                else
+                    return default;
             }
-            catch (System.Exception exception) 
+            catch (System.Exception e) 
             {
-                Debug.LogError($"ERROR: Unable to convert retrieved value to specified type. (key: {key})\n" + exception.Message);
-                return false;
-            }
-        }
-
-        public bool TryGetProperty<TValue>(string key, out ItemProperty<TValue> property) 
-        {
-            property = GetProperty<TValue>(key);
-            return property != null;
-        }
-
-        public ItemProperty<TValue> GetProperty<TValue>(string key)
-        {
-            var list = GetPropertyListByType<TValue>();
-            if (list != null)
-                return list.Find(c => c.Key == key);
-            return null;
-        }
-
-        private List<ItemProperty<TValue>> GetPropertyListByType<TValue>()
-        {
-            var type = typeof(TValue);
-            if (PropertyTypeListLookup.ContainsKey(type))
-                return PropertyTypeListLookup[type] as List<ItemProperty<TValue>>;
-            else 
-            {
-                Debug.LogError("Could not find a list for specified property type in ItemDefinition.");
-                return null;
+                Debug.LogError("Could not retrive property value as specified type.");
+                Debug.LogException(e);
+                return default;
             }
         }
 
-        private Dictionary<System.Type, object> CreatePropertyTypeListLookup()
+        private Dictionary<System.Type, object> BuildPropretyListLookup()
         {
             return new()
             {
@@ -118,46 +85,38 @@ namespace Arctic.Gameplay.Items
                 { typeof(bool), boolProperties },
                 { typeof(int), intProperties},
                 { typeof(float), floatProperties },
-                { typeof(GameObject), gameObjectProperties },
+                { typeof(GameObject), prefabProperties },
                 { typeof(UnityObject), unityObjectProperties }
             };
         }
 
-        private Dictionary<System.Type, System.Type> CreateItemPropertyTypeInterpretation()
+        private Dictionary<string, object> BuildItemPropertyLookup() 
         {
-            return new()
-            {
-                { typeof(string),  typeof(ItemProperty<string>) },
-                { typeof(bool), typeof(ItemProperty<bool>) },
-                { typeof(int), typeof(ItemProperty<int>)},
-                { typeof(float), typeof(ItemProperty<float>)},
-                { typeof(GameObject), typeof(ItemProperty<GameObject>) },
-                { typeof(UnityObject), typeof(ItemProperty<UnityObject>) }
-            };
+            Dictionary<string, object> lookup = new();
+            AddPropretyListToLookup<string>(ref lookup);
+            AddPropretyListToLookup<bool>(ref lookup);
+            AddPropretyListToLookup<int>(ref lookup);
+            AddPropretyListToLookup<float>(ref lookup);
+            AddPropretyListToLookup<GameObject>(ref lookup);
+            AddPropretyListToLookup<UnityObject>(ref lookup);
+            return lookup;
         }
 
-
-        private Dictionary<string, object> CreatePropertyLookup() 
+        private void AddPropretyListToLookup<TValue>(ref Dictionary<string, object> lookup) 
         {
-            try
+            if(lookup == null)
+                lookup = new();
+            var typeList = PropertyListLookup[typeof(TValue)];
+            var propertyList = typeList as List<ItemProperty<TValue>>;
+            foreach (var prop in propertyList)
             {
-                Dictionary<string, object> lookup = new Dictionary<string, object>();
-                foreach (var listKV in PropertyTypeListLookup) 
+                if (lookup.ContainsKey(prop.Key)) 
                 {
-                    IEnumerable listEnum = (IEnumerable)listKV.Value;
-                    foreach (var propKv in listEnum)
-                    {
-                    }
+                    Debug.LogError($"Duplicate item property key found: (key: {prop.Key})  (guid: {guid}). Ignoring all except for the first property.");
+                    continue;
                 }
-
-                return lookup;
+                lookup.Add(prop.Key, prop.Value);
             }
-            catch(System.Exception e)
-            {
-                Debug.LogException(e);
-                return null;
-            }
-        }
-
+        }   
     }
 }

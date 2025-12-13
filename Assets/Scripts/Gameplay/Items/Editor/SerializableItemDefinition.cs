@@ -1,5 +1,6 @@
-using System.Collections.Generic;
 using Arctic.Utilities.Serialization;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace Arctic.Gameplay.Items.Editor
 {
@@ -7,11 +8,11 @@ namespace Arctic.Gameplay.Items.Editor
     public class SerializableItemDefinition
     {
         public string guid;
-        public List<SerializableKeyValueData> keyValues;
+        public List<SerializableKeyValueData> properties;
         public SerializableItemDefinition(ItemDefinition itemDef)
         {
             this.guid = itemDef.GUID;
-            this.keyValues = CreatePropertyListFromDictionary(itemDef.PropertyLookup);
+            this.properties = CreatePropertyListFromDictionary(itemDef.ItemPropertyLookup);
         }
 
         private List<SerializableKeyValueData> CreatePropertyListFromDictionary(Dictionary<string, object> dictionary) 
@@ -20,6 +21,11 @@ namespace Arctic.Gameplay.Items.Editor
             foreach (var kv in dictionary) 
                 list.Add(new SerializableKeyValueData(kv.Key, kv.Value));
             return list;
+        }
+
+        public string ToJsonString() 
+        {
+            return JsonUtility.ToJson(this, true);
         }
     }
 }

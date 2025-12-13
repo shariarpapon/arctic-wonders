@@ -34,13 +34,11 @@ namespace Arctic.Gameplay.Items.Editor
         private void DrawTextEditor(string title) 
         {
             GuiHelper.DrawHeaderLabel(title, fontSize: 11);
-            GuiHelper.DrawTextEditorWindowArea(ref text);
-        }
 
-        private string GetJsonItemData() 
-        {
-            SerializableItemDefinition data = new SerializableItemDefinition(target);
-            return null;   
+            SerializableItemDefinition serItemDef = new SerializableItemDefinition(target);
+            text = serItemDef.ToJsonString();
+
+            GuiHelper.DrawTextEditorWindowArea(ref text);
         }
 
         private void GuiWarn(string message) => GuiHelper.DrawText(message, Color.orange);
