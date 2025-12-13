@@ -37,7 +37,7 @@ namespace Arctic.Gameplay.Items.Editor
               
                 try
                 {
-                    JsonProperty guidProprety = properties.Find(c => c.id == JsonPropertySerializer.GUID_KEY);
+                    JsonProperty guidProprety = properties.Find(c => c.guid == JsonProperty.GUID_KEY);
                     if (guidProprety != null)
                     {
                         properties.Remove(guidProprety);
@@ -48,7 +48,7 @@ namespace Arctic.Gameplay.Items.Editor
                     else 
                     {
                         status = SerializerStatus.GuidKeyNotFound;
-                        throw new System.InvalidOperationException("Cannot parse valid GUID property with key : " + JsonPropertySerializer.GUID_KEY); 
+                        throw new System.InvalidOperationException("Cannot parse valid GUID property with key : " + JsonProperty.GUID_KEY); 
                     }
                 }
                 catch (System.InvalidOperationException)

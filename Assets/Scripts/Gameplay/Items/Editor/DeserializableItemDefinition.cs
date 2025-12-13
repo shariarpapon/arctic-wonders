@@ -37,12 +37,12 @@ namespace Arctic.Gameplay.Items.Editor
                 ISerializer<DeserializableItemDefintion, string> serializer = new JsonItemDefinitionSerializer();
                 foreach (JsonProperty prop in properties) 
                 {
-                    if (source.UnifiedPropertyDataLookup.ContainsKey(prop.id))
+                    if (source.UnifiedPropertyDataLookup.ContainsKey(prop.guid))
                         continue;
-                    ItemPropertyData data = new ItemPropertyData(prop.id, prop.value, prop.type);
+                    ItemPropertyData data = new ItemPropertyData(prop.guid, prop.value, prop.type);
                     if (!source.TryAddProperty(data)) 
                     {
-                        Debug.LogError($"Unable to parse item property from deserialized wrapper (key: {prop.id}) (type: {prop.type.FullName})");
+                        Debug.LogError($"Unable to parse item property from deserialized wrapper (key: {prop.guid}) (type: {prop.type.FullName})");
                         return false;
                     }
                 }

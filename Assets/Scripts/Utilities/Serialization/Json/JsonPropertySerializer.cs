@@ -8,8 +8,6 @@ namespace Arctic.Utilities.Serialization.Json
 {
     public sealed class JsonPropertySerializer : ISerializer<JsonProperty, string>
     {
-        public static string GUID_KEY = "guid";
-
         public static readonly HashSet<Type> SerializableTypes = new HashSet<Type>() 
         {
             typeof(string), 
@@ -120,9 +118,10 @@ namespace Arctic.Utilities.Serialization.Json
             try
             {
                 StringBuilder sb = new StringBuilder();
-                if (!TrySerializeProperty(new JsonProperty(GUID_KEY, key, typeof(string)), out string guidJson))
+                JsonProperty guiProperty = new JsonProperty(JsonProperty.GUID_KEY, key, typeof(string));
+                if (!TrySerializeProperty(guiProperty, out string guidJson))
                 {
-                    Debug.LogError($"Could not serialize proprety GUID ({GUID_KEY} : {key})");
+                    Debug.LogError($"Could not serialize proprety GUID ({JsonProperty.GUID_KEY} : {key})");
                     return false;
                 }
                 sb.AppendLine(guidJson);
@@ -146,7 +145,7 @@ namespace Arctic.Utilities.Serialization.Json
         {
             json = null;
             StringBuilder sb = new StringBuilder();
-            sb.Append("{\""+property.id +"\":");
+            sb.Append("{\""+property.guid +"\":");
             string value = "";
 
             if (!SerializableTypes.Contains(property.type))
