@@ -18,8 +18,9 @@ namespace Arctic.Gameplay.Items.Editor
             this.guid = source == null ? null : source.GUID;
             this.source = source;
             properties = new List<JsonProperty>();
-            BuildJsonPropertyList();
+            BuildJsonPropertyList(source);
         }
+
         public void AddProperty(JsonProperty prop)
         {
             if (properties == null)
@@ -55,12 +56,12 @@ namespace Arctic.Gameplay.Items.Editor
             }
         }
 
-        private void BuildJsonPropertyList()
+        private void BuildJsonPropertyList(ItemDefinition sourceRef)
         {
-            if (source == null)
+            if (sourceRef == null)
                 return;
             properties = new List<JsonProperty>();
-            foreach (var kv in source.UnifiedPropertyDataLookup)
+            foreach (var kv in sourceRef.UnifiedPropertyDataLookup)
             {
                 string key = kv.Key;
                 ItemPropertyData data = kv.Value;

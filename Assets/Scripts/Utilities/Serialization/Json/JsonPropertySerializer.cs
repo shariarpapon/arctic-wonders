@@ -91,7 +91,7 @@ namespace Arctic.Utilities.Serialization.Json
             }
         }
 
-        public List<JsonProperty> ParsePropertyList(string json) 
+        public List<JsonProperty> ParseAsList(string json) 
         {
             List<JsonProperty> properties = new List<JsonProperty>();
             try
@@ -114,7 +114,6 @@ namespace Arctic.Utilities.Serialization.Json
             }
         }
 
-        //MUST: add TryDeserializeEnumerable for back and forth conversions of list.
         public bool TrySerializeEnumerable(string key, IEnumerable<JsonProperty> enumerable, out string json) 
         {
             json = null;

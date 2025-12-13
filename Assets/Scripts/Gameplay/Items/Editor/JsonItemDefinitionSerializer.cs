@@ -1,5 +1,6 @@
 using Arctic.Utilities.Serialization;
 using Arctic.Utilities.Serialization.Json;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Arctic.Gameplay.Items.Editor
@@ -27,44 +28,43 @@ namespace Arctic.Gameplay.Items.Editor
 
         public SerializerOutput<DeserializableItemDefintion> Deserialize(string json)
         {
+            DeserializableItemDefintion output = new();
+            SerializerStatus status = SerializerStatus.Failed;
             try
             {
                 JsonPropertySerializer serializer = new JsonPropertySerializer();
-                DeserializableItemDefintion desItemDef = new();
-                string[] lines = json.Split('\n');
-                bool serializedAtleastOne = false;
-                foreach (string line in lines) 
-                {
-                    var deserialized = serializer.Deserialize(line);
-                    if (deserialized.Status == SerializerStatus.Successful)
-                    {
-                        desItemDef.AddProperty(deserialized.Object);
-                        serializedAtleastOne = true;
-                    }
-                }
-
+                List<JsonProperty> properties = serializer.ParseAsList(json);
+              
                 try
                 {
-                    JsonProperty guidProp = desItemDef.properties.Find(c => c.id == JsonPropertySerializer.GUID_KEY);
-                    if (guidProp != null)
+                    JsonProperty guidProprety = properties.Find(c => c.id == JsonPropertySerializer.GUID_KEY);
+                    if (guidProprety != null)
                     {
-                        desItemDef.properties.Remove(guidProp);
-                        desItemDef.guid = guidProp.ValueAs<string>();
+                        properties.Remove(guidProprety);
+                        output.guid = guidProprety.ValueAs<string>();
+                        output.properties = properties;
+                        status = SerializerStatus.Successful;
                     }
-                    else throw new System.InvalidOperationException("Cannot parse valid GUID property with key : " + JsonPropertySerializer.GUID_KEY);
+                    else 
+                    {
+                        status = SerializerStatus.GuidKeyNotFound;
+                        throw new System.InvalidOperationException("Cannot parse valid GUID property with key : " + JsonPropertySerializer.GUID_KEY); 
+                    }
                 }
                 catch (System.InvalidOperationException)
                 {
                     Debug.LogWarning($"Asigning random GUID to item definition.");
-                    desItemDef.guid = ItemDefinition.GenerateRandomGUID();
+                    output.guid = ItemDefinition.GenerateRandomGUID();
+                    status = SerializerStatus.Failed;
                 }
 
-                return new SerializerOutput<DeserializableItemDefintion>(desItemDef, serializedAtleastOne ? SerializerStatus.Successful : SerializerStatus.Failed);
+                return new SerializerOutput<DeserializableItemDefintion>(output, status);
             }
             catch(System.Exception ex)
             {
                 Debug.LogException(ex);
-                return new SerializerOutput<DeserializableItemDefintion>(default, SerializerStatus.Failed);
+                status = SerializerStatus.Failed;
+                return new SerializerOutput<DeserializableItemDefintion>(output, status);
             }
         }
     }

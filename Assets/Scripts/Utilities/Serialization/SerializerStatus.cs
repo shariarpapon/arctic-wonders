@@ -9,6 +9,7 @@ namespace Arctic.Utilities.Serialization
     {
          Failed,
          Successful,
-         JsonStringNotValid
+         JsonStringNotValid,
+         GuidKeyNotFound,
     }
 }
