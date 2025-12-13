@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Arctic.Gameplay.Items
@@ -7,11 +8,18 @@ namespace Arctic.Gameplay.Items
     {
         public string Key => key;
         public TValue Value => value;
+        public System.Type ValueType => value.GetType();
 
         [SerializeField] private string key;
         [SerializeField] private TValue value;
 
         public ItemProperty() { }
+
+        public ItemProperty(ItemPropertyData data) 
+        {
+            this.key = data.key;
+            this.value = (TValue)data.value;
+        }
 
         public ItemProperty(string key) 
         {
@@ -23,5 +31,6 @@ namespace Arctic.Gameplay.Items
             this.key = key;
             this.value = value;
         }
+
     }
 }

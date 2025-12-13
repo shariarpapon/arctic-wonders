@@ -30,9 +30,18 @@ namespace Arctic.Utilities.Editor
 
         public const float U_DEFAULT_FIELD_HEIGHT = 18;
 
-        public static void SetContentColor(Color color)
+        public static void SetContentColor(Color color) => GUI.contentColor = color;
+        public static void SetBgColor(Color color) => GUI.backgroundColor = color;
+
+        public static void DrawButton(string label, System.Action action)
         {
-            GUI.contentColor = color;
+            if (GUILayout.Button(label))
+                action?.Invoke();
+        }
+
+        public static void DrawButton(string label, Color contColor, Color bgColor, System.Action action)
+        {
+            ColorSwitch(contColor, bgColor, () => DrawButton(label, action));   
         }
 
         /// <returns>Accumulated vertical height of the drawn elements.</returns>
@@ -121,5 +130,26 @@ namespace Arctic.Utilities.Editor
             draw?.Invoke();
             GUI.contentColor = lastColor;
         }
+
+        /// <summary>Switches to given content color -> invokes the draw action -> switches back to original color.</summary>
+        public static void BgColorSwitch(Color bgColor, System.Action draw)
+        {
+            Color lastColor = GUI.backgroundColor;
+            GUI.backgroundColor = bgColor;
+            draw?.Invoke();
+            GUI.backgroundColor = lastColor;
+        }
+
+        public static void ColorSwitch(Color contColor, Color bgColor, System.Action draw)
+        {
+            Color lastCont = GUI.contentColor;
+            Color lastBg = GUI.backgroundColor;
+            GUI.contentColor = contColor;
+            GUI.backgroundColor = bgColor;
+            draw?.Invoke();
+            GUI.contentColor = lastCont;
+            GUI.backgroundColor = lastBg;
+        }
+
     }
 }

@@ -8,6 +8,7 @@ namespace Arctic.Utilities.Serialization
     public enum SerializerStatus
     {
          Failed,
-         Successful
+         Successful,
+         JsonStringNotValid
     }
 }

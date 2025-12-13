@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ItemDefinition
   m_EditorClassIdentifier: Assembly-CSharp::Arctic.Gameplay.Items.ItemDefinition
   randomGuid: 0
-  guid: fde0a9e5652a4685a21bd67241342886
+  guid: 32c655ea1abe43479b6cd95617c80f87
   stringProperties:
   - key: name
     value: test_tem
