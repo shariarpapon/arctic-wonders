@@ -28,21 +28,6 @@ namespace Arctic.Gameplay.Items.Editor
             GuiHelper.DrawObjectField("Target " + nameof(ItemDefinition), ref target);
             GuiHelper.DrawHorizontalLine(height: 1, spaceAbove: 3.5f);
 
-            //TEST
-            JsonPropertySerializer srz = new JsonPropertySerializer();
-            JsonProperty prop = new JsonProperty("test_id", 3.141f, typeof(float));
-            var serialized = srz.Serialize(prop);
-            string json = serialized.Object;
-            EditorGUILayout.SelectableLabel(json);
-            EditorGUILayout.Separator();
-
-            json = json.Replace("test_id", "bid").Replace("3.141", "true");
-            var deserialized = srz.Deserialize(json);
-            JsonProperty property = deserialized.Object;
-            EditorGUILayout.SelectableLabel(property.id+"--"+property.ValueAs<bool>().ToString()+"--"+prop.type.FullName);
-            //TEST^
-
-
             if (target != null)
                 DrawTextEditor($"Item Editor<{target.GUID}>");
             else GuiWarn("Must asign a valid ItemDefinition scriptable object.");

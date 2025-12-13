@@ -42,7 +42,7 @@ namespace Arctic.Gameplay.Items
         /// <summary>
         /// Property lists for all types unified into a single lookup dictionary.
         /// </summary>
-        public Dictionary<string, object> UnifiedPropertyValueLookup 
+        public Dictionary<string, object> UnifiedPropertyLookup 
         {
             get 
             {
@@ -72,7 +72,7 @@ namespace Arctic.Gameplay.Items
         {
             try 
             {
-                if (UnifiedPropertyValueLookup.TryGetValue(key, out var prop))
+                if (UnifiedPropertyLookup.TryGetValue(key, out var prop))
                     return (TValue)prop;
                 else
                     return default;

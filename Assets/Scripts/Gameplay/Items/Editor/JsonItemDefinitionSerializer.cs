@@ -1,4 +1,5 @@
 using Arctic.Utilities.Serialization;
+using Arctic.Utilities.Serialization.Json;
 using System.Text;
 using UnityEngine;
 
@@ -23,13 +24,20 @@ namespace Arctic.Gameplay.Items.Editor
         {
             try
             {
-                StringBuilder json = new StringBuilder();
-                var lookup = serializableItemDef.source.UnifiedPropertyValueLookup;
-
-                return new SerializerOutput<string>(json.ToString(), SerializerStatus.Successful);
+                JsonPropertySerializer serializer = new JsonPropertySerializer();
+                StringBuilder sb = new StringBuilder();
+                foreach (var kv in serializableItemDef.source.UnifiedPropertyLookup)
+                {
+                    JsonProperty jsonProperty = new JsonProperty(kv.Key, kv.Value, kv.Value.GetType());
+                    var serialized = serializer.Serialize(jsonProperty);
+                    if (serialized.Status == SerializerStatus.Successful)
+                        sb.AppendLine(serialized.Object);
+                }
+                return new SerializerOutput<string>(sb.ToString(), SerializerStatus.Successful);
             }
             catch (System.Exception e)
             {
+                Debug.LogException(e);
                 return new SerializerOutput<string>("ERROR: " + e.Message, SerializerStatus.Failed);
             }
         }

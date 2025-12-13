@@ -1,5 +1,8 @@
 using Arctic.Utilities.Serialization;
+using Arctic.Utilities.Serialization.Json;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using UnityEngine;
 
 namespace Arctic.Gameplay.Items.Editor
@@ -10,26 +13,30 @@ namespace Arctic.Gameplay.Items.Editor
         public string guid;
 
         [System.NonSerialized] public readonly ItemDefinition source;
-        [System.NonSerialized] public readonly List<SerializableKeyValue> keyValues;
 
         public SerializableItemDefinition(ItemDefinition source)
         {
             this.guid = source.GUID;
             this.source = source;
-            this.keyValues = KeyValuesFromLookup(source.UnifiedPropertyValueLookup);
         }
 
-        private List<SerializableKeyValue> KeyValuesFromLookup(Dictionary<string, object> lookup) 
+        public SerializableItemDefinition() 
         {
-            List<SerializableKeyValue> list = new List<SerializableKeyValue>();
-            foreach (var kv in lookup) 
-                list.Add(new SerializableKeyValue(kv.Key, kv.Value));
-            return list;
+            
         }
 
         public string ToJsonString() 
         {
-            return JsonUtility.ToJson(this, true);
+            JsonPropertySerializer serializer = new JsonPropertySerializer();
+            StringBuilder sb = new StringBuilder();
+            foreach (var kv in source.UnifiedPropertyLookup) 
+            {
+                JsonProperty jsonProperty = new JsonProperty(kv.Key, kv.Value, kv.Value.GetType());
+                var serialized = serializer.Serialize(jsonProperty);
+                if (serialized.Status == SerializerStatus.Successful)
+                    sb.AppendLine(serialized.Object);
+            }
+            return sb.ToString();
         }
     }
 }
