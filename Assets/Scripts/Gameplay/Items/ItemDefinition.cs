@@ -150,20 +150,20 @@ namespace Arctic.Gameplay.Items
             }
         }
 
-        public bool TryAddProperty(ItemPropertyData data) 
+        public bool TryAddProperty(ItemPropertyData data, bool overwrite)
         {
             if (data.type == typeof(string))
-                return TryAddPropertyOfType<string>(data);
+                return TryAddPropertyOfType<string>(data, overwrite);
             else if (data.type == typeof(bool))
-                return TryAddPropertyOfType<bool>(data);
+                return TryAddPropertyOfType<bool>(data, overwrite);
             else if (data.type == typeof(int))
-                return TryAddPropertyOfType<int>(data);
+                return TryAddPropertyOfType<int>(data, overwrite);
             else if (data.type == typeof(float))
-                return TryAddPropertyOfType<float>(data);
+                return TryAddPropertyOfType<float>(data, overwrite);
             else return false;
         }
 
-        public bool TryAddPropertyOfType<TValue>(ItemPropertyData data) 
+        public bool TryAddPropertyOfType<TValue>(ItemPropertyData data, bool overwrite) 
         {
             System.Type type = typeof(TValue);
             if (!PropertyListLookup.ContainsKey(type))
@@ -173,14 +173,24 @@ namespace Arctic.Gameplay.Items
             }
             try
             {
-                List<ItemProperty<TValue>> list = PropertyListLookup[type] as List<ItemProperty<TValue>>;
-                if (list != null)
+                List<ItemProperty<TValue>> propertyList = PropertyListLookup[type] as List<ItemProperty<TValue>>;
+                if (propertyList != null)
                 {
-                    if (list.Find(c => c.Key == data.key) != null)
+                    for (int i = 0; i < propertyList.Count; i++)
                     {
-                        list.Add(new ItemProperty<TValue>(data));
-                        return true;
+                        if (propertyList[i].Key == data.key)
+                            if (overwrite)
+                            {
+                                propertyList[i] = new ItemProperty<TValue>(data);
+                                return true;
+                            }
                     }
+                    propertyList.Add(new ItemProperty<TValue>(data));
+                    return true;
+                }
+                else 
+                {
+                    Debug.LogError($"Property list of type<{data.type.FullName}> not found.");
                 }
                 return false;
             }

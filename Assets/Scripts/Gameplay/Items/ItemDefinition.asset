@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: ItemDefinition
   m_EditorClassIdentifier: Assembly-CSharp::Arctic.Gameplay.Items.ItemDefinition
   randomGuid: 0
-  guid: 32c655ea1abe43479b6cd95617c80f87
+  guid: test_id
   stringProperties:
   - key: name
-    value: test_tem
+    value: test_item
   - key: desc
     value: test description abc...
   - key: stats
@@ -29,6 +29,8 @@ MonoBehaviour:
     value: 789
   floatProperties:
   - key: testFloat
-    value: 3.14
+    value: 2.71
+  - key: spoil_rate
+    value: 3.1415
   prefabProperties: []
   unityObjectProperties: []

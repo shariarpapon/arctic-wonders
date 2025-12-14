@@ -10,6 +10,6 @@ namespace Arctic.Utilities.Serialization
          Failed,
          Successful,
          JsonStringNotValid,
-         GuidKeyNotFound,
+         IDKeyNotFound,
     }
 }

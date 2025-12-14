@@ -32,5 +32,7 @@ namespace Arctic.Gameplay.Items
             this.value = value;
         }
 
+        public void SetValue(TValue value) => this.value = value;
+        public void SetKey(string key) => this.key = key; 
     }
 }

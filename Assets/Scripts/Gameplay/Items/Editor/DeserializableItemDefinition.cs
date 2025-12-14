@@ -5,13 +5,23 @@ using Arctic.Utilities.Serialization.Json;
 using UnityEngine;
 
 namespace Arctic.Gameplay.Items.Editor
-{
+{ 
     public struct DeserializableItemDefintion
     {
+        public const string GUID_KEY = "guid";
+
         public string guid;
         public List<JsonProperty> properties;
 
         [System.NonSerialized] public ItemDefinition source;
+
+        public DeserializableItemDefintion(string guid, List<JsonProperty> properties) 
+        {
+            this.guid = guid;
+            this.properties = properties;
+            this.source = null;
+            this.source = LoadItemDefinitionAsset(guid);
+        }
 
         public DeserializableItemDefintion(ItemDefinition source)
         {
@@ -19,6 +29,11 @@ namespace Arctic.Gameplay.Items.Editor
             this.source = source;
             properties = new List<JsonProperty>();
             BuildJsonPropertyList(source);
+        }
+
+        public ItemDefinition LoadItemDefinitionAsset(string guid) 
+        {
+            return null;
         }
 
         public void AddProperty(JsonProperty prop)
@@ -30,19 +45,22 @@ namespace Arctic.Gameplay.Items.Editor
 
         public bool TryParseIntoSource(ref ItemDefinition source)
         {
-            if (source == null || properties == null)
+            if (source == null) 
                 return false;
+            source.SetGUID(guid);
             try 
             {
                 ISerializer<DeserializableItemDefintion, string> serializer = new JsonItemDefinitionSerializer();
-                foreach (JsonProperty prop in properties) 
+                foreach (JsonProperty prop in properties)
                 {
-                    if (source.UnifiedPropertyDataLookup.ContainsKey(prop.guid))
+                    if (prop == null) 
                         continue;
-                    ItemPropertyData data = new ItemPropertyData(prop.guid, prop.value, prop.type);
-                    if (!source.TryAddProperty(data)) 
+                    if (!source.PropertyListLookup.ContainsKey(prop.ValueType))
+                        continue;
+                    ItemPropertyData data = new ItemPropertyData(prop.Key, prop.Value, prop.ValueType);
+                    if (!source.TryAddProperty(data, true)) 
                     {
-                        Debug.LogError($"Unable to parse item property from deserialized wrapper (key: {prop.guid}) (type: {prop.type.FullName})");
+                        Debug.LogError($"Unable to parse item property from deserialized wrapper (key: {prop.Key}) (type: {prop.ValueType.FullName})");
                         return false;
                     }
                 }

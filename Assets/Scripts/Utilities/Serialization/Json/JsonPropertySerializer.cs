@@ -30,7 +30,7 @@ namespace Arctic.Utilities.Serialization.Json
                 if (TrySerializeProperty(property, out string json))
                     return new SerializerOutput<string>(json, SerializerStatus.Successful);
 
-                return new SerializerOutput<string>($"ERROR: Could not serialize property of type <{property.type.FullName}>", SerializerStatus.Failed);
+                return new SerializerOutput<string>($"ERROR: Could not serialize property of type <{property.ValueType.FullName}>", SerializerStatus.Failed);
             }
             catch (Exception e)
             {
@@ -55,7 +55,7 @@ namespace Arctic.Utilities.Serialization.Json
                 string id = json.Substring(0, colonIndex).Trim().Trim('"');
                 string rawValue = json.Substring(colonIndex + 1).Trim();
 
-                object value;
+                object value = null;
                 Type type;
 
                 if (rawValue.StartsWith("\""))
@@ -63,9 +63,9 @@ namespace Arctic.Utilities.Serialization.Json
                     value = rawValue.Trim('"');
                     type = typeof(string);
                 }
-                else if (rawValue == "true" || rawValue == "false")
+                else if (TryParseBoolValue(ref rawValue, out bool boolValue))
                 {
-                    value = bool.Parse(rawValue);
+                    value = boolValue;
                     type = typeof(bool);
                 }
                 else if (!rawValue.Contains("."))
@@ -86,6 +86,19 @@ namespace Arctic.Utilities.Serialization.Json
             {
                 Debug.LogException(ex);
                 return new SerializerOutput<JsonProperty>(null, SerializerStatus.Failed);
+            }
+        }
+
+        private bool TryParseBoolValue(ref string value, out bool boolValue) 
+        {
+            boolValue = default;
+            switch (value.ToLower()) 
+            {
+                case "true":
+                case "false":
+                    return bool.TryParse(value, out boolValue);
+                default:
+                    return false;
             }
         }
 
@@ -145,22 +158,22 @@ namespace Arctic.Utilities.Serialization.Json
         {
             json = null;
             StringBuilder sb = new StringBuilder();
-            sb.Append("{\""+property.guid +"\":");
+            sb.Append("{\""+property.Key +"\":");
             string value = "";
 
-            if (!SerializableTypes.Contains(property.type))
+            if (!SerializableTypes.Contains(property.ValueType))
             {
-                Debug.LogError($"Serialization of type <{property.type.FullName}> is not supported.");
+                Debug.LogError($"Serialization of type <{property.ValueType.FullName}> is not supported.");
                 return false;
             }
 
-            if (property.type == typeof(string))
+            if (property.ValueType == typeof(string))
                 value = $"\"{property.ValueAs<string>()}\"";
-            else if (property.type == typeof(bool))
+            else if (property.ValueType == typeof(bool))
                 value = property.ValueAs<bool>().ToString().ToLower();
-            else if (property.type == typeof(int))
+            else if (property.ValueType == typeof(int))
                 value = property.ValueAs<int>().ToString();
-            else if (property.type == typeof(float))
+            else if (property.ValueType == typeof(float))
                 value = property.ValueAs<float>().ToString(CultureInfo.InvariantCulture);
 
             sb.Append(value + "}");

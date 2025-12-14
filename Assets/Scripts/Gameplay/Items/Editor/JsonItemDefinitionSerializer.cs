@@ -28,7 +28,7 @@ namespace Arctic.Gameplay.Items.Editor
 
         public SerializerOutput<DeserializableItemDefintion> Deserialize(string json)
         {
-            DeserializableItemDefintion output = new();
+            DeserializableItemDefintion desItemDef = new();
             SerializerStatus status = SerializerStatus.Failed;
             try
             {
@@ -37,34 +37,34 @@ namespace Arctic.Gameplay.Items.Editor
               
                 try
                 {
-                    JsonProperty guidProprety = properties.Find(c => c.guid == JsonProperty.GUID_KEY);
-                    if (guidProprety != null)
+                    JsonProperty guidProperty = properties.Find(p => p.Key == JsonProperty.GUID_KEY);
+                    if (guidProperty != null)
                     {
-                        properties.Remove(guidProprety);
-                        output.guid = guidProprety.ValueAs<string>();
-                        output.properties = properties;
+                        properties.Remove(guidProperty);
+                        desItemDef.guid = guidProperty.ValueAs<string>();
+                        desItemDef.properties = properties;
                         status = SerializerStatus.Successful;
                     }
                     else 
                     {
-                        status = SerializerStatus.GuidKeyNotFound;
+                        status = SerializerStatus.IDKeyNotFound;
                         throw new System.InvalidOperationException("Cannot parse valid GUID property with key : " + JsonProperty.GUID_KEY); 
                     }
                 }
                 catch (System.InvalidOperationException)
                 {
                     Debug.LogWarning($"Asigning random GUID to item definition.");
-                    output.guid = ItemDefinition.GenerateRandomGUID();
+                    desItemDef.guid = ItemDefinition.GenerateRandomGUID();
                     status = SerializerStatus.Failed;
                 }
 
-                return new SerializerOutput<DeserializableItemDefintion>(output, status);
+                return new SerializerOutput<DeserializableItemDefintion>(desItemDef, status);
             }
             catch(System.Exception ex)
             {
                 Debug.LogException(ex);
                 status = SerializerStatus.Failed;
-                return new SerializerOutput<DeserializableItemDefintion>(output, status);
+                return new SerializerOutput<DeserializableItemDefintion>(desItemDef, status);
             }
         }
     }

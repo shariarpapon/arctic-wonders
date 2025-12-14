@@ -55,7 +55,8 @@ namespace Arctic.Gameplay.Items.Editor
             {
                 DeserializableItemDefintion deserialized = Deserialize(text, itemDefSerializer);
                 Undo.RecordObject(itemDefinition, "deserialize_" + nameof(itemDefinition) + "_" + itemDefinition.GUID);
-                deserialized.TryParseIntoSource(ref itemDefinition);
+                if (!deserialized.TryParseIntoSource(ref itemDefinition)) 
+                    Debug.LogError("Could not parse into source item definition.");
                 EditorUtility.SetDirty(itemDefinition);                
             }
             catch (System.Exception e) 
@@ -88,7 +89,7 @@ namespace Arctic.Gameplay.Items.Editor
                 PrintConfirmation(false, deserialized.Object);
                 return deserialized.Object;
             }
-            throw new System.InvalidOperationException($"Cannot deserialize into item defintion. (status: {deserialized.Status})");
+            throw new System.InvalidOperationException($"Cannot deserialize into {nameof(DeserializableItemDefintion)}. (status: {deserialized.Status})");
         }
 
         private void PrintConfirmation(bool serialized, DeserializableItemDefintion deserializedItemDef) 
