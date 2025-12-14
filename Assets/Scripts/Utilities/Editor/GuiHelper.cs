@@ -128,16 +128,7 @@ namespace Arctic.Utilities.Editor
                 fullArea.width - paddingX * 2f,
                 fullArea.height - paddingY * 2f
             );
-
-            // --- HACK: hide selection ---
-            Color oldSelection = GUI.skin.settings.selectionColor;
-            GUI.skin.settings.selectionColor = new Color(0, 0, 0, 0);
-
             text = EditorGUI.TextArea(padded, text, style);
-
-            GUI.skin.settings.selectionColor = oldSelection;
-            // ---------------------------
-
             return padded.height;
         }
 

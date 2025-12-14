@@ -5,14 +5,11 @@ using UnityEngine;
 namespace Arctic.Gameplay.Items
 {
     [System.Serializable]
-    public class ItemProperty<TValue> : IKeyValueProperty<string, TValue>
+    public class ItemProperty<TValue> : IProperty
     {
-        public string Key => key;
-        public TValue Value => value;
-        public System.Type ValueType => value.GetType();
-
         [SerializeField] private string key;
         [SerializeField] private TValue value;
+        private System.Type type;
 
         public ItemProperty() { }
 
@@ -33,7 +30,13 @@ namespace Arctic.Gameplay.Items
             this.value = value;
         }
 
+        public string GetKey() => key;
+        public object GetValue() => value;
+        public System.Type GetValueType() => typeof(TValue);
+
         public void SetValue(TValue value) => this.value = value;
-        public void SetKey(string key) => this.key = key; 
+        public void SetKey(string key) => this.key = key;
+        public void SetValue(object value) => this.value = (TValue)value;
+        public void SetValueType(Type type) => this.type = type;
     }
 }

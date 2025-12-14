@@ -12,7 +12,7 @@ namespace Arctic.Gameplay.Items.Editor
         private static readonly ISerializer<ItemDataWrapper, string> itemDefSerializer = new JsonItemDataSerializer();
         private static ItemData TargetItemData = null;
         private static string text = string.Empty;
-        private static int FontSize = 18;
+        private static int EditorTextFontSize = 12;
 
         [MenuItem("Tools/ItemData Editor")]
         public static void OpenWindow() 
@@ -61,9 +61,9 @@ namespace Arctic.Gameplay.Items.Editor
             GuiHelper.DrawButton("Serialize", UnityColorDatabase.CYAN,UnityColorDatabase.WHITE, SerializeAndUpdateText);
             GuiHelper.DrawButton("Deserialize", UnityColorDatabase.YELLOW, UnityColorDatabase.WHITE, DeserializeAndUpdateItemData);
             GUILayout.EndHorizontal();
-            FontSize = EditorGUILayout.IntSlider("Font Size", FontSize, 1, 100);
+            EditorTextFontSize = EditorGUILayout.IntSlider("Font Size", EditorTextFontSize, 1, 100);
             //GuiHelper.DrawTextEditorWindowArea(ref textRef, fontSize:FontSize);
-            GuiHelper.DrawTextEditorWindowArea(ref textRef, fontSize: FontSize);
+            GuiHelper.DrawTextEditorWindowArea(ref textRef, fontSize: EditorTextFontSize);
         }
 
         private void SerializeAndUpdateText() 

@@ -124,13 +124,16 @@ namespace Arctic.Gameplay.Items
             var propertyList = typeList as List<ItemProperty<TValue>>;
             foreach (var property in propertyList)
             {
-                if (lookup.ContainsKey(property.Key)) 
+                if (lookup.ContainsKey(property.GetKey())) 
                 {
-                    Debug.LogError($"Duplicate item property key found: (key: {property.Key})  (guid: {guid}). Ignoring all except for the first property.");
+                    Debug.LogError($"Duplicate item property key found: (key: {property.GetKey()})  (guid: {guid}). Ignoring all except for the first property.");
                     continue;
                 }
-                ItemPropertyData propertyData = new ItemPropertyData(property.Key, property.Value, property.ValueType);
-                lookup.Add(property.Key, propertyData);
+                string propertyKey = property.GetKey();
+                object propertyValue = property.GetValue();
+                System.Type propertyType = property.GetValueType();
+                ItemPropertyData propertyData = new ItemPropertyData(property.GetKey(), property.GetValue(), property.GetValueType());
+                lookup.Add(property.GetKey(), propertyData);
             }
         }
 
@@ -178,7 +181,7 @@ namespace Arctic.Gameplay.Items
                 {
                     for (int i = 0; i < propertyList.Count; i++)
                     {
-                        if (propertyList[i].Key == data.key)
+                        if (propertyList[i].GetKey() == data.key)
                             if (overwrite)
                             {
                                 propertyList[i] = new ItemProperty<TValue>(data);
