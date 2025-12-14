@@ -6,9 +6,9 @@ using UnityEngine;
 
 namespace Arctic.Gameplay.Items.Editor
 {
-    public sealed class ItemJsonEditorWindow : EditorWindow
+    public sealed class ItemDataJsonEditorWindow : EditorWindow
     {
-        private static ItemJsonEditorWindow Instance =null;
+        private static ItemDataJsonEditorWindow Instance =null;
         private static readonly ISerializer<ItemDataWrapper, string> itemDefSerializer = new JsonItemDataSerializer();
         private static ItemData TargetItemData = null;
         private static string text = string.Empty;
@@ -34,7 +34,7 @@ namespace Arctic.Gameplay.Items.Editor
         {
             TargetItemData = target;
             if (Instance == null)
-                Instance = GetWindow<ItemJsonEditorWindow>("Json Editor");
+                Instance = GetWindow<ItemDataJsonEditorWindow>("Json Editor");
         }
 
         private void OnDisable()
