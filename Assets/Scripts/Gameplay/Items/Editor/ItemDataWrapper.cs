@@ -1,6 +1,7 @@
+using Arctic.Utilities.Serialization;
+using Arctic.Utilities.Serialization.Json;
 using System;
 using System.Collections.Generic;
-using Arctic.Utilities.Serialization;
 using UnityEngine;
 
 namespace Arctic.Gameplay.Items.Editor
@@ -40,14 +41,14 @@ namespace Arctic.Gameplay.Items.Editor
             properties.Add(prop);
         }
 
-        public bool TryParseIntoSource(ref ItemData source)
+        public bool ApplyChangesToSource(ref ItemData source)
         {
             if (source == null) 
                 return false;
             source.SetGUID(guid);
             try 
             {
-                ISerializer<ItemDataWrapper, string> serializer = new JsonItemDataSerializer();
+                ISerializer<ItemDataWrapper, string> serializer = new ItemDataSerializer(new JsonPropertySerializer());
                 foreach (Property prop in properties)
                 {
                     if (prop == null) 

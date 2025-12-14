@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Arctic.Utilities.Serialization
@@ -6,5 +7,43 @@ namespace Arctic.Utilities.Serialization
     {
         public Output<TSerialized> Serialize(TDesrialized deserialized);
         public Output<TDesrialized> Deserialize(TSerialized serialized);
+
+        public virtual bool TrySerializeEnumerable(IEnumerable<TDesrialized> enumerable, out List<TSerialized> serializedList)
+        {
+            serializedList = new List<TSerialized>();
+            try
+            {
+                foreach (TDesrialized deserialized in enumerable)
+                {
+                    var output = Serialize(deserialized);
+                    if (output.Status == SerializerStatus.Successful)
+                        serializedList.Add(output.Object);
+                }
+                return true;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public virtual bool TryDeserializeEnumerable(IEnumerable<TSerialized> enumerable, out List<TDesrialized> deserializedList)
+        {
+            deserializedList = new List<TDesrialized>();
+            try
+            {
+                foreach (TSerialized serialized in enumerable) 
+                {
+                    var output = Deserialize(serialized);
+                    if (output.Status == SerializerStatus.Successful)
+                        deserializedList.Add(output.Object);
+                }
+                return true;
+            }
+            catch(Exception e)
+            {
+                throw e;
+            }
+        }
     }
 }

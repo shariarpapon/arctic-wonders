@@ -9,7 +9,8 @@ namespace Arctic.Utilities.Serialization
     {
          Failed,
          Successful,
-         JsonStringNotValid,
+         CouldNotDeserializeEnumerable,
+         StringNotValid,
          IDKeyNotFound,
     }
 }

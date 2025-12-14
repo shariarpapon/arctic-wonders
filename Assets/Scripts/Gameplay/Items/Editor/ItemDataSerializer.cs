@@ -1,23 +1,36 @@
 using Arctic.Utilities.Serialization;
 using Arctic.Utilities.Serialization.Json;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 namespace Arctic.Gameplay.Items.Editor
 {
-    public class JsonItemDataSerializer : ISerializer<ItemDataWrapper, string>
+    public class ItemDataSerializer : ISerializer<ItemDataWrapper, string> 
     {
         private const string ITEM_GUID_KEY = "guid";
+        private ISerializer<IProperty, string> propertySerializer; 
 
-        public Output<string> Serialize(ItemDataWrapper itemDef)
+        public ItemDataSerializer(ISerializer<IProperty, string> propertySerializer) 
         {
-            JsonPropertySerializer jsonPropretySerializer = new JsonPropertySerializer();
+            this.propertySerializer = propertySerializer;
+        }
+
+        public Output<string> Serialize(ItemDataWrapper itemData)
+        {
+            propertySerializer = new JsonPropertySerializer();
             try
             {
-                Property itemGuidProperty = new Property(ITEM_GUID_KEY, itemDef.guid, typeof(string));
-                itemDef.properties.Add(itemGuidProperty);
-                if (jsonPropretySerializer.TrySerializeProperties(itemDef.properties, out string json))
-                    return new Output<string>(json, SerializerStatus.Successful);
+                IProperty itemGuidProperty = new Property(ITEM_GUID_KEY, itemData.guid, typeof(string));
+                itemData.properties.Add(itemGuidProperty);
+
+                if (propertySerializer.TrySerializeEnumerable(itemData.properties, out var serializedProperties)) 
+                {
+                    StringBuilder sb = new StringBuilder();
+                    foreach(string serializedProp in serializedProperties)
+                        sb.AppendLine(serializedProp);
+                    return new Output<string>(sb.ToString(), SerializerStatus.Successful);
+                }
                 else
                     return new Output<string>(null, SerializerStatus.Failed);
             }
@@ -28,10 +41,12 @@ namespace Arctic.Gameplay.Items.Editor
             }
         }
 
-        public Output<ItemDataWrapper> Deserialize(string json)
+        public Output<ItemDataWrapper> Deserialize(string serializedString)
         {
-            JsonPropertySerializer propretySerializer = new JsonPropertySerializer();
-            List<IProperty> deserializedProperties = propretySerializer.DeserializeList(json);
+            string[] lines = serializedString.Split("\n");
+            if (!propertySerializer.TryDeserializeEnumerable(lines, out var deserializedProperties))
+                return new Output<ItemDataWrapper>(default, SerializerStatus.CouldNotDeserializeEnumerable);
+
             if (TryExtractGUIDFromDeserializedProperties(ref deserializedProperties, out string itemGuid)) 
             {
                 ItemDataWrapper itemDataWrapper = new ItemDataWrapper(itemGuid, deserializedProperties);

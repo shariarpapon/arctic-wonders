@@ -42,7 +42,7 @@ namespace Arctic.Utilities.Serialization.Json
         public Output<IProperty> Deserialize(string json)
         {
             if (!IsValidJson(json))
-                return new Output<IProperty>(null, SerializerStatus.JsonStringNotValid);
+                return new Output<IProperty>(null, SerializerStatus.StringNotValid);
 
             try
             {
@@ -51,7 +51,7 @@ namespace Arctic.Utilities.Serialization.Json
 
                 int colonIndex = json.IndexOf(':');
                 if (colonIndex < 0)
-                    return new Output<IProperty>(null, SerializerStatus.JsonStringNotValid);
+                    return new Output<IProperty>(null, SerializerStatus.StringNotValid);
                 string id = json.Substring(0, colonIndex).Trim().Trim('"');
                 string rawValue = json.Substring(colonIndex + 1).Trim();
 
