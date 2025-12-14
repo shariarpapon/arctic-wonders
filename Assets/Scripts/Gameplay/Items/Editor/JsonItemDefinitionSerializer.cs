@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Arctic.Gameplay.Items.Editor
 {
-    public class JsonItemDefinitionSerializer : ISerializer<ItemDataWrapper, string>
+    public class JsonItemDataSerializer : ISerializer<ItemDataWrapper, string>
     {
         private const string ITEM_GUID_KEY = "guid";
 
@@ -43,7 +43,7 @@ namespace Arctic.Gameplay.Items.Editor
 
         private static bool TryExtractGUIDFromDeserializedProperties(ref List<JsonProperty> deserializedProperties, out string itemGuid)
         {
-            itemGuid = ItemDefinition.GenerateRandomGUID();
+            itemGuid = ItemData.GenerateRandomGUID();
             try
             {
                 JsonProperty itemGuidProperty = deserializedProperties.Find(p => p.Key == ITEM_GUID_KEY);

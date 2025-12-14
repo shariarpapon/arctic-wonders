@@ -3,7 +3,7 @@ using System;
 namespace Arctic.Utilities.Serialization.Json
 {
     [System.Serializable] 
-    public class JsonProperty : IProperty
+    public class JsonProperty : ISerializableProperty
     {
         public string Key { get; set; }
         public object Value { get; set; }
@@ -15,7 +15,6 @@ namespace Arctic.Utilities.Serialization.Json
             Value = value;
             ValueType = type;
         }
-
         public T ValueAs<T>() => (T)Value;
     }
 }

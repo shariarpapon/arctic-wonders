@@ -8,28 +8,50 @@ namespace Arctic.Gameplay.Items.Editor
 {
     public sealed class ItemJsonEditorWindow : EditorWindow
     {
-        private const string MENU_PATH = "Tools/Item Editor";
-        private static readonly ISerializer<ItemDataWrapper, string> itemDefSerializer = new JsonItemDefinitionSerializer();
+        private static ItemJsonEditorWindow Instance =null;
+        private static readonly ISerializer<ItemDataWrapper, string> itemDefSerializer = new JsonItemDataSerializer();
+        private static ItemData TargetItemData = null;
+        private static string text = string.Empty;
+        private static int FontSize = 18;
 
-        private ItemDefinition itemDefinition = null;
-        private string text = string.Empty;
-
-        [MenuItem(MENU_PATH)]
+        [MenuItem("Tools/ItemData Editor")]
         public static void OpenWindow() 
         {
-            GetWindow<ItemJsonEditorWindow>("Json Editor");
+            Initialize(TargetItemData);
+        }
+
+        [MenuItem("Assets/ItemData Editor")]
+        public static void AssetMenuItem()
+        {
+            if (Selection.activeObject is ItemData) 
+            {
+                ItemData selected = (ItemData)Selection.activeObject;
+                Initialize(selected);
+            }
+        }
+
+        public static void Initialize(ItemData target) 
+        {
+            TargetItemData = target;
+            if (Instance == null)
+                Instance = GetWindow<ItemJsonEditorWindow>("Json Editor");
+        }
+
+        private void OnDisable()
+        {
+            Instance = null;
         }
 
         private void OnGUI()
         {
-            string currentGuid = itemDefinition == null ? null : itemDefinition.GUID;
-            GuiHelper.DrawObjectField("Target " + nameof(ItemDefinition), ref itemDefinition);
+            string currentGuid = TargetItemData == null ? null : TargetItemData.GUID;
+            GuiHelper.DrawObjectField("Target " + nameof(ItemData), ref TargetItemData);
             GuiHelper.DrawHorizontalLine(height: 1, spaceAbove: 3.5f);
-            if ((currentGuid == null && itemDefinition != null) || (itemDefinition != null && currentGuid != itemDefinition.GUID)) 
+            if ((currentGuid == null && TargetItemData != null) || (TargetItemData != null && currentGuid != TargetItemData.GUID)) 
                 SerializeAndUpdateText();
-            else if(itemDefinition != null) 
-                UpdateTextEditor($"Item Editor<{itemDefinition.GUID}>", ref text);
-            else GuiWarn("Must asign a valid ItemDefinition scriptable object.");
+            else if(TargetItemData != null) 
+                UpdateTextEditor($"Item Editor<{TargetItemData.GUID}>", ref text);
+            else GuiWarn("Must asign a valid ItemData scriptable object.");
         }
 
         private void UpdateTextEditor(string title, ref string textRef) 
@@ -37,27 +59,29 @@ namespace Arctic.Gameplay.Items.Editor
             GuiHelper.DrawHeaderLabel(title, fontSize: 11);
             GUILayout.BeginHorizontal();
             GuiHelper.DrawButton("Serialize", UnityColorDatabase.CYAN,UnityColorDatabase.WHITE, SerializeAndUpdateText);
-            GuiHelper.DrawButton("Deserialize", UnityColorDatabase.YELLOW, UnityColorDatabase.WHITE, DeserializeAndUpdateItemDefinition);
+            GuiHelper.DrawButton("Deserialize", UnityColorDatabase.YELLOW, UnityColorDatabase.WHITE, DeserializeAndUpdateItemData);
             GUILayout.EndHorizontal();
-            GuiHelper.DrawTextEditorWindowArea(ref textRef);
+            FontSize = EditorGUILayout.IntSlider("Font Size", FontSize, 1, 100);
+            //GuiHelper.DrawTextEditorWindowArea(ref textRef, fontSize:FontSize);
+            GuiHelper.DrawTextEditorWindowArea(ref textRef, fontSize: FontSize);
         }
 
         private void SerializeAndUpdateText() 
         {
-            string serialized = Serialize(itemDefinition, itemDefSerializer);
+            string serialized = Serialize(TargetItemData, itemDefSerializer);
             if (text != serialized) 
                 text = serialized;
         }
 
-        private void DeserializeAndUpdateItemDefinition() 
+        private void DeserializeAndUpdateItemData() 
         {
             try
             {
                 ItemDataWrapper deserialized = Deserialize(text, itemDefSerializer);
-                Undo.RecordObject(itemDefinition, "deserialize_" + nameof(itemDefinition) + "_" + itemDefinition.GUID);
-                if (!deserialized.TryParseIntoSource(ref itemDefinition)) 
+                Undo.RecordObject(TargetItemData, "deserialize_" + nameof(TargetItemData) + "_" + TargetItemData.GUID);
+                if (!deserialized.TryParseIntoSource(ref TargetItemData)) 
                     Debug.LogError("Could not parse into source item definition.");
-                EditorUtility.SetDirty(itemDefinition);                
+                EditorUtility.SetDirty(TargetItemData);                
             }
             catch (System.Exception e) 
             {
@@ -66,7 +90,7 @@ namespace Arctic.Gameplay.Items.Editor
             }
         }
 
-        private string Serialize(ItemDefinition source, ISerializer<ItemDataWrapper, string> serializer)
+        private string Serialize(ItemData source, ISerializer<ItemDataWrapper, string> serializer)
         {
             ItemDataWrapper deserializedSource = new ItemDataWrapper(source);
             var serialized = serializer.Serialize(deserializedSource);

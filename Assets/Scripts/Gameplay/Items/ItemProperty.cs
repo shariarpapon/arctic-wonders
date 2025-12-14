@@ -1,3 +1,4 @@
+using Arctic.Utilities.Serialization;
 using System;
 using UnityEngine;
 

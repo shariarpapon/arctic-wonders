@@ -1,5 +1,6 @@
-using UnityEngine;
 using UnityEditor;
+using UnityEngine;
+using static UnityEngine.Rendering.DebugUI.MessageBox;
 
 namespace Arctic.Utilities.Editor
 {
@@ -37,6 +38,15 @@ namespace Arctic.Utilities.Editor
         {
             if (GUILayout.Button(label))
                 action?.Invoke();
+        }
+
+        public static GUIStyle GetFontStyleWithSize(int fontSize) 
+        {
+            var style = new GUIStyle(EditorStyles.label);
+            style.fontSize = fontSize;
+            style.wordWrap = true;
+            style.alignment = TextAnchor.UpperLeft;
+            return style;
         }
 
         public static void DrawButton(string label, Color contColor, Color bgColor, System.Action action)
@@ -102,11 +112,12 @@ namespace Arctic.Utilities.Editor
         }
 
         /// <returns>Accumulated vertical height of the drawn elements.</returns>
-        public static float DrawTextEditorWindowArea(ref string text, float paddingX = 4f, float paddingY = 4f)
+        public static float DrawTextEditorWindowArea(ref string text, int fontSize = 18, float paddingX = 4f, float paddingY = 4f)
         {
+            GUIStyle style = GetFontStyleWithSize(fontSize);
             Rect fullArea = GUILayoutUtility.GetRect(
                 GUIContent.none,
-                GUIStyle.none,
+                style,
                 GUILayout.ExpandWidth(true),
                 GUILayout.ExpandHeight(true)
             );
@@ -117,10 +128,18 @@ namespace Arctic.Utilities.Editor
                 fullArea.width - paddingX * 2f,
                 fullArea.height - paddingY * 2f
             );
-            text = EditorGUI.TextArea(padded, text);
+
+            // --- HACK: hide selection ---
+            Color oldSelection = GUI.skin.settings.selectionColor;
+            GUI.skin.settings.selectionColor = new Color(0, 0, 0, 0);
+
+            text = EditorGUI.TextArea(padded, text, style);
+
+            GUI.skin.settings.selectionColor = oldSelection;
+            // ---------------------------
+
             return padded.height;
         }
-
 
         /// <summary>Switches to given content color -> invokes the draw action -> switches back to original color.</summary>
         public static void ContentColorSwitch(Color contentColor, System.Action draw) 

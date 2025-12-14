@@ -4,8 +4,8 @@ using UnityObject = UnityEngine.Object;
 
 namespace Arctic.Gameplay.Items
 {
-    [CreateAssetMenu(fileName = "ItemDefinition", menuName = "Items/Item Definition", order = -999)]
-    public class ItemDefinition : ScriptableObject
+    [CreateAssetMenu(fileName = "NewItemData", menuName = "Items/Item Data", order = -999)]
+    public class ItemData : ScriptableObject
     {
         public string GUID => guid;
 
@@ -168,7 +168,7 @@ namespace Arctic.Gameplay.Items
             System.Type type = typeof(TValue);
             if (!PropertyListLookup.ContainsKey(type))
             {
-                Debug.LogError($"ItemDefinition does not support properties of type <{data.type.FullName}>");
+                Debug.LogError($"ItemData does not support properties of type <{data.type.FullName}>");
                 return false;
             }
             try

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 60b2ade33a4996c44a2a5a08557fadba, type: 3}
-  m_Name: ItemDefinition
+  m_Name: ItemData
   m_EditorClassIdentifier: Assembly-CSharp::Arctic.Gameplay.Items.ItemDefinition
   randomGuid: 0
   guid: _default_global_id_

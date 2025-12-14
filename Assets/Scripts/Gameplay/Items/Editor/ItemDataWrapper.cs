@@ -9,7 +9,7 @@ namespace Arctic.Gameplay.Items.Editor
     public struct ItemDataWrapper
     {
         public string guid;
-        public ItemDefinition source;
+        public ItemData source;
         public List<JsonProperty> properties;
 
         public ItemDataWrapper(string guid, List<JsonProperty> properties) 
@@ -17,10 +17,10 @@ namespace Arctic.Gameplay.Items.Editor
             this.guid = guid;
             this.properties = properties;
             this.source = null;
-            this.source = LoadItemDefinitionAsset(guid);
+            this.source = LoadItemDataAsset(guid);
         }
 
-        public ItemDataWrapper(ItemDefinition source)
+        public ItemDataWrapper(ItemData source)
         {
             this.guid = source == null ? null : source.GUID;
             this.source = source;
@@ -29,7 +29,7 @@ namespace Arctic.Gameplay.Items.Editor
         }
 
         //TODO
-        public ItemDefinition LoadItemDefinitionAsset(string guid) 
+        public ItemData LoadItemDataAsset(string guid) 
         {
             return null;
         }
@@ -41,14 +41,14 @@ namespace Arctic.Gameplay.Items.Editor
             properties.Add(prop);
         }
 
-        public bool TryParseIntoSource(ref ItemDefinition source)
+        public bool TryParseIntoSource(ref ItemData source)
         {
             if (source == null) 
                 return false;
             source.SetGUID(guid);
             try 
             {
-                ISerializer<ItemDataWrapper, string> serializer = new JsonItemDefinitionSerializer();
+                ISerializer<ItemDataWrapper, string> serializer = new JsonItemDataSerializer();
                 foreach (JsonProperty prop in properties)
                 {
                     if (prop == null) 
@@ -71,7 +71,7 @@ namespace Arctic.Gameplay.Items.Editor
             }
         }
 
-        private void BuildJsonPropertyList(ItemDefinition sourceRef)
+        private void BuildJsonPropertyList(ItemData sourceRef)
         {
             if (sourceRef == null)
                 return;
