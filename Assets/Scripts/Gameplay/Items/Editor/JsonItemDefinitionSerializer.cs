@@ -5,16 +5,18 @@ using UnityEngine;
 
 namespace Arctic.Gameplay.Items.Editor
 {
-    public class JsonItemDefinitionSerializer : ISerializer<DeserializableItemDefintion, string>
+    public class JsonItemDefinitionSerializer : ISerializer<ItemDataWrapper, string>
     {
-        private JsonPropertySerializer propertySerializer;
+        private const string ITEM_GUID_KEY = "guid";
 
-        public SerializerOutput<string> Serialize(DeserializableItemDefintion itemDef)
+        public SerializerOutput<string> Serialize(ItemDataWrapper itemDef)
         {
-            propertySerializer = new JsonPropertySerializer();
+            JsonPropertySerializer jsonPropretySerializer = new JsonPropertySerializer();
             try
             {
-                if (propertySerializer.TrySerializeEnumerable(itemDef.guid, itemDef.properties, out string json))
+                JsonProperty itemGuidProperty = new JsonProperty(ITEM_GUID_KEY, itemDef.guid, typeof(string));
+                itemDef.properties.Add(itemGuidProperty);
+                if (jsonPropretySerializer.TrySerializeProperties(itemDef.properties, out string json))
                     return new SerializerOutput<string>(json, SerializerStatus.Successful);
                 else
                     return new SerializerOutput<string>(null, SerializerStatus.Failed);
@@ -26,45 +28,34 @@ namespace Arctic.Gameplay.Items.Editor
             }
         }
 
-        public SerializerOutput<DeserializableItemDefintion> Deserialize(string json)
+        public SerializerOutput<ItemDataWrapper> Deserialize(string json)
         {
-            DeserializableItemDefintion desItemDef = new();
-            SerializerStatus status = SerializerStatus.Failed;
+            JsonPropertySerializer propretySerializer = new JsonPropertySerializer();
+            List<JsonProperty> deserializedProperties = propretySerializer.DeserializeList(json);
+            if (TryExtractGUIDFromDeserializedProperties(ref deserializedProperties, out string itemGuid)) 
+            {
+                ItemDataWrapper itemDataWrapper = new ItemDataWrapper(itemGuid, deserializedProperties);
+                return new SerializerOutput<ItemDataWrapper>(itemDataWrapper, SerializerStatus.Successful);
+            }
+            else
+                return new SerializerOutput<ItemDataWrapper>(default, SerializerStatus.Failed);
+        }
+
+        private static bool TryExtractGUIDFromDeserializedProperties(ref List<JsonProperty> deserializedProperties, out string itemGuid)
+        {
+            itemGuid = ItemDefinition.GenerateRandomGUID();
             try
             {
-                JsonPropertySerializer serializer = new JsonPropertySerializer();
-                List<JsonProperty> properties = serializer.ParseAsList(json);
-              
-                try
-                {
-                    JsonProperty guidProperty = properties.Find(p => p.Key == JsonProperty.GUID_KEY);
-                    if (guidProperty != null)
-                    {
-                        properties.Remove(guidProperty);
-                        desItemDef.guid = guidProperty.ValueAs<string>();
-                        desItemDef.properties = properties;
-                        status = SerializerStatus.Successful;
-                    }
-                    else 
-                    {
-                        status = SerializerStatus.IDKeyNotFound;
-                        throw new System.InvalidOperationException("Cannot parse valid GUID property with key : " + JsonProperty.GUID_KEY); 
-                    }
-                }
-                catch (System.InvalidOperationException)
-                {
-                    Debug.LogWarning($"Asigning random GUID to item definition.");
-                    desItemDef.guid = ItemDefinition.GenerateRandomGUID();
-                    status = SerializerStatus.Failed;
-                }
-
-                return new SerializerOutput<DeserializableItemDefintion>(desItemDef, status);
+                JsonProperty itemGuidProperty = deserializedProperties.Find(p => p.Key == ITEM_GUID_KEY);
+                string itemGuidValue = itemGuidProperty.ValueAs<string>();
+                itemGuid = itemGuidValue;
+                deserializedProperties.Remove(itemGuidProperty);
+                return true;
             }
-            catch(System.Exception ex)
+            catch (System.Exception e) 
             {
-                Debug.LogException(ex);
-                status = SerializerStatus.Failed;
-                return new SerializerOutput<DeserializableItemDefintion>(desItemDef, status);
+                Debug.LogError("Error: Could not extract item GUID from deserialized properties: " + e.Message);
+                return false;
             }
         }
     }

@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: ItemDefinition
   m_EditorClassIdentifier: Assembly-CSharp::Arctic.Gameplay.Items.ItemDefinition
   randomGuid: 0
-  guid: test_id
+  guid: _default_global_id_
   stringProperties:
   - key: name
-    value: test_item
+    value: test_item222
   - key: desc
-    value: test description abc...
+    value: test description abc2222...
   - key: stats
-    value: test stats abc....
+    value: test stats ab2222c....
   boolProperties:
   - key: isDestroyed
     value: 1

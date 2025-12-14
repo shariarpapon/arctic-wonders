@@ -102,7 +102,7 @@ namespace Arctic.Utilities.Serialization.Json
             }
         }
 
-        public List<JsonProperty> ParseAsList(string json) 
+        public List<JsonProperty> DeserializeList(string json) 
         {
             List<JsonProperty> properties = new List<JsonProperty>();
             try
@@ -110,7 +110,7 @@ namespace Arctic.Utilities.Serialization.Json
                 string[] lines = json.Split("\n");
                 foreach (var line in lines) 
                 {
-                    if (string.IsNullOrEmpty(line) || !IsValidJson(line))
+                    if (!IsValidJson(line))
                         continue;
                     SerializerOutput<JsonProperty> output = Deserialize(line);
                     if (output.Status == SerializerStatus.Successful)
@@ -125,20 +125,13 @@ namespace Arctic.Utilities.Serialization.Json
             }
         }
 
-        public bool TrySerializeEnumerable(string key, IEnumerable<JsonProperty> enumerable, out string json) 
+        public bool TrySerializeProperties(IEnumerable<JsonProperty> properties, out string json) 
         {
             json = null;
             try
             {
-                StringBuilder sb = new StringBuilder();
-                JsonProperty guiProperty = new JsonProperty(JsonProperty.GUID_KEY, key, typeof(string));
-                if (!TrySerializeProperty(guiProperty, out string guidJson))
-                {
-                    Debug.LogError($"Could not serialize proprety GUID ({JsonProperty.GUID_KEY} : {key})");
-                    return false;
-                }
-                sb.AppendLine(guidJson);
-                foreach (var property in enumerable)
+                StringBuilder sb = new StringBuilder();               
+                foreach (var property in properties)
                 {
                     var serialized = Serialize(property);
                     if (serialized.Status == SerializerStatus.Successful)
@@ -162,11 +155,7 @@ namespace Arctic.Utilities.Serialization.Json
             string value = "";
 
             if (!SerializableTypes.Contains(property.ValueType))
-            {
-                Debug.LogError($"Serialization of type <{property.ValueType.FullName}> is not supported.");
                 return false;
-            }
-
             if (property.ValueType == typeof(string))
                 value = $"\"{property.ValueAs<string>()}\"";
             else if (property.ValueType == typeof(bool))

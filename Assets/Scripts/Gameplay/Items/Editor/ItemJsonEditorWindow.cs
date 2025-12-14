@@ -9,7 +9,7 @@ namespace Arctic.Gameplay.Items.Editor
     public sealed class ItemJsonEditorWindow : EditorWindow
     {
         private const string MENU_PATH = "Tools/Item Editor";
-        private static readonly ISerializer<DeserializableItemDefintion, string> itemDefSerializer = new JsonItemDefinitionSerializer();
+        private static readonly ISerializer<ItemDataWrapper, string> itemDefSerializer = new JsonItemDefinitionSerializer();
 
         private ItemDefinition itemDefinition = null;
         private string text = string.Empty;
@@ -53,7 +53,7 @@ namespace Arctic.Gameplay.Items.Editor
         {
             try
             {
-                DeserializableItemDefintion deserialized = Deserialize(text, itemDefSerializer);
+                ItemDataWrapper deserialized = Deserialize(text, itemDefSerializer);
                 Undo.RecordObject(itemDefinition, "deserialize_" + nameof(itemDefinition) + "_" + itemDefinition.GUID);
                 if (!deserialized.TryParseIntoSource(ref itemDefinition)) 
                     Debug.LogError("Could not parse into source item definition.");
@@ -66,9 +66,9 @@ namespace Arctic.Gameplay.Items.Editor
             }
         }
 
-        private string Serialize(ItemDefinition source, ISerializer<DeserializableItemDefintion, string> serializer)
+        private string Serialize(ItemDefinition source, ISerializer<ItemDataWrapper, string> serializer)
         {
-            DeserializableItemDefintion deserializedSource = new DeserializableItemDefintion(source);
+            ItemDataWrapper deserializedSource = new ItemDataWrapper(source);
             var serialized = serializer.Serialize(deserializedSource);
             if (serialized.Status == SerializerStatus.Successful)
             {
@@ -81,7 +81,7 @@ namespace Arctic.Gameplay.Items.Editor
             return null;
         }
 
-        private DeserializableItemDefintion Deserialize(string source, ISerializer<DeserializableItemDefintion, string> serializer)
+        private ItemDataWrapper Deserialize(string source, ISerializer<ItemDataWrapper, string> serializer)
         {
             var deserialized = serializer.Deserialize(source);
             if (deserialized.Status == SerializerStatus.Successful)
@@ -89,10 +89,10 @@ namespace Arctic.Gameplay.Items.Editor
                 PrintConfirmation(false, deserialized.Object);
                 return deserialized.Object;
             }
-            throw new System.InvalidOperationException($"Cannot deserialize into {nameof(DeserializableItemDefintion)}. (status: {deserialized.Status})");
+            throw new System.InvalidOperationException($"Cannot deserialize into {nameof(ItemDataWrapper)}. (status: {deserialized.Status})");
         }
 
-        private void PrintConfirmation(bool serialized, DeserializableItemDefintion deserializedItemDef) 
+        private void PrintConfirmation(bool serialized, ItemDataWrapper deserializedItemDef) 
         {
             string guid = deserializedItemDef.guid;
             if (serialized)

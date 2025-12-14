@@ -5,8 +5,6 @@ namespace Arctic.Utilities.Serialization.Json
     [System.Serializable] 
     public class JsonProperty : IProperty
     {
-        public const string GUID_KEY = "guid";
-
         public string Key { get; set; }
         public object Value { get; set; }
         public Type ValueType { get; set; }

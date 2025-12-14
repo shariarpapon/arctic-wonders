@@ -6,16 +6,13 @@ using UnityEngine;
 
 namespace Arctic.Gameplay.Items.Editor
 { 
-    public struct DeserializableItemDefintion
+    public struct ItemDataWrapper
     {
-        public const string GUID_KEY = "guid";
-
         public string guid;
+        public ItemDefinition source;
         public List<JsonProperty> properties;
 
-        [System.NonSerialized] public ItemDefinition source;
-
-        public DeserializableItemDefintion(string guid, List<JsonProperty> properties) 
+        public ItemDataWrapper(string guid, List<JsonProperty> properties) 
         {
             this.guid = guid;
             this.properties = properties;
@@ -23,7 +20,7 @@ namespace Arctic.Gameplay.Items.Editor
             this.source = LoadItemDefinitionAsset(guid);
         }
 
-        public DeserializableItemDefintion(ItemDefinition source)
+        public ItemDataWrapper(ItemDefinition source)
         {
             this.guid = source == null ? null : source.GUID;
             this.source = source;
@@ -31,6 +28,7 @@ namespace Arctic.Gameplay.Items.Editor
             BuildJsonPropertyList(source);
         }
 
+        //TODO
         public ItemDefinition LoadItemDefinitionAsset(string guid) 
         {
             return null;
@@ -50,7 +48,7 @@ namespace Arctic.Gameplay.Items.Editor
             source.SetGUID(guid);
             try 
             {
-                ISerializer<DeserializableItemDefintion, string> serializer = new JsonItemDefinitionSerializer();
+                ISerializer<ItemDataWrapper, string> serializer = new JsonItemDefinitionSerializer();
                 foreach (JsonProperty prop in properties)
                 {
                     if (prop == null) 
