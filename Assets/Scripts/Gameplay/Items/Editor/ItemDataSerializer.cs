@@ -18,42 +18,41 @@ namespace Arctic.Gameplay.Items.Editor
 
         public Output<string> Serialize(ItemDataWrapper itemData)
         {
-            propertySerializer = new JsonPropertySerializer();
             try
             {
                 IProperty itemGuidProperty = new Property(ITEM_GUID_KEY, itemData.guid, typeof(string));
                 itemData.properties.Add(itemGuidProperty);
 
-                if (propertySerializer.TrySerializeEnumerable(itemData.properties, out var serializedProperties)) 
+                if (propertySerializer.TrySerializeAll(itemData.properties, out var serializedProperties)) 
                 {
                     StringBuilder sb = new StringBuilder();
                     foreach(string serializedProp in serializedProperties)
                         sb.AppendLine(serializedProp);
-                    return new Output<string>(sb.ToString(), SerializerStatus.Successful);
+                    return new Output<string>(sb.ToString(), OutputStatus.Successful);
                 }
                 else
-                    return new Output<string>(null, SerializerStatus.Failed);
+                    return new Output<string>(null, OutputStatus.Failed);
             }
             catch (System.Exception e)
             {
                 Debug.LogException(e);
-                return new Output<string>("ERROR: " + e.Message, SerializerStatus.Failed);
+                return new Output<string>("ERROR: " + e.Message, OutputStatus.Failed);
             }
         }
 
         public Output<ItemDataWrapper> Deserialize(string serializedString)
         {
             string[] lines = serializedString.Split("\n");
-            if (!propertySerializer.TryDeserializeEnumerable(lines, out var deserializedProperties))
-                return new Output<ItemDataWrapper>(default, SerializerStatus.CouldNotDeserializeEnumerable);
+            if (!propertySerializer.TryDeserializeAll(lines, out var deserializedProperties))
+                return new Output<ItemDataWrapper>(default, OutputStatus.CouldNotDeserializeEnumerable);
 
             if (TryExtractGUIDFromDeserializedProperties(ref deserializedProperties, out string itemGuid)) 
             {
                 ItemDataWrapper itemDataWrapper = new ItemDataWrapper(itemGuid, deserializedProperties);
-                return new Output<ItemDataWrapper>(itemDataWrapper, SerializerStatus.Successful);
+                return new Output<ItemDataWrapper>(itemDataWrapper, OutputStatus.Successful);
             }
             else
-                return new Output<ItemDataWrapper>(default, SerializerStatus.Failed);
+                return new Output<ItemDataWrapper>(default, OutputStatus.Failed);
         }
 
         private static bool TryExtractGUIDFromDeserializedProperties(ref List<IProperty> deserializedProperties, out string itemGuid)

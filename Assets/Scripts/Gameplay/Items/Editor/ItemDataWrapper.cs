@@ -1,8 +1,8 @@
-using Arctic.Utilities.Serialization;
-using Arctic.Utilities.Serialization.Json;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Arctic.Utilities.Serialization;
+using Arctic.Utilities.Serialization.Json;
 
 namespace Arctic.Gameplay.Items.Editor
 { 
@@ -80,13 +80,17 @@ namespace Arctic.Gameplay.Items.Editor
             {
                 string key = kv.Key;
                 ItemPropertyData data = kv.Value;
+
                 object value = data.value;
                 System.Type valueType = data.type;
+
                 AddProperty(CreateProperty(key, value, valueType));
             }
         }
 
         private IProperty CreateProperty(string key, object value, System.Type valueType)
-            => new Property(key, value, valueType);
+        { 
+            return new Property(key, value, valueType); 
+        }
     }
 }   

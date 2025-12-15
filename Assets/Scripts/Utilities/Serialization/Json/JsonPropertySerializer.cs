@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace Arctic.Utilities.Serialization.Json
 {
+    //TODO: create PropertySerializer base class with all universal property serialization functionality and inherit from that and override parsing.
     public sealed class JsonPropertySerializer : ISerializer<IProperty, string>
     {
         public static readonly HashSet<Type> SerializableTypes = new HashSet<Type>() 
@@ -28,13 +29,13 @@ namespace Arctic.Utilities.Serialization.Json
             try
             {
                 if (TrySerializeProperty(property, out string json))
-                    return new Output<string>(json, SerializerStatus.Successful);
+                    return new Output<string>(json, OutputStatus.Successful);
 
-                return new Output<string>($"ERROR: Could not serialize property of type <{property.GetValueType().FullName}>", SerializerStatus.Failed);
+                return new Output<string>($"ERROR: Could not serialize property of type <{property.GetValueType().FullName}>", OutputStatus.Failed);
             }
             catch (Exception e)
             {
-                return new Output<string>("ERROR: " + e.Message, SerializerStatus.Failed);
+                return new Output<string>("ERROR: " + e.Message, OutputStatus.Failed);
             }
         }
 
@@ -42,7 +43,7 @@ namespace Arctic.Utilities.Serialization.Json
         public Output<IProperty> Deserialize(string json)
         {
             if (!IsValidJson(json))
-                return new Output<IProperty>(null, SerializerStatus.StringNotValid);
+                return new Output<IProperty>(null, OutputStatus.StringNotValid);
 
             try
             {
@@ -51,7 +52,7 @@ namespace Arctic.Utilities.Serialization.Json
 
                 int colonIndex = json.IndexOf(':');
                 if (colonIndex < 0)
-                    return new Output<IProperty>(null, SerializerStatus.StringNotValid);
+                    return new Output<IProperty>(null, OutputStatus.StringNotValid);
                 string id = json.Substring(0, colonIndex).Trim().Trim('"');
                 string rawValue = json.Substring(colonIndex + 1).Trim();
 
@@ -63,14 +64,14 @@ namespace Arctic.Utilities.Serialization.Json
                     value = rawValue.Trim('"');
                     type = typeof(string);
                 }
-                else if (TryParseBoolValue(ref rawValue, out bool boolValue))
+                else if (bool.TryParse(rawValue, out bool boolValue))
                 {
                     value = boolValue;
                     type = typeof(bool);
                 }
-                else if (!rawValue.Contains("."))
+                else if (int.TryParse(rawValue, out int intValue))
                 {
-                    value = int.Parse(rawValue);
+                    value = intValue;
                     type = typeof(int);
                 }
                 else
@@ -80,12 +81,12 @@ namespace Arctic.Utilities.Serialization.Json
                 }
 
                 var property = new Property(id, value, type);
-                return new Output<IProperty>(property, SerializerStatus.Successful);
+                return new Output<IProperty>(property, OutputStatus.Successful);
             }
             catch (Exception ex) 
             {
                 Debug.LogException(ex);
-                return new Output<IProperty>(null, SerializerStatus.Failed);
+                return new Output<IProperty>(null, OutputStatus.Failed);
             }
         }
 
@@ -113,7 +114,7 @@ namespace Arctic.Utilities.Serialization.Json
                     if (!IsValidJson(line))
                         continue;
                     Output<IProperty> output = Deserialize(line);
-                    if (output.Status == SerializerStatus.Successful)
+                    if (output.Status == OutputStatus.Successful)
                         properties.Add(output.Object);
                 }
                 return properties;
@@ -134,7 +135,7 @@ namespace Arctic.Utilities.Serialization.Json
                 foreach (var property in properties)
                 {
                     var serialized = Serialize(property);
-                    if (serialized.Status == SerializerStatus.Successful)
+                    if (serialized.Status == OutputStatus.Successful)
                         sb.AppendLine(serialized.Object);
                 }
                 json = sb.ToString();

@@ -8,7 +8,7 @@ namespace Arctic.Utilities.Serialization
         public Output<TSerialized> Serialize(TDesrialized deserialized);
         public Output<TDesrialized> Deserialize(TSerialized serialized);
 
-        public virtual bool TrySerializeEnumerable(IEnumerable<TDesrialized> enumerable, out List<TSerialized> serializedList)
+        public virtual bool TrySerializeAll(IEnumerable<TDesrialized> enumerable, out List<TSerialized> serializedList)
         {
             serializedList = new List<TSerialized>();
             try
@@ -16,7 +16,7 @@ namespace Arctic.Utilities.Serialization
                 foreach (TDesrialized deserialized in enumerable)
                 {
                     var output = Serialize(deserialized);
-                    if (output.Status == SerializerStatus.Successful)
+                    if (output.Status == OutputStatus.Successful)
                         serializedList.Add(output.Object);
                 }
                 return true;
@@ -27,7 +27,7 @@ namespace Arctic.Utilities.Serialization
             }
         }
 
-        public virtual bool TryDeserializeEnumerable(IEnumerable<TSerialized> enumerable, out List<TDesrialized> deserializedList)
+        public virtual bool TryDeserializeAll(IEnumerable<TSerialized> enumerable, out List<TDesrialized> deserializedList)
         {
             deserializedList = new List<TDesrialized>();
             try
@@ -35,7 +35,7 @@ namespace Arctic.Utilities.Serialization
                 foreach (TSerialized serialized in enumerable) 
                 {
                     var output = Deserialize(serialized);
-                    if (output.Status == SerializerStatus.Successful)
+                    if (output.Status == OutputStatus.Successful)
                         deserializedList.Add(output.Object);
                 }
                 return true;

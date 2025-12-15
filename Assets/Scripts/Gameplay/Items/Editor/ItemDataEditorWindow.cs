@@ -9,6 +9,7 @@ namespace Arctic.Gameplay.Items.Editor
 {
     public sealed class ItemDataEditorWindow : EditorWindow
     {
+        private const string WINDOW_TITLE = "ItemData Editor";
         private static ItemDataEditorWindow WindowInstance =null;
         private static ItemData TargetItemData = null;
         private static string text = string.Empty;
@@ -16,13 +17,13 @@ namespace Arctic.Gameplay.Items.Editor
 
         private static readonly ISerializer<ItemDataWrapper, string> ActiveItemDataSerializer = new ItemDataSerializer(new JsonPropertySerializer());
 
-        [MenuItem("Tools/ItemData Editor")]
+        [MenuItem("Tools/" + WINDOW_TITLE)]
         public static void OpenWindow() 
         {
-            Initialize(TargetItemData);
+            Initialize(null);
         }
 
-        [MenuItem("Assets/ItemData Editor")]
+        [MenuItem("Assets/" + WINDOW_TITLE)]
         public static void AssetMenuItem()
         {
             if (Selection.activeObject is ItemData) 
@@ -34,9 +35,12 @@ namespace Arctic.Gameplay.Items.Editor
 
         public static void Initialize(ItemData target) 
         {
-            TargetItemData = target;
+            if (TargetItemData == null)
+                TargetItemData = target;
             if (WindowInstance == null)
-                WindowInstance = GetWindow<ItemDataEditorWindow>("Json Editor");
+                WindowInstance = GetWindow<ItemDataEditorWindow>(WINDOW_TITLE);
+            WindowInstance.ShowTab();
+            WindowInstance.Focus();
         }
 
         private void OnDisable()
@@ -70,8 +74,7 @@ namespace Arctic.Gameplay.Items.Editor
         private void SerializeAndUpdateText() 
         {
             string serialized = Serialize(TargetItemData, ActiveItemDataSerializer);
-            if (text != serialized) 
-                text = serialized;
+            text = serialized;
         }
 
         private void DeserializeAndUpdateItemData() 
@@ -95,7 +98,7 @@ namespace Arctic.Gameplay.Items.Editor
         {
             ItemDataWrapper deserializedSource = new ItemDataWrapper(source);
             var serialized = serializer.Serialize(deserializedSource);
-            if (serialized.Status == SerializerStatus.Successful)
+            if (serialized.Status == OutputStatus.Successful)
             {
                 PrintConfirmation(true, deserializedSource);
                 return serialized.Object;
@@ -109,7 +112,7 @@ namespace Arctic.Gameplay.Items.Editor
         private ItemDataWrapper DeserializeItemDataWrapper(string source, ISerializer<ItemDataWrapper, string> serializer)
         {
             var deserialized = serializer.Deserialize(source);
-            if (deserialized.Status == SerializerStatus.Successful)
+            if (deserialized.Status == OutputStatus.Successful)
             {
                 PrintConfirmation(false, deserialized.Object);
                 return deserialized.Object;
