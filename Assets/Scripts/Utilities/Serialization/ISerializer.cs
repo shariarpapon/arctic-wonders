@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Arctic.Utilities.Serialization
 {
@@ -23,6 +24,7 @@ namespace Arctic.Utilities.Serialization
             }
             catch (Exception e)
             {
+                Debug.LogError("cant serialize all properties: " + e.Message);
                 throw e;
             }
         }
@@ -42,6 +44,7 @@ namespace Arctic.Utilities.Serialization
             }
             catch(Exception e)
             {
+                Debug.LogError("cant deserialize all properties: " + e.Message);
                 throw e;
             }
         }

@@ -1,8 +1,8 @@
+using Arctic.Utilities.Serialization;
+using Arctic.Utilities.Serialization.Json;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Arctic.Utilities.Serialization;
-using Arctic.Utilities.Serialization.Json;
 
 namespace Arctic.Gameplay.Items.Editor
 { 
@@ -25,7 +25,7 @@ namespace Arctic.Gameplay.Items.Editor
             this.guid = source == null ? null : source.GUID;
             this.source = source;
             properties = new List<IProperty>();
-            BuildPropertyListFromData(source);
+            BuildPropertyListFromSource(source);
         }
 
         //TODO
@@ -41,7 +41,7 @@ namespace Arctic.Gameplay.Items.Editor
             properties.Add(prop);
         }
 
-        public bool ApplyChangesToSource(ref ItemData source)
+        public bool ApplyChangesToSource(ItemData source)
         {
             if (source == null) 
                 return false;
@@ -49,19 +49,20 @@ namespace Arctic.Gameplay.Items.Editor
             try 
             {
                 ISerializer<ItemDataWrapper, string> serializer = new ItemDataSerializer(new JsonPropertySerializer());
-                foreach (Property prop in properties)
+                foreach (IProperty prop in properties)
                 {
                     if (prop == null) 
                         continue;
-                    if (!source.PropertyListLookup.ContainsKey(prop.GetValueType()))
+                    if (!source.GetPropertyListLookup(false).ContainsKey(prop.GetValueType()))
                         continue;
-                    ItemPropertyData data = new ItemPropertyData(prop.GetKey(), prop.GetValue(), prop.GetValueType());
-                    if (!source.TryAddProperty(data, true)) 
+                    IProperty data = new SerializableItemProperty(prop.GetKey(), prop.GetValue(), prop.GetValueType());
+                    if (!source.TryAddItemProperty(data, true)) 
                     {
                         Debug.LogError($"Unable to parse item property from deserialized wrapper (key: {prop.GetKey()}) (type: {prop.GetValueType().FullName})");
                         return false;
                     }
                 }
+                source.RebuildLookups();
                 return true;
             }
             catch (Exception e) 
@@ -71,18 +72,18 @@ namespace Arctic.Gameplay.Items.Editor
             }
         }
 
-        private void BuildPropertyListFromData(ItemData sourceRef)
+        private void BuildPropertyListFromSource(ItemData sourceRef)
         {
             if (sourceRef == null)
                 return;
             properties = new List<IProperty>();
-            foreach (var kv in sourceRef.UnifiedPropertyDataLookup)
+            foreach (var kv in sourceRef.GetUnifiedPropertyDataLookup(true))
             {
                 string key = kv.Key;
-                ItemPropertyData data = kv.Value;
+                SerializableItemProperty data = kv.Value;
 
-                object value = data.value;
-                System.Type valueType = data.type;
+                object value = data.GetValue();
+                System.Type valueType = data.GetType();
 
                 AddProperty(CreateProperty(key, value, valueType));
             }

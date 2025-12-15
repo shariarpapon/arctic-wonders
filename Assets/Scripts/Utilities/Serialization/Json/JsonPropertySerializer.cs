@@ -31,10 +31,12 @@ namespace Arctic.Utilities.Serialization.Json
                 if (TrySerializeProperty(property, out string json))
                     return new Output<string>(json, OutputStatus.Successful);
 
+                Debug.LogError($"Could not serialize property<{property.GetValueType().FullName}> into json string.");
                 return new Output<string>($"ERROR: Could not serialize property of type <{property.GetValueType().FullName}>", OutputStatus.Failed);
             }
             catch (Exception e)
             {
+                Debug.LogError("Could not serialize json property: " + e.Message);
                 return new Output<string>("ERROR: " + e.Message, OutputStatus.Failed);
             }
         }
@@ -87,19 +89,6 @@ namespace Arctic.Utilities.Serialization.Json
             {
                 Debug.LogException(ex);
                 return new Output<IProperty>(null, OutputStatus.Failed);
-            }
-        }
-
-        private bool TryParseBoolValue(ref string value, out bool boolValue) 
-        {
-            boolValue = default;
-            switch (value.ToLower()) 
-            {
-                case "true":
-                case "false":
-                    return bool.TryParse(value, out boolValue);
-                default:
-                    return false;
             }
         }
 

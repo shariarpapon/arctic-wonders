@@ -13,10 +13,11 @@ namespace Arctic.Gameplay.Items
 
         public ItemProperty() { }
 
-        public ItemProperty(ItemPropertyData data) 
+        public ItemProperty(IProperty data) 
         {
-            this.key = data.key;
-            this.value = (TValue)data.value;
+            this.key = data.GetKey();
+            this.value = (TValue)data.GetValue();
+            this.type = data.GetType();
         }
 
         public ItemProperty(string key) 
@@ -28,11 +29,12 @@ namespace Arctic.Gameplay.Items
         {
             this.key = key;
             this.value = value;
+            this.type = value.GetType();
         }
 
         public string GetKey() => key;
         public object GetValue() => value;
-        public System.Type GetValueType() => typeof(TValue);
+        public Type GetValueType() => type;
 
         public void SetValue(TValue value) => this.value = value;
         public void SetKey(string key) => this.key = key;
