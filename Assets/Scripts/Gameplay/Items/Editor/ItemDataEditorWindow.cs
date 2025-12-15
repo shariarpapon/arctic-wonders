@@ -11,11 +11,11 @@ namespace Arctic.Gameplay.Items.Editor
     {
         private const string WINDOW_TITLE = "ItemData Editor";
         private static ItemDataEditorWindow WindowInstance =null;
-        private static ItemData TargetItemData = null;
         private static string text = string.Empty;
         private static int EditorTextFontSize = 12;
 
         private static readonly ISerializer<ItemDataWrapper, string> ActiveItemDataSerializer = new ItemDataSerializer(new JsonPropertySerializer());
+        private ItemData targetData = null;
 
         [MenuItem("Tools/" + WINDOW_TITLE)]
         public static void OpenWindow() 
@@ -35,11 +35,10 @@ namespace Arctic.Gameplay.Items.Editor
 
         public static void Initialize(ItemData target) 
         {
-            if (TargetItemData == null)
-                TargetItemData = target;
+            if (WindowInstance.targetData == null && WindowInstance != null)
+                WindowInstance.targetData = target;
             if (WindowInstance == null)
                 WindowInstance = GetWindow<ItemDataEditorWindow>(WINDOW_TITLE);
-            WindowInstance.ShowTab();
             WindowInstance.Focus();
         }
 
@@ -50,13 +49,13 @@ namespace Arctic.Gameplay.Items.Editor
 
         private void OnGUI()
         {
-            string currentGuid = TargetItemData == null ? null : TargetItemData.GUID;
-            GuiHelper.DrawObjectField("Target " + nameof(ItemData), ref TargetItemData);
+            string currentGuid = targetData == null ? null : targetData.GUID;
+            GuiHelper.DrawObjectField("Target " + nameof(ItemData), ref targetData);
             GuiHelper.DrawHorizontalLine(height: 1, spaceAbove: 3.5f);
-            if ((currentGuid == null && TargetItemData != null) || (TargetItemData != null && currentGuid != TargetItemData.GUID)) 
+            if ((currentGuid == null && targetData != null) || (targetData != null && currentGuid != targetData.GUID)) 
                 SerializeAndUpdateText();
-            else if(TargetItemData != null) 
-                UpdateTextEditor($"Item Editor<{TargetItemData.GUID}>", ref text);
+            else if(targetData != null) 
+                UpdateTextEditor($"Item Editor<{targetData.GUID}>", ref text);
             else GuiWarn("Must asign a valid ItemData scriptable object.");
         }
 
@@ -73,7 +72,7 @@ namespace Arctic.Gameplay.Items.Editor
 
         private void SerializeAndUpdateText() 
         {
-            string serialized = Serialize(TargetItemData, ActiveItemDataSerializer);
+            string serialized = SerializeItemDataWrapper(targetData, ActiveItemDataSerializer);
             text = serialized;
         }
 
@@ -82,10 +81,10 @@ namespace Arctic.Gameplay.Items.Editor
             try
             {
                 ItemDataWrapper deserialized = DeserializeItemDataWrapper(text, ActiveItemDataSerializer);
-                Undo.RecordObject(TargetItemData, "deserialize_" + nameof(TargetItemData) + "_" + TargetItemData.GUID);
-                if (!deserialized.ApplyChangesToSource(ref TargetItemData)) 
+                Undo.RecordObject(targetData, "deserialize_" + nameof(targetData) + "_" + targetData.GUID);
+                if (!deserialized.ApplyChangesToSource(ref targetData)) 
                     Debug.LogError("Could not apply changes to source ItemDaata.");
-                EditorUtility.SetDirty(TargetItemData);                
+                EditorUtility.SetDirty(targetData);                
             }
             catch (System.Exception e) 
             {
@@ -94,7 +93,7 @@ namespace Arctic.Gameplay.Items.Editor
             }
         }
 
-        private string Serialize(ItemData source, ISerializer<ItemDataWrapper, string> serializer)
+        private string SerializeItemDataWrapper(ItemData source, ISerializer<ItemDataWrapper, string> serializer)
         {
             ItemDataWrapper deserializedSource = new ItemDataWrapper(source);
             var serialized = serializer.Serialize(deserializedSource);

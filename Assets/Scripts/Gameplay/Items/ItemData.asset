@@ -16,11 +16,11 @@ MonoBehaviour:
   randomGuid: 0
   stringProperties:
   - key: name
-    value: shariar
+    value: ongoo
   - key: desc
     value: test 222description abc2222...
   - key: stats
-    value: test stats ab2222c....
+    value: test stat 1111111
   boolProperties:
   - key: isDestroyed
     value: 1
