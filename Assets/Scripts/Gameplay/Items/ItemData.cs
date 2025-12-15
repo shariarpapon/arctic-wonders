@@ -22,37 +22,12 @@ namespace Arctic.Gameplay.Items
         [SerializeField] private List<ItemProperty<GameObject>> prefabProperties;
         [SerializeField] private List<ItemProperty<UnityObject>> unityObjectProperties;
 
-
         private Dictionary<string, SerializableItemProperty> unifiedPropertyLookup;
-        /// <summary>
-        /// Property lists for all types unified into a single lookup dictionary.
-        /// </summary>
-        public Dictionary<string, SerializableItemProperty> UnifiedPropertyDataLookup
-        {
-            get
-            {
-                if (unifiedPropertyLookup == null)
-                    unifiedPropertyLookup = BuildUnifiedPropertyLookup();
-                return unifiedPropertyLookup;
-            }
-        }
 
         /// <summary>
         /// The object value here is guranteed to be of type List&lt;ItemProperty&gt;.
         /// </summary>
         private Dictionary<System.Type, List<IProperty>> propertyListLookup;
-        /// <summary>
-        /// Lookup dictionary for retrieving the property list given the value-type.
-        /// </summary>
-        public Dictionary<System.Type, List<IProperty>> PropertyListLookup
-        {
-            get
-            {
-                if (propertyListLookup == null)
-                    propertyListLookup = BuildPropretyListLookup();
-                return propertyListLookup;
-            }
-        }
 
         protected virtual void OnValidate()
         {
@@ -67,12 +42,11 @@ namespace Arctic.Gameplay.Items
 
         public void SetGUID(string guid) => this.guid = guid;
 
-
         public TValue GetPropertyValue<TValue>(string key)
         {
             try
             {
-                if (UnifiedPropertyDataLookup.TryGetValue(key, out var data))
+                if (GetUnifiedPropertyDataLookup(false).TryGetValue(key, out var data))
                     return data.ValueAs<TValue>();
                 else
                     return default;
@@ -86,7 +60,7 @@ namespace Arctic.Gameplay.Items
         }
         public bool TryGetPropertyValue<TValue>(string key, out TValue value)
         {
-            if (!UnifiedPropertyDataLookup.TryGetValue(key, out var data))
+            if (!GetUnifiedPropertyDataLookup(false).TryGetValue(key, out var data))
             {
                 value = default;
                 return false;
@@ -103,18 +77,55 @@ namespace Arctic.Gameplay.Items
                 return false;
             }
         }
+        /// <summary>
+        /// Property lists for all types unified into a single lookup dictionary.
+        /// </summary>
+        public Dictionary<string, SerializableItemProperty> GetUnifiedPropertyDataLookup(bool rebuild)
+        {
+            if (unifiedPropertyLookup == null || rebuild)
+                RebuildUnifiedPropertyLookup();
+            return unifiedPropertyLookup;
+        }
 
+        /// <summary>
+        /// Updates the unified lookup to reflect the latest property changes.
+        /// </summary>
+        public void RebuildUnifiedPropertyLookup()
+        {
+            unifiedPropertyLookup = BuildUnifiedPropertyLookup();
+        }
+
+        public void RebuildPropertyListLookup()
+        {
+            propertyListLookup = BuildPropretyListLookup();
+        }
+
+        public void RebuildLookups()
+        {
+            RebuildPropertyListLookup();
+            RebuildUnifiedPropertyLookup();
+        }
+
+        /// <summary>
+        /// Lookup dictionary for retrieving the property list given the value-type.
+        /// </summary>
+        public Dictionary<System.Type, List<IProperty>> GetPropertyListLookup(bool rebuild)
+        {
+            if (propertyListLookup == null || rebuild)
+                RebuildPropertyListLookup();
+            return propertyListLookup;
+        }
 
         private Dictionary<System.Type, List<IProperty>> BuildPropretyListLookup()
         {
             return new()
             {
-                { typeof(string), new(stringProperties) },
-                { typeof(bool), new(boolProperties) },
-                { typeof(int), new(intProperties) },
-                { typeof(float), new(floatProperties) },
-                { typeof(GameObject), new(prefabProperties) },
-                { typeof(UnityObject), new(unityObjectProperties) }
+                { typeof(string), new(stringProperties)},
+                { typeof(bool), new(boolProperties)},
+                { typeof(int), new(intProperties)},
+                { typeof(float), new(floatProperties)},
+                { typeof(GameObject), new(prefabProperties)},
+                { typeof(UnityObject), new(unityObjectProperties)}
             };
         }
 
@@ -134,7 +145,7 @@ namespace Arctic.Gameplay.Items
         {
             if (unifiedLookup == null)
                 unifiedLookup = new();
-            List<IProperty> propertyList = PropertyListLookup[typeof(TValue)];
+            List<IProperty> propertyList = GetPropertyListLookup(rebuild: false)[typeof(TValue)];
             foreach (var property in propertyList)
             {
                 if (unifiedLookup.ContainsKey(property.GetKey()))
@@ -165,7 +176,7 @@ namespace Arctic.Gameplay.Items
             {
                 if (list[i].GetKey() == newProp.GetKey())
                 {
-                    if (!overwrite) 
+                    if (!overwrite)
                         return false;
                     list[i] = new ItemProperty<TValue>(newProp);
                     return true;
@@ -179,11 +190,11 @@ namespace Arctic.Gameplay.Items
         public List<IProperty> GetPropertyList<TValue>()
         {
             System.Type type = typeof(TValue);
-            if (!PropertyListLookup.ContainsKey(type))
+            if (!GetPropertyListLookup(rebuild: false).ContainsKey(type))
                 return null;
             try
             {
-                return PropertyListLookup[type];
+                return GetPropertyListLookup(rebuild: false)[type];
             }
             catch (System.Exception e)
             {
@@ -196,22 +207,22 @@ namespace Arctic.Gameplay.Items
         {
             if (newProperty.GetValueType() == typeof(string))
             {
-                ItemProperty<string>  itemPropertyRep = new ItemProperty<string>(newProperty);
+                ItemProperty<string> itemPropertyRep = new ItemProperty<string>(newProperty);
                 return TryAddItemPropertyOfType<string>(itemPropertyRep, overwrite);
             }
             else if (newProperty.GetValueType() == typeof(bool))
             {
-                ItemProperty<bool>  itemPropertyRep = new ItemProperty<bool>(newProperty);
+                ItemProperty<bool> itemPropertyRep = new ItemProperty<bool>(newProperty);
                 return TryAddItemPropertyOfType<bool>(itemPropertyRep, overwrite);
             }
             else if (newProperty.GetValueType() == typeof(int))
             {
-                ItemProperty<int>  itemPropertyRep = new ItemProperty<int>(newProperty);
+                ItemProperty<int> itemPropertyRep = new ItemProperty<int>(newProperty);
                 return TryAddItemPropertyOfType<int>(itemPropertyRep, overwrite);
             }
             else if (newProperty.GetValueType() == typeof(float))
             {
-                ItemProperty<float>  itemPropertyRep = new ItemProperty<float>(newProperty);
+                ItemProperty<float> itemPropertyRep = new ItemProperty<float>(newProperty);
                 return TryAddItemPropertyOfType<float>(itemPropertyRep, overwrite);
             }
             else

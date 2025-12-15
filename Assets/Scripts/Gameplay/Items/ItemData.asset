@@ -12,25 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60b2ade33a4996c44a2a5a08557fadba, type: 3}
   m_Name: ItemData
   m_EditorClassIdentifier: Assembly-CSharp::Arctic.Gameplay.Items.ItemDefinition
-  guid: guid_test22
+  guid: id_alexx
   randomGuid: 0
   stringProperties:
   - key: name
-    value: ongoo
-  - key: desc
-    value: test 222description abc2222...
-  - key: stats
-    value: test stat 1111111
+    value: cc
+  - key: gender
+    value: asd
   boolProperties:
-  - key: isDestroyed
-    value: 1
+  - key: american
+    value: 0
   intProperties:
-  - key: testInt
-    value: 789
-  - key: spoil_rate
-    value: 3
+  - key: age
+    value: 30
   floatProperties:
-  - key: testFloat
-    value: 2.71
+  - key: height
+    value: 5.8
   prefabProperties: []
   unityObjectProperties: []

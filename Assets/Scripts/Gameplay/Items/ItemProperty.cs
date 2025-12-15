@@ -29,6 +29,7 @@ namespace Arctic.Gameplay.Items
         {
             this.key = key;
             this.value = value;
+            this.type = value.GetType();
         }
 
         public string GetKey() => key;

@@ -16,7 +16,7 @@ namespace Arctic.Gameplay.Items.Editor
         }
 
         public Output<string> Serialize(ItemDataWrapper itemData)
-        {
+        {  
             try
             {
                 IProperty itemGuidProperty = new Property(ITEM_GUID_KEY, itemData.guid, typeof(string));
