@@ -11,5 +11,17 @@ namespace Arctic.Utilities.Serialization
         public void SetValueType(System.Type type);
 
         public T ValueAs<T>() => (T)GetValue();
+
+        public sealed void Copy(IProperty source) 
+        {
+            this.SetData(source.GetKey(), source.GetValue(), source.GetValueType());
+        }
+
+        public sealed void SetData(string key, object value, System.Type type) 
+        {
+            this.SetKey(key);
+            this.SetValue(value);
+            this.SetValueType(type);
+        }
     }
 }

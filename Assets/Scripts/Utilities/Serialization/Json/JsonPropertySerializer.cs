@@ -90,19 +90,6 @@ namespace Arctic.Utilities.Serialization.Json
             }
         }
 
-        private bool TryParseBoolValue(ref string value, out bool boolValue) 
-        {
-            boolValue = default;
-            switch (value.ToLower()) 
-            {
-                case "true":
-                case "false":
-                    return bool.TryParse(value, out boolValue);
-                default:
-                    return false;
-            }
-        }
-
         public List<IProperty> DeserializeList(string json) 
         {
             List<IProperty> properties = new List<IProperty>();

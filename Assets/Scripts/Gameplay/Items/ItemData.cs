@@ -1,3 +1,4 @@
+using Arctic.Utilities.Serialization;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityObject = UnityEngine.Object;
@@ -10,8 +11,8 @@ namespace Arctic.Gameplay.Items
         public string GUID => guid;
 
         [Header("Identity")]
-        [SerializeField] private bool randomGuid;
         [SerializeField] private string guid;
+        [SerializeField] private bool randomGuid;
 
         [Header("Item Propeties")]
         [SerializeField] private List<ItemProperty<string>> stringProperties;
@@ -21,36 +22,35 @@ namespace Arctic.Gameplay.Items
         [SerializeField] private List<ItemProperty<GameObject>> prefabProperties;
         [SerializeField] private List<ItemProperty<UnityObject>> unityObjectProperties;
 
-
-        private Dictionary<System.Type, object> propertyListLookup;
+        
+        private Dictionary<string, SerializableItemProperty> unifiedPropertyLookup;
         /// <summary>
-        /// The object value here is guranteed to be of type ItemProperty.
+        /// Property lists for all types unified into a single lookup dictionary.
         /// </summary>
-        private Dictionary<string, ItemPropertyData> unifiedPropertyDataLookup;
+        public Dictionary<string, SerializableItemProperty> UnifiedPropertyDataLookup
+        {
+            get
+            {
+                if (unifiedPropertyLookup == null)
+                    unifiedPropertyLookup = BuildUnifiedPropertyLookup();
+                return unifiedPropertyLookup;
+            }
+        }
 
+        /// <summary>
+        /// The object value here is guranteed to be of type List&lt;ItemProperty&gt;.
+        /// </summary>
+        private Dictionary<System.Type, List<IProperty>> propertyListLookup;
         /// <summary>
         /// Lookup dictionary for retrieving the property list given the value-type.
         /// </summary>
-        public Dictionary<System.Type, object> PropertyListLookup
+        public Dictionary<System.Type, List<IProperty>> PropertyListLookup
         {
             get
             {
                 if (propertyListLookup == null)
                     propertyListLookup = BuildPropretyListLookup();
                 return propertyListLookup;
-            }
-        }
-
-        /// <summary>
-        /// Property lists for all types unified into a single lookup dictionary.
-        /// </summary>
-        public Dictionary<string, ItemPropertyData> UnifiedPropertyDataLookup 
-        {
-            get 
-            {
-                if (unifiedPropertyDataLookup == null)
-                    unifiedPropertyDataLookup = BuildUnifiedPropertyLookup();
-                return unifiedPropertyDataLookup;
             }
         }
 
@@ -67,12 +67,6 @@ namespace Arctic.Gameplay.Items
 
         public void SetGUID(string guid) => this.guid = guid;
 
-        /// <returns>True if a valid output value was retrived from the property with the given key, false otherwise.</returns>
-        public bool TryGetPropertyValue<TValue>(string key, out TValue propertyValue) 
-        {
-            propertyValue = GetPropertyValue<TValue>(key);
-            return propertyValue != null;
-        }
 
         public TValue GetPropertyValue<TValue>(string key)
         {
@@ -90,41 +84,60 @@ namespace Arctic.Gameplay.Items
                 return default;
             }
         }
+        public bool TryGetPropertyValue<TValue>(string key, out TValue value)
+        {
+            if (!UnifiedPropertyDataLookup.TryGetValue(key, out var data))
+            {
+                value = default;
+                return false;
+            }
 
-        private Dictionary<System.Type, object> BuildPropretyListLookup()
+            try
+            {
+                value = data.ValueAs<TValue>();
+                return true;
+            }
+            catch
+            {
+                value = default;
+                return false;
+            }
+        }
+
+
+        private Dictionary<System.Type, List<IProperty>> BuildPropretyListLookup()
         {
             return new()
             {
-                { typeof(string), stringProperties },
-                { typeof(bool), boolProperties },
-                { typeof(int), intProperties},
-                { typeof(float), floatProperties },
-                { typeof(GameObject), prefabProperties },
-                { typeof(UnityObject), unityObjectProperties }
+                { typeof(string), new(stringProperties) },
+                { typeof(bool), new(boolProperties) },
+                { typeof(int), new(intProperties) },
+                { typeof(float), new(floatProperties) },
+                { typeof(GameObject), new(prefabProperties) },
+                { typeof(UnityObject), new(unityObjectProperties) }
             };
         }
 
-        private Dictionary<string, ItemPropertyData> BuildUnifiedPropertyLookup() 
+        private Dictionary<string, SerializableItemProperty> BuildUnifiedPropertyLookup() 
         {
-            Dictionary<string, ItemPropertyData> lookup = new();
-            AddPropertyListToLookup<string>(ref lookup);
-            AddPropertyListToLookup<bool>(ref lookup);
-            AddPropertyListToLookup<int>(ref lookup);
-            AddPropertyListToLookup<float>(ref lookup);
-            AddPropertyListToLookup<GameObject>(ref lookup);
-            AddPropertyListToLookup<UnityObject>(ref lookup);
-            return lookup;
+            Dictionary<string, SerializableItemProperty> unifiedLookup = new();
+            AddPropertiesToUnifiedLookup<string>(ref unifiedLookup);
+            AddPropertiesToUnifiedLookup<bool>(ref unifiedLookup);
+            AddPropertiesToUnifiedLookup<int>(ref unifiedLookup);
+            AddPropertiesToUnifiedLookup<float>(ref unifiedLookup);
+            AddPropertiesToUnifiedLookup<GameObject>(ref unifiedLookup);
+            AddPropertiesToUnifiedLookup<UnityObject>(ref unifiedLookup);
+            return unifiedLookup;
         }
 
-        private void AddPropertyListToLookup<TValue>(ref Dictionary<string, ItemPropertyData> lookup) 
+        private void AddPropertiesToUnifiedLookup<TValue>(ref Dictionary<string, SerializableItemProperty> unifiedLookup) 
         {
-            if(lookup == null)
-                lookup = new();
-            var typeList = PropertyListLookup[typeof(TValue)];
-            var propertyList = typeList as List<ItemProperty<TValue>>;
+            if(unifiedLookup == null) 
+                unifiedLookup = new();
+            List<IProperty> propertyList = PropertyListLookup[typeof(TValue)];
             foreach (var property in propertyList)
             {
-                if (lookup.ContainsKey(property.GetKey())) 
+                if (unifiedLookup.ContainsKey(property.GetKey())) 
                 {
                     Debug.LogError($"Duplicate item property key found: (key: {property.GetKey()})  (guid: {guid}). Ignoring all except for the first property.");
                     continue;
@@ -132,70 +145,54 @@ namespace Arctic.Gameplay.Items
                 string propertyKey = property.GetKey();
                 object propertyValue = property.GetValue();
                 System.Type propertyType = property.GetValueType();
-                ItemPropertyData propertyData = new ItemPropertyData(property.GetKey(), property.GetValue(), property.GetValueType());
-                lookup.Add(property.GetKey(), propertyData);
+                SerializableItemProperty propertyData = new SerializableItemProperty(property.GetKey(), property.GetValue(), property.GetValueType());
+                unifiedLookup.Add(property.GetKey(), propertyData);
             }
         }
 
-        public List<ItemProperty<TValue>> GetPropertyList<TValue>() 
+        private bool TryAddItemPropertyOfType<TProp>(IProperty newProp, bool overwrite) where TProp : IProperty
         {
-            System.Type type = typeof(TValue);
-            if (PropertyListLookup.ContainsKey(type) == false)
-                return null;
-            try
-            {
-                return PropertyListLookup[type] as List<ItemProperty<TValue>>;
-            }
-            catch(System.Exception e) 
-            {
-                Debug.LogException(e);
-                return null;
-            }
-        }
-
-        public bool TryAddProperty(ItemPropertyData data, bool overwrite)
-        {
-            if (data.type == typeof(string))
-                return TryAddPropertyOfType<string>(data, overwrite);
-            else if (data.type == typeof(bool))
-                return TryAddPropertyOfType<bool>(data, overwrite);
-            else if (data.type == typeof(int))
-                return TryAddPropertyOfType<int>(data, overwrite);
-            else if (data.type == typeof(float))
-                return TryAddPropertyOfType<float>(data, overwrite);
-            else return false;
-        }
-
-        public bool TryAddPropertyOfType<TValue>(ItemPropertyData data, bool overwrite) 
-        {
-            System.Type type = typeof(TValue);
-            if (!PropertyListLookup.ContainsKey(type))
-            {
-                Debug.LogError($"ItemData does not support properties of type <{data.type.FullName}>");
+            if (newProp == null)
                 return false;
-            }
+
             try
             {
-                List<ItemProperty<TValue>> propertyList = PropertyListLookup[type] as List<ItemProperty<TValue>>;
-                if (propertyList != null)
+                System.Type valueType = newProp.GetValueType();
+                List<TProp> itemPropertyList = null;
+                if (valueType == typeof(string))
+                    itemPropertyList = stringProperties as List<TProp>;
+                else if (valueType == typeof(bool))
+                    itemPropertyList = boolProperties as List<TProp>;
+                else if (valueType == typeof(int))
+                    itemPropertyList = intProperties as List<TProp>;
+                else if (valueType == typeof(float))
+                    itemPropertyList = floatProperties as List<TProp>;
+                else if (itemPropertyList == null)
                 {
-                    for (int i = 0; i < propertyList.Count; i++)
+                    Debug.LogError($"Error: Could not interpret type of property value. (valueType: {valueType.FullName})");
+                    return false;
+                }
+
+                for (int i = 0; i < itemPropertyList.Count; i++)
+                {
+                    TProp existingProp = itemPropertyList[i];
+                    if (existingProp == null)
+                        return false;
+                    if (existingProp.GetKey() == newProp.GetKey())
                     {
-                        if (propertyList[i].GetKey() == data.key)
-                            if (overwrite)
-                            {
-                                propertyList[i] = new ItemProperty<TValue>(data);
-                                return true;
-                            }
+                        if (overwrite)
+                        {
+                            itemPropertyList[i].Copy(existingProp);
+                            return true;
+                        }
+                        else return false;
                     }
-                    propertyList.Add(new ItemProperty<TValue>(data));
-                    return true;
                 }
-                else 
-                {
-                    Debug.LogError($"Property list of type<{data.type.FullName}> not found.");
-                }
-                return false;
+
+                TProp t = (TProp)newProp;
+                itemPropertyList.Add(t);
+                return true;
+
             }
             catch (System.Exception e)
             {
@@ -204,5 +201,75 @@ namespace Arctic.Gameplay.Items
             }
         }
 
+        public List<IProperty> GetPropertyList<TValue>() 
+        {
+            System.Type type = typeof(TValue);
+            if (!PropertyListLookup.ContainsKey(type))
+                return null;
+            try
+            {
+                return PropertyListLookup[type];
+            }
+            catch(System.Exception e) 
+            {
+                Debug.LogException(e);
+                return null;
+            }
+        }
+
+        public bool TryAddItemProperty(IProperty data, bool overwrite)
+        {
+            if (data.GetValueType() == typeof(string))
+                return TryAddItemPropertyOfType<ItemProperty<string>>(data, overwrite);
+            else if (data.GetValueType() == typeof(bool))
+                return TryAddItemPropertyOfType<ItemProperty<bool>>(data, overwrite);
+            else if (data.GetValueType() == typeof(int))
+                return TryAddItemPropertyOfType<ItemProperty<int>>(data, overwrite);
+            else if (data.GetValueType() == typeof(float))
+                return TryAddItemPropertyOfType<ItemProperty<float>>(data, overwrite);
+            else 
+            {
+                Debug.LogError($"Error: Could not add item property of type <{data.GetValueType().FullName}>");
+                return false;
+            }
+        }
+
+        //public bool TryAddPropertyOfType<TValue>(ItemPropertyData data, bool overwrite) 
+        //{
+        //    System.Type type = typeof(TValue);
+        //    if (!PropertyListLookup.ContainsKey(type))
+        //    {
+        //        Debug.LogError($"ItemData does not support properties of type <{data.type.FullName}>");
+        //        return false;
+        //    }
+        //    try
+        //    {
+        //        List<IProperty> propertyList = PropertyListLookup[type];
+        //        if (propertyList != null)
+        //        {
+        //            for (int i = 0; i < propertyList.Count; i++)
+        //            {
+        //                if (propertyList[i].GetKey() == data.key)
+        //                    if (overwrite)
+        //                    {
+        //                        propertyList[i] = new ItemProperty<TValue>(data);
+        //                        return true;
+        //                    }
+        //            }
+        //            propertyList.Add(new ItemProperty<TValue>(data));
+        //            return true;
+        //        }
+        //        else 
+        //        {
+        //            Debug.LogError($"Property list of type<{data.type.FullName}> not found.");
+        //        }
+        //        return false;
+        //    }
+        //    catch (System.Exception e)
+        //    {
+        //        Debug.LogException(e);
+        //        return false;
+        //    }
+        //}
     }
 }

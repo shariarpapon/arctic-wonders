@@ -55,8 +55,8 @@ namespace Arctic.Gameplay.Items.Editor
                         continue;
                     if (!source.PropertyListLookup.ContainsKey(prop.GetValueType()))
                         continue;
-                    ItemPropertyData data = new ItemPropertyData(prop.GetKey(), prop.GetValue(), prop.GetValueType());
-                    if (!source.TryAddProperty(data, true)) 
+                    IProperty data = new SerializableItemProperty(prop.GetKey(), prop.GetValue(), prop.GetValueType());
+                    if (!source.TryAddItemProperty(data, true)) 
                     {
                         Debug.LogError($"Unable to parse item property from deserialized wrapper (key: {prop.GetKey()}) (type: {prop.GetValueType().FullName})");
                         return false;
@@ -79,10 +79,10 @@ namespace Arctic.Gameplay.Items.Editor
             foreach (var kv in sourceRef.UnifiedPropertyDataLookup)
             {
                 string key = kv.Key;
-                ItemPropertyData data = kv.Value;
+                SerializableItemProperty data = kv.Value;
 
-                object value = data.value;
-                System.Type valueType = data.type;
+                object value = data.GetValue();
+                System.Type valueType = data.GetType();
 
                 AddProperty(CreateProperty(key, value, valueType));
             }

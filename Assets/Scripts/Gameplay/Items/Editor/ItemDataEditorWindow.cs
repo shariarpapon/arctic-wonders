@@ -84,7 +84,7 @@ namespace Arctic.Gameplay.Items.Editor
                 ItemDataWrapper deserialized = DeserializeItemDataWrapper(text, ActiveItemDataSerializer);
                 Undo.RecordObject(TargetItemData, "deserialize_" + nameof(TargetItemData) + "_" + TargetItemData.GUID);
                 if (!deserialized.ApplyChangesToSource(ref TargetItemData)) 
-                    Debug.LogError("Could not parse into source item definition.");
+                    Debug.LogError("Could not apply changes to source ItemDaata.");
                 EditorUtility.SetDirty(TargetItemData);                
             }
             catch (System.Exception e) 
