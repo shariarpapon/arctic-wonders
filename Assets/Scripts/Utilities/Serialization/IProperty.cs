@@ -15,7 +15,7 @@ namespace Arctic.Utilities.Serialization
         {
             this.SetData(source.GetKey(), source.GetValue(), source.GetValueType());
         }
-
+        
         public sealed void SetData(string key, object value, System.Type type) 
         {
             this.SetKey(key);

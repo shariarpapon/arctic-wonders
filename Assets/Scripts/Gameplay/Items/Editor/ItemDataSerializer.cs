@@ -19,7 +19,7 @@ namespace Arctic.Gameplay.Items.Editor
         {  
             try
             {
-                IProperty itemGuidProperty = new Property(ITEM_GUID_KEY, itemData.guid, typeof(string));
+                IProperty itemGuidProperty = new GenericProperty<string>(ITEM_GUID_KEY, itemData.guid);
                 itemData.properties.Add(itemGuidProperty);
 
                 if (propertySerializer.TrySerializeAll(itemData.properties, out var serializedProperties)) 

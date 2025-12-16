@@ -12,5 +12,6 @@ namespace Arctic.Utilities.Serialization
          CouldNotDeserializeEnumerable,
          StringNotValid,
          IDKeyNotFound,
+         UnableToParse
     }
 }

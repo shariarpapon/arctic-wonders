@@ -1,29 +1,25 @@
-using Arctic.Utilities.Serialization;
-using System;
-using UnityEngine;
-
-namespace Arctic.Gameplay.Items
+namespace Arctic.Utilities.Serialization
 {
     [System.Serializable]
-    public class ItemProperty<TValue> : IProperty
+    public class GenericProperty<TValue> : IProperty
     {
-        [SerializeField] private string key;
-        [SerializeField] private TValue value;
+        public string key;
+        public TValue value;
 
-        public ItemProperty() { }
+        public GenericProperty() { }
 
-        public ItemProperty(IProperty data) 
+        public GenericProperty(IProperty data)
         {
             this.key = data.GetKey();
             this.value = (TValue)data.GetValue();
         }
 
-        public ItemProperty(string key) 
+        public GenericProperty(string key)
         {
             this.key = key;
         }
 
-        public ItemProperty(string key, TValue value)
+        public GenericProperty(string key, TValue value)
         {
             this.key = key;
             this.value = value;
@@ -31,7 +27,7 @@ namespace Arctic.Gameplay.Items
 
         public string GetKey() => key;
         public object GetValue() => value;
-        public Type GetValueType() => typeof(TValue);
+        public System.Type GetValueType() => typeof(TValue);
 
         public void SetValue(TValue value) => this.value = value;
         public void SetKey(string key) => this.key = key;

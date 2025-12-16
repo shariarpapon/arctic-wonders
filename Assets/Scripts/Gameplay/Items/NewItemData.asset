@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60b2ade33a4996c44a2a5a08557fadba, type: 3}
   m_Name: NewItemData
   m_EditorClassIdentifier: Assembly-CSharp::Arctic.Gameplay.Items.ItemData
-  guid: ab12221121 4121111111
+  guid: 4121111111
   randomGuid: 0
   stringProperties:
   - key: key
-    value: monol
+    value: aaaasdasda
   boolProperties:
   - key: bool
     value: 1
@@ -26,5 +26,7 @@ MonoBehaviour:
   floatProperties:
   - key: float
     value: 4.56
-  prefabProperties: []
+  prefabProperties:
+  - key: test
+    value: {fileID: 1581911556082600, guid: 74ae338682c60ab4cb3bbd884ace03af, type: 3}
   unityObjectProperties: []

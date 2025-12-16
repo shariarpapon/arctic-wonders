@@ -3,13 +3,13 @@ using System;
 namespace Arctic.Utilities.Serialization
 {
     [System.Serializable]
-    public class Property : IProperty
+    public sealed class ExplicitProperty : IProperty
     {
         public string key;
         public object value;
-        public Type type;
+        public System.Type type;
 
-        public Property(string key, object value, System.Type type)
+        public ExplicitProperty(string key, object value, Type type)
         {
             this.key = key;
             this.value = value;
@@ -21,6 +21,6 @@ namespace Arctic.Utilities.Serialization
 
         public void SetValue(object value) => this.value = value;
         public void SetKey(string key) => this.key = key;
-        public void SetValueType(Type type) => this.type = type;
+        public T ValueAs<T>() => (T)value;
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace Arctic.Utilities.Serialization.Json
 {
@@ -30,8 +31,7 @@ namespace Arctic.Utilities.Serialization.Json
             {
                 if (TrySerializeProperty(property, out string json))
                     return new Output<string>(json, OutputStatus.Successful);
-
-                Debug.LogError($"Could not serialize property<{property?.GetValueType()?.FullName}> into json string.");
+                    Debug.LogError($"Could not serialize property<{property?.GetValueType()?.FullName}> into json string.");
                 return new Output<string>($"ERROR: Could not serialize property of type <{property?.GetValueType()?.FullName}>", OutputStatus.Failed);
             }
             catch (Exception e)
@@ -55,41 +55,34 @@ namespace Arctic.Utilities.Serialization.Json
                 int colonIndex = json.IndexOf(':');
                 if (colonIndex < 0)
                     return new Output<IProperty>(null, OutputStatus.StringNotValid);
-                string id = json.Substring(0, colonIndex).Trim().Trim('"');
+                string key = json.Substring(0, colonIndex).Trim().Trim('"');
                 string rawValue = json.Substring(colonIndex + 1).Trim();
-
-                object value = null;
-                Type type;
-
+                IProperty property = null;
                 if (rawValue.StartsWith("\""))
-                {
-                    value = rawValue.Trim('"');
-                    type = typeof(string);
-                }
+                    property = new GenericProperty<string>(key, rawValue.Trim('"'));
                 else if (bool.TryParse(rawValue, out bool boolValue))
-                {
-                    value = boolValue;
-                    type = typeof(bool);
-                }
+                    property = new GenericProperty<bool>(key, boolValue);
                 else if (int.TryParse(rawValue, out int intValue))
-                {
-                    value = intValue;
-                    type = typeof(int);
-                }
+                    property = new GenericProperty<int>(key, intValue);
+                else if(float.TryParse(rawValue, NumberStyles.Float, CultureInfo.InvariantCulture, out float floatValue))
+                        property = new GenericProperty<float>(key, floatValue);
                 else
                 {
-                    value = float.Parse(rawValue, CultureInfo.InvariantCulture);
-                    type = typeof(float);
+                    Debug.LogError($"Cannot parse string uisng <{nameof(JsonPropertySerializer)}> (rawValue: {rawValue})");
+                    return new Output<IProperty>(null, OutputStatus.UnableToParse);
                 }
-
-                var property = new Property(id, value, type);
-                return new Output<IProperty>(property, OutputStatus.Successful);
+                    return new Output<IProperty>(property, OutputStatus.Successful);
             }
             catch (Exception ex) 
             {
                 Debug.LogException(ex);
                 return new Output<IProperty>(null, OutputStatus.Failed);
             }
+        }
+
+        private GenericProperty<TValue> CreateProperty<TValue>(string key, TValue value) 
+        {
+            return new GenericProperty<TValue>(key, value);
         }
 
         public List<IProperty> DeserializeAsListOfPropertiesSeperatedByNewLine(string json) 
