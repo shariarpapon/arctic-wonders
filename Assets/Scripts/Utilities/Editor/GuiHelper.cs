@@ -55,7 +55,7 @@ namespace Arctic.Utilities.Editor
         }
 
         /// <returns>Accumulated vertical height of the drawn elements.</returns>
-        public static float DrawObjectField<TObject>(string label, TObject obj, bool allowSceneObjects = false) where TObject : Object
+        public static float DrawObjectField<TObject>(string label, ref TObject obj, bool allowSceneObjects = false) where TObject : Object
         {
             obj = (TObject)EditorGUILayout.ObjectField(label, obj, typeof(TObject), allowSceneObjects);
             return U_DEFAULT_FIELD_HEIGHT;

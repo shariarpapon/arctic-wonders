@@ -13,7 +13,7 @@ namespace Arctic.Gameplay.Items.Editor
     {
         private const string WINDOW_TITLE = "ItemData Editor";
         private static ItemDataEditorWindow WindowInstance =null;
-        private static string text = string.Empty;
+        private static string OutputText = string.Empty;
         private static int EditorTextFontSize = 12;
 
         private static readonly ISerializer<ItemDataWrapper, string> ActiveItemDataSerializer = new ItemDataSerializer(new JsonPropertySerializer());
@@ -39,10 +39,12 @@ namespace Arctic.Gameplay.Items.Editor
         {
             if (WindowInstance == null)
                 WindowInstance = GetWindow<ItemDataEditorWindow>(WINDOW_TITLE);
-            WindowInstance.Focus();
 
-            if(target != null)
+            WindowInstance.Focus();
+            if(WindowInstance.srcItemData == null)
+            {
                 WindowInstance.srcItemData = target;
+            }
         }
 
         private void OnDisable()
@@ -53,12 +55,12 @@ namespace Arctic.Gameplay.Items.Editor
         private void OnGUI()
         {
             string currentGuid = srcItemData == null ? null : srcItemData.GUID;
-            GuiHelper.DrawObjectField("Target " + nameof(ItemData), srcItemData);
+            GuiHelper.DrawObjectField("Target " + nameof(ItemData), ref srcItemData);
             GuiHelper.DrawHorizontalLine(height: 1, spaceAbove: 3.5f);
             if ((currentGuid == null && srcItemData != null) || (srcItemData != null && currentGuid != srcItemData.GUID)) 
                 SerializeAndUpdateText();
             else if(srcItemData != null) 
-                UpdateTextEditor($"Item Editor<{srcItemData.GUID}>", ref text);
+                UpdateTextEditor($"Item Editor<{srcItemData.GUID}>", ref OutputText);
             else GuiWarn("Must asign a valid ItemData scriptable object.");
         }
 
@@ -91,7 +93,7 @@ namespace Arctic.Gameplay.Items.Editor
         {
             try
             {
-                ItemDataWrapper deserialized = DeserializeToItemDataWrapper(text, ActiveItemDataSerializer);
+                ItemDataWrapper deserialized = DeserializeToItemDataWrapper(OutputText, ActiveItemDataSerializer);
                 if (!deserialized.ApplyChangesToSource(srcItemData)) 
                     Debug.LogError("Could not apply changes to source ItemDaata.");
 
@@ -106,6 +108,7 @@ namespace Arctic.Gameplay.Items.Editor
                 return;
             }
         }
+
         private ItemDataWrapper DeserializeToItemDataWrapper(string source, ISerializer<ItemDataWrapper, string> serializer)
         {
             var deserialized = serializer.Deserialize(source);
@@ -117,23 +120,25 @@ namespace Arctic.Gameplay.Items.Editor
             throw new System.InvalidOperationException($"Cannot deserialize into {nameof(ItemDataWrapper)}. (status: {deserialized.Status})");
         }
 
-
         private void SerializeAndUpdateText()
         {
-            //TEST
-            //ReloadItemDataSource();
             string serialized = SerializeItemDataWrapper(srcItemData, ActiveItemDataSerializer);
-            if(text != serialized)
-                text = serialized;
+            if(OutputText != serialized)
+                SetOutputText(serialized);
+        }
+
+        public void SetOutputText(string text) 
+        {
+            GUI.FocusControl(null);
+            OutputText = text;
+            Repaint();
         }
 
         private void ReloadItemDataSource()
         {
             AssetDatabase.SaveAssets();
-            PrintProperties(srcItemData, "before-reload");
             ItemData itemDataOnDisk = ReloadAsset(srcItemData);
             srcItemData = itemDataOnDisk;
-            PrintProperties(srcItemData, "after-reload");
         }
 
         private string SerializeItemDataWrapper(ItemData source, ISerializer<ItemDataWrapper, string> serializer)
@@ -190,7 +195,7 @@ namespace Arctic.Gameplay.Items.Editor
                 Debug.Log($"<color=yellow>DESERIALIZED: </color> <{guid}>");
         }
 
-        private void GuiWarn(string message) => GuiHelper.DrawText(message, UnityColorDatabase.ORANGE);
+        private void GuiWarn(string message) => GuiHelper.DrawText(message, UnityColorDatabase.PINK);
         #endregion
     }
 }  
