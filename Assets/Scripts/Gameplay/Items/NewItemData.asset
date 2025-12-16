@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60b2ade33a4996c44a2a5a08557fadba, type: 3}
   m_Name: NewItemData
   m_EditorClassIdentifier: Assembly-CSharp::Arctic.Gameplay.Items.ItemData
-  guid: ab1222
+  guid: ab12221121 4121111111
   randomGuid: 0
   stringProperties:
   - key: key
-    value: value123
+    value: 123
   boolProperties:
   - key: bool
     value: 1

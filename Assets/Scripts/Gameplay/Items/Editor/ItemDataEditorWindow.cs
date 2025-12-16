@@ -61,7 +61,7 @@ namespace Arctic.Gameplay.Items.Editor
                 SerializeAndUpdateText();
             else if(srcItemData != null) 
                 UpdateTextEditor($"Item Editor<{srcItemData.GUID}>", ref OutputText);
-            else GuiWarn("Must asign a valid ItemData scriptable object.");
+            else DrawWarning("Must asign a valid ItemData scriptable object.");
         }
 
         private T ReloadAsset<T>(T asset) where T : ScriptableObject
@@ -156,8 +156,20 @@ namespace Arctic.Gameplay.Items.Editor
             return null;
         }
 
+        private void DrawWarning(string message) => GuiHelper.DrawText(message, UnityColorDatabase.PINK);
+
 
         #region Debug ##########################
+        private void PrintConfirmation(bool serialized, ItemDataWrapper deserializedWrapper)
+        {
+            string guid = deserializedWrapper.guid;
+            if (serialized)
+                Debug.Log($"<color=cyan>SERIALIZED: </color> <{guid}>");
+            else if (!serialized)
+                Debug.Log($"<color=yellow>DESERIALIZED: </color> <{guid}>");
+        }
+
+
         private static void PrintProperties(ItemData data, string title = "properties")
         {
             StringBuilder sb = new StringBuilder();
@@ -182,20 +194,6 @@ namespace Arctic.Gameplay.Items.Editor
             Debug.Log($"<color=orange>==={title}===</color>");
             Debug.Log(sb.ToString());
         }
-
-        private void PrintConfirmation(bool serialized, ItemDataWrapper deserializedWrapper) 
-        {
-            PrintProperties(srcItemData, "Source Instnace");
-            PrintProperties(deserializedWrapper.properties, "Deserialized");
-
-            string guid = deserializedWrapper.guid;
-            if (serialized)
-                Debug.Log($"<color=cyan>SERIALIZED: </color> <{guid}>");
-            else if (!serialized)
-                Debug.Log($"<color=yellow>DESERIALIZED: </color> <{guid}>");
-        }
-
-        private void GuiWarn(string message) => GuiHelper.DrawText(message, UnityColorDatabase.PINK);
         #endregion
     }
 }  
