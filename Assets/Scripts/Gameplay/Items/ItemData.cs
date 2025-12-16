@@ -22,7 +22,7 @@ namespace Arctic.Gameplay.Items
         [SerializeField] private List<GenericProperty<GameObject>> prefabProperties;
         [SerializeField] private List<GenericProperty<UnityObject>> unityObjectProperties;
 
-        private Dictionary<string, ExplicitProperty> unifiedPropertyLookup;
+        private Dictionary<string, IProperty> unifiedPropertyLookup;
 
         /// <summary>
         /// The object value here is guranteed to be of type List&lt;ItemProperty&gt;.
@@ -80,7 +80,7 @@ namespace Arctic.Gameplay.Items
         /// <summary>
         /// Property lists for all types unified into a single lookup dictionary.
         /// </summary>
-        public Dictionary<string, ExplicitProperty> GetUnifiedPropertyDataLookup(bool rebuild)
+        public Dictionary<string, IProperty> GetUnifiedPropertyDataLookup(bool rebuild)
         {
             if (unifiedPropertyLookup == null || rebuild)
                 RebuildUnifiedPropertyLookup();
@@ -129,9 +129,9 @@ namespace Arctic.Gameplay.Items
             };
         }
 
-        private Dictionary<string, ExplicitProperty> BuildUnifiedPropertyLookup()
+        private Dictionary<string, IProperty> BuildUnifiedPropertyLookup()
         {
-            Dictionary<string, ExplicitProperty> unifiedLookup = new();
+            Dictionary<string, IProperty> unifiedLookup = new();
             AddPropertiesToUnifiedLookup<string>(ref unifiedLookup);
             AddPropertiesToUnifiedLookup<bool>(ref unifiedLookup);
             AddPropertiesToUnifiedLookup<int>(ref unifiedLookup);
@@ -141,10 +141,10 @@ namespace Arctic.Gameplay.Items
             return unifiedLookup;
         }
 
-        private void AddPropertiesToUnifiedLookup<TValue>(ref Dictionary<string, ExplicitProperty> unifiedLookup)
+        private void AddPropertiesToUnifiedLookup<TValue>(ref Dictionary<string, IProperty> unifiedLookup)
         {
             if (unifiedLookup == null)
-                unifiedLookup = new();
+                unifiedLookup = new Dictionary<string, IProperty>();
             List<IProperty> propertyList = GetPropertyListLookup(rebuild: false)[typeof(TValue)];
             foreach (var property in propertyList)
             {
@@ -153,11 +153,7 @@ namespace Arctic.Gameplay.Items
                     Debug.LogError($"Duplicate item property key found: (key: {property.GetKey()})  (guid: {guid}). Ignoring all except for the first property.");
                     continue;
                 }
-                string propertyKey = property.GetKey();
-                object propertyValue = property.GetValue();
-                System.Type propertyType = property.GetValueType();
-                ExplicitProperty propertyData = new ExplicitProperty(property.GetKey(), property.GetValue(), property.GetValueType());
-                unifiedLookup.Add(property.GetKey(), propertyData);
+                unifiedLookup.Add(property.GetKey(), property);
             }
         }
 

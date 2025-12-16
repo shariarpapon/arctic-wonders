@@ -1,18 +1,23 @@
 using Arctic.Utilities.Serialization;
-using Arctic.Utilities.Serialization.Json;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Arctic.Gameplay.Items.Editor
-{ 
-    public struct ItemDataWrapper
+{
+    /// <summary>
+    /// A serializable editor-only representation of <see cref="ItemData"/>,
+    /// used to extract, modify, serialize, and reapply item properties
+    /// without mutating the source asset directly.
+    /// </summary>
+
+    public struct SerializableItemData
     {
         public string guid;
         public ItemData source;
         public List<IProperty> properties;
 
-        public ItemDataWrapper(string guid, List<IProperty> properties) 
+        public SerializableItemData(string guid, List<IProperty> properties) 
         {
             this.guid = guid;
             this.properties = properties;
@@ -20,11 +25,11 @@ namespace Arctic.Gameplay.Items.Editor
             this.source = LoadItemDataAsset(guid);
         }
 
-        public ItemDataWrapper(ItemData source)
+        public SerializableItemData(ItemData source)
         {
             this.guid = source == null ? null : source.GUID;
             this.source = source;
-            properties = new List<IProperty>();
+            this.properties = null;
             BuildPropertyListFromSource(source);
         }
 
@@ -41,28 +46,28 @@ namespace Arctic.Gameplay.Items.Editor
             properties.Add(prop);
         }
 
-        public bool ApplyChangesToSource(ItemData source)
+        public bool ApplyTo(ItemData target)
         {
-            if (source == null) 
+            if (target == null) 
                 return false;
-            source.SetGUID(guid);
+            target.SetGUID(guid);
             try 
             {
-                ISerializer<ItemDataWrapper, string> serializer = new ItemDataSerializer(new JsonPropertySerializer());
+                ISerializer<SerializableItemData, string> serializer = new ItemDataSerializer(new BasicPropertySerializer());
                 foreach (IProperty prop in properties)
                 {
                     if (prop == null) 
                         continue;
-                    if (!source.GetPropertyListLookup(false).ContainsKey(prop.GetValueType()))
+                    if (!target.GetPropertyListLookup(false).ContainsKey(prop.GetValueType()))
                         continue;
                     IProperty data = new ExplicitProperty(prop.GetKey(), prop.GetValue(), prop.GetValueType());
-                    if (!source.TryAddItemProperty(data, true)) 
+                    if (!target.TryAddItemProperty(data, true)) 
                     {
                         Debug.LogError($"Unable to parse item property from deserialized wrapper (key: {prop.GetKey()}) (type: {prop.GetValueType().FullName})");
                         return false;
                     }
                 }
-                source.RebuildLookups();
+                target.RebuildLookups();
                 return true;
             }
             catch (Exception e) 
@@ -74,8 +79,6 @@ namespace Arctic.Gameplay.Items.Editor
 
         private void BuildPropertyListFromSource(ItemData sourceRef)
         {
-            if (sourceRef == null)
-                return;
             properties = new List<IProperty>();
             foreach (var kv in sourceRef.GetUnifiedPropertyDataLookup(true))
                 AddProperty(kv.Value);

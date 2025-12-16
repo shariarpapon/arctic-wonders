@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Arctic.Gameplay.Items.Editor
 {
-    public class ItemDataSerializer : ISerializer<ItemDataWrapper, string> 
+    public class ItemDataSerializer : ISerializer<SerializableItemData, string> 
     {
         private const string ITEM_GUID_KEY = "guid";
         private ISerializer<IProperty, string> propertySerializer; 
@@ -15,7 +15,7 @@ namespace Arctic.Gameplay.Items.Editor
             this.propertySerializer = propertySerializer;
         }
 
-        public Output<string> Serialize(ItemDataWrapper itemData)
+        public Output<string> Serialize(SerializableItemData itemData)
         {  
             try
             {
@@ -39,19 +39,19 @@ namespace Arctic.Gameplay.Items.Editor
             }
         }
 
-        public Output<ItemDataWrapper> Deserialize(string serializedString)
+        public Output<SerializableItemData> Deserialize(string serializedString)
         {
             string[] lines = serializedString.Split("\n");
             if (!propertySerializer.TryDeserializeAll(lines, out var deserializedProperties))
-                return new Output<ItemDataWrapper>(default, OutputStatus.CouldNotDeserializeEnumerable);
+                return new Output<SerializableItemData>(default, OutputStatus.CouldNotDeserializeEnumerable);
 
             if (TryExtractGUIDFromDeserializedProperties(ref deserializedProperties, out string itemGuid)) 
             {
-                ItemDataWrapper itemDataWrapper = new ItemDataWrapper(itemGuid, deserializedProperties);
-                return new Output<ItemDataWrapper>(itemDataWrapper, OutputStatus.Successful);
+                SerializableItemData itemDataWrapper = new SerializableItemData(itemGuid, deserializedProperties);
+                return new Output<SerializableItemData>(itemDataWrapper, OutputStatus.Successful);
             }
             else
-                return new Output<ItemDataWrapper>(default, OutputStatus.Failed);
+                return new Output<SerializableItemData>(default, OutputStatus.Failed);
         }
 
         private static bool TryExtractGUIDFromDeserializedProperties(ref List<IProperty> deserializedProperties, out string itemGuid)

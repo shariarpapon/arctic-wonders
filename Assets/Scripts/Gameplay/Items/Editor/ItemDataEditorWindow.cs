@@ -1,7 +1,6 @@
 using Arctic.Utilities;
 using Arctic.Utilities.Editor;
 using Arctic.Utilities.Serialization;
-using Arctic.Utilities.Serialization.Json;
 using System.Collections.Generic;
 using System.Text;
 using UnityEditor;
@@ -16,7 +15,7 @@ namespace Arctic.Gameplay.Items.Editor
         private static string OutputText = string.Empty;
         private static int EditorTextFontSize = 12;
 
-        private static readonly ISerializer<ItemDataWrapper, string> ActiveItemDataSerializer = new ItemDataSerializer(new JsonPropertySerializer());
+        private static readonly ISerializer<SerializableItemData, string> ActiveItemDataSerializer = new ItemDataSerializer(new BasicPropertySerializer());
         private ItemData srcItemData = null;
 
         [MenuItem("Tools/" + WINDOW_TITLE)]
@@ -93,8 +92,8 @@ namespace Arctic.Gameplay.Items.Editor
         {
             try
             {
-                ItemDataWrapper deserialized = DeserializeToItemDataWrapper(OutputText, ActiveItemDataSerializer);
-                if (!deserialized.ApplyChangesToSource(srcItemData)) 
+                SerializableItemData deserialized = DeserializeToItemDataWrapper(OutputText, ActiveItemDataSerializer);
+                if (!deserialized.ApplyTo(srcItemData)) 
                     Debug.LogError("Could not apply changes to source ItemDaata.");
 
                 EditorUtility.SetDirty(srcItemData);
@@ -109,7 +108,7 @@ namespace Arctic.Gameplay.Items.Editor
             }
         }
 
-        private ItemDataWrapper DeserializeToItemDataWrapper(string source, ISerializer<ItemDataWrapper, string> serializer)
+        private SerializableItemData DeserializeToItemDataWrapper(string source, ISerializer<SerializableItemData, string> serializer)
         {
             var deserialized = serializer.Deserialize(source);
             if (deserialized.Status == OutputStatus.Successful)
@@ -117,7 +116,7 @@ namespace Arctic.Gameplay.Items.Editor
                 PrintConfirmation(false, deserialized.Object);
                 return deserialized.Object;
             }
-            throw new System.InvalidOperationException($"Cannot deserialize into {nameof(ItemDataWrapper)}. (status: {deserialized.Status})");
+            throw new System.InvalidOperationException($"Cannot deserialize into {nameof(SerializableItemData)}. (status: {deserialized.Status})");
         }
 
         private void SerializeAndUpdateText()
@@ -141,9 +140,9 @@ namespace Arctic.Gameplay.Items.Editor
             srcItemData = itemDataOnDisk;
         }
 
-        private string SerializeItemDataWrapper(ItemData source, ISerializer<ItemDataWrapper, string> serializer)
+        private string SerializeItemDataWrapper(ItemData source, ISerializer<SerializableItemData, string> serializer)
         {
-            ItemDataWrapper deserializedSource = new ItemDataWrapper(source);
+            SerializableItemData deserializedSource = new SerializableItemData(source);
             var serialized = serializer.Serialize(deserializedSource);
             if (serialized.Status == OutputStatus.Successful)
             {
@@ -160,7 +159,7 @@ namespace Arctic.Gameplay.Items.Editor
 
 
         #region Debug ##########################
-        private void PrintConfirmation(bool serialized, ItemDataWrapper deserializedWrapper)
+        private void PrintConfirmation(bool serialized, SerializableItemData deserializedWrapper)
         {
             string guid = deserializedWrapper.guid;
             if (serialized)

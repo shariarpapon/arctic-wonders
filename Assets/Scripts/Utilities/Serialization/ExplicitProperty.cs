@@ -2,6 +2,13 @@ using System;
 
 namespace Arctic.Utilities.Serialization
 {
+    /// <summary>
+    /// An immutable implementation of <see cref="IProperty"/> that explicitly stores
+    /// both the value and its runtime type. This property is intended for safe,
+    /// read-only access where the value type must be preserved and mutation is
+    /// disallowed to prevent invalid casting or type corruption.
+    /// The key may be modified.
+    /// </summary>
     [System.Serializable]
     public sealed class ExplicitProperty : IProperty
     {
@@ -21,7 +28,7 @@ namespace Arctic.Utilities.Serialization
 
         public void SetValue(object value) 
         {
-            throw new System.Exception("Cannot modify value of an explicit property. This is not allowed due to type casting safety.");
+            throw new System.Exception("Cannot modify value of an explicit property. This is not allowed to prevent invalid casting and type corruption.");
         }
         public void SetKey(string key) => this.key = key;
         public T ValueAs<T>() => (T)value;
