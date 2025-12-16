@@ -9,7 +9,6 @@ namespace Arctic.Gameplay.Items
     {
         [SerializeField] private string key;
         [SerializeField] private TValue value;
-        private System.Type type;
 
         public ItemProperty() { }
 
@@ -17,7 +16,6 @@ namespace Arctic.Gameplay.Items
         {
             this.key = data.GetKey();
             this.value = (TValue)data.GetValue();
-            this.type = data.GetType();
         }
 
         public ItemProperty(string key) 
@@ -29,16 +27,14 @@ namespace Arctic.Gameplay.Items
         {
             this.key = key;
             this.value = value;
-            this.type = value.GetType();
         }
 
         public string GetKey() => key;
         public object GetValue() => value;
-        public Type GetValueType() => type;
+        public Type GetValueType() => typeof(TValue);
 
         public void SetValue(TValue value) => this.value = value;
         public void SetKey(string key) => this.key = key;
         public void SetValue(object value) => this.value = (TValue)value;
-        public void SetValueType(Type type) => this.type = type;
     }
 }

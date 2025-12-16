@@ -83,7 +83,7 @@ namespace Arctic.Gameplay.Items.Editor
                 SerializableItemProperty data = kv.Value;
 
                 object value = data.GetValue();
-                System.Type valueType = data.GetType();
+                System.Type valueType = data.GetValueType();
 
                 AddProperty(CreateProperty(key, value, valueType));
             }

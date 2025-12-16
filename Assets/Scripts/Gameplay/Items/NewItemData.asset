@@ -16,7 +16,7 @@ MonoBehaviour:
   randomGuid: 0
   stringProperties:
   - key: key
-    value: 123
+    value: mongrol
   boolProperties:
   - key: bool
     value: 1

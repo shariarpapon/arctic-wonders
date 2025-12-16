@@ -8,7 +8,6 @@ namespace Arctic.Utilities.Serialization
         
         public void SetKey(string key);
         public void SetValue(object value);
-        public void SetValueType(System.Type type);
 
         public T ValueAs<T>() => (T)GetValue();
 
@@ -21,7 +20,6 @@ namespace Arctic.Utilities.Serialization
         {
             this.SetKey(key);
             this.SetValue(value);
-            this.SetValueType(type);
         }
     }
 }

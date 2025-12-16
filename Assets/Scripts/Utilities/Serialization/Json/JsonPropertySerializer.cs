@@ -31,8 +31,8 @@ namespace Arctic.Utilities.Serialization.Json
                 if (TrySerializeProperty(property, out string json))
                     return new Output<string>(json, OutputStatus.Successful);
 
-                Debug.LogError($"Could not serialize property<{property.GetValueType().FullName}> into json string.");
-                return new Output<string>($"ERROR: Could not serialize property of type <{property.GetValueType().FullName}>", OutputStatus.Failed);
+                Debug.LogError($"Could not serialize property<{property?.GetValueType()?.FullName}> into json string.");
+                return new Output<string>($"ERROR: Could not serialize property of type <{property?.GetValueType()?.FullName}>", OutputStatus.Failed);
             }
             catch (Exception e)
             {
@@ -92,7 +92,7 @@ namespace Arctic.Utilities.Serialization.Json
             }
         }
 
-        public List<IProperty> DeserializeList(string json) 
+        public List<IProperty> DeserializeAsListOfPropertiesSeperatedByNewLine(string json) 
         {
             List<IProperty> properties = new List<IProperty>();
             try
@@ -112,28 +112,6 @@ namespace Arctic.Utilities.Serialization.Json
             {
                 Debug.LogException(e);
                 return null;
-            }
-        }
-
-        public bool TrySerializeProperties(IEnumerable<IProperty> properties, out string json) 
-        {
-            json = null;
-            try
-            {
-                StringBuilder sb = new StringBuilder();               
-                foreach (var property in properties)
-                {
-                    var serialized = Serialize(property);
-                    if (serialized.Status == OutputStatus.Successful)
-                        sb.AppendLine(serialized.Object);
-                }
-                json = sb.ToString();
-                return true;
-            }
-            catch (Exception e) 
-            {
-                Debug.LogException(e);
-                return false;
             }
         }
 
