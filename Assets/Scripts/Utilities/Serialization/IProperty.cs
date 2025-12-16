@@ -17,19 +17,8 @@ namespace Arctic.Utilities.Serialization
             }
             catch (System.Exception e)
             {
-                throw new System.Exception($"Unable to cast property value<{GetValueType()?.FullName}>to sepcified to type<{typeof(T).FullName}> ### " + e.Message);
+                throw new System.Exception($"*** Unable to cast property value<{GetValueType()?.FullName}>to sepcified to type<{typeof(T).FullName}> *** " + e.Message);
             }
-        }
-
-        public sealed void Copy(IProperty source) 
-        {
-            this.SetData(source.GetKey(), source.GetValue(), source.GetValueType());
-        }
-        
-        public sealed void SetData(string key, object value, System.Type type) 
-        {
-            this.SetKey(key);
-            this.SetValue(value);
         }
     }
 }
