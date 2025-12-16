@@ -26,7 +26,5 @@ MonoBehaviour:
   floatProperties:
   - key: float
     value: 4.56
-  prefabProperties:
-  - key: test
-    value: {fileID: 1581911556082600, guid: 74ae338682c60ab4cb3bbd884ace03af, type: 3}
+  prefabProperties: []
   unityObjectProperties: []

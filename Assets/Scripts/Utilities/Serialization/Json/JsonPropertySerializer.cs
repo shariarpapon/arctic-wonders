@@ -68,7 +68,7 @@ namespace Arctic.Utilities.Serialization.Json
                         property = new GenericProperty<float>(key, floatValue);
                 else
                 {
-                    Debug.LogError($"Cannot parse string uisng <{nameof(JsonPropertySerializer)}> (rawValue: {rawValue})");
+                    Debug.LogError($"Cannot parse string using <{nameof(JsonPropertySerializer)}> (rawValue: {rawValue})");
                     return new Output<IProperty>(null, OutputStatus.UnableToParse);
                 }
                     return new Output<IProperty>(property, OutputStatus.Successful);

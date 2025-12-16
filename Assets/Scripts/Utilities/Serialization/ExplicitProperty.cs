@@ -6,8 +6,8 @@ namespace Arctic.Utilities.Serialization
     public sealed class ExplicitProperty : IProperty
     {
         public string key;
-        public object value;
-        public System.Type type;
+        public readonly object value;
+        public readonly System.Type type;
 
         public ExplicitProperty(string key, object value, Type type)
         {
@@ -19,7 +19,10 @@ namespace Arctic.Utilities.Serialization
         public object GetValue() => value;
         public System.Type GetValueType() => type;
 
-        public void SetValue(object value) => this.value = value;
+        public void SetValue(object value) 
+        {
+            throw new System.Exception("Cannot modify value of an explicit property. This is not allowed due to type casting safety.");
+        }
         public void SetKey(string key) => this.key = key;
         public T ValueAs<T>() => (T)value;
     }
