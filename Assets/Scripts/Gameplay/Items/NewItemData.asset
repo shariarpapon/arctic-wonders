@@ -16,13 +16,13 @@ MonoBehaviour:
   randomGuid: 0
   stringProperties:
   - key: key
-    value: ds
+    value: bbbaaa
   boolProperties:
   - key: bool
     value: 1
   intProperties:
   - key: int2
-    value: 124
+    value: 11111
   floatProperties:
   - key: float
     value: 4.56

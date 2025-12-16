@@ -46,14 +46,14 @@ namespace Arctic.Gameplay.Items.Editor
             properties.Add(prop);
         }
 
-        public bool ApplyTo(ItemData target)
+        public readonly bool ApplyTo(ItemData target)
         {
             if (target == null) 
                 return false;
             target.SetGUID(guid);
             try 
             {
-                ISerializer<SerializableItemData, string> serializer = new ItemDataSerializer(new BasicPropertySerializer());
+                ISerializer<SerializableItemData, string> serializer = new ItemDataSerializer();
                 foreach (IProperty prop in properties)
                 {
                     if (prop == null) 

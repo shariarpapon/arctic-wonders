@@ -8,7 +8,12 @@ namespace Arctic.Gameplay.Items.Editor
     public class ItemDataSerializer : ISerializer<SerializableItemData, string> 
     {
         private const string ITEM_GUID_KEY = "guid";
-        private ISerializer<IProperty, string> propertySerializer; 
+        private ISerializer<IProperty, string> propertySerializer;
+
+        public ItemDataSerializer() 
+        {
+            this.propertySerializer = new BasicPropertySerializer();
+        }
 
         public ItemDataSerializer(ISerializer<IProperty, string> propertySerializer) 
         {

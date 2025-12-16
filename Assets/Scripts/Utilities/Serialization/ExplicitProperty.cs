@@ -26,11 +26,7 @@ namespace Arctic.Utilities.Serialization
         public object GetValue() => value;
         public System.Type GetValueType() => type;
 
-        public void SetValue(object value) 
-        {
-            throw new System.Exception("Cannot modify value of an explicit property. This is not allowed to prevent invalid casting and type corruption.");
-        }
-        public void SetKey(string key) => this.key = key;
-        public T ValueAs<T>() => (T)value;
+        //public void SetKey(string key) => this.key = key;
+        //public T ValueAs<T>() => (T)value;
     }
 }
