@@ -53,8 +53,7 @@ namespace Arctic.Gameplay.Items
             }
             catch (System.Exception e)
             {
-                Debug.LogError("Could not retrive property value as specified type.");
-                Debug.LogException(e);
+                Debug.LogError("Could not retrieve property value AS specified type: " + e.Message);
                 return default;
             }
         }

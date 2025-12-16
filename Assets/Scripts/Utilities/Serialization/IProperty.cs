@@ -9,7 +9,17 @@ namespace Arctic.Utilities.Serialization
         public void SetKey(string key);
         public void SetValue(object value);
 
-        public T ValueAs<T>() => (T)GetValue();
+        public T ValueAs<T>() 
+        {
+            try
+            {
+                return (T)GetValue();
+            }
+            catch (System.Exception e)
+            {
+                throw new System.Exception($"Unable to cast property value<{GetValueType()?.FullName}>to sepcified to type<{typeof(T).FullName}> ### " + e.Message);
+            }
+        }
 
         public sealed void Copy(IProperty source) 
         {
