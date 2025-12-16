@@ -10,13 +10,13 @@ namespace Arctic.Utilities.Serialization
     /// The key may be modified.
     /// </summary>
     [System.Serializable]
-    public sealed class ExplicitProperty : IProperty
+    public sealed class ParsedProperty : IProperty
     {
         public string key;
         public readonly object value;
         public readonly System.Type type;
 
-        public ExplicitProperty(string key, object value, Type type)
+        public ParsedProperty(string key, object value, Type type)
         {
             this.key = key;
             this.value = value;
@@ -25,8 +25,5 @@ namespace Arctic.Utilities.Serialization
         public string GetKey() => key;
         public object GetValue() => value;
         public System.Type GetValueType() => type;
-
-        //public void SetKey(string key) => this.key = key;
-        //public T ValueAs<T>() => (T)value;
     }
 }

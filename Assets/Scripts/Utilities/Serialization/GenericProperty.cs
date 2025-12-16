@@ -28,8 +28,8 @@ namespace Arctic.Utilities.Serialization
         public string GetKey() => key;
         public object GetValue() => value;
         public System.Type GetValueType() => typeof(TValue);
-
-        //public void SetKey(string key) => this.key = key;
         public void SetValue(object value) => this.value = (TValue)value;
+
+        // TODO: add parsing behavior here, this is the runtime property. 
     }
 }

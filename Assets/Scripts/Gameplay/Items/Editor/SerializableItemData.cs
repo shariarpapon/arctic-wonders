@@ -60,7 +60,7 @@ namespace Arctic.Gameplay.Items.Editor
                         continue;
                     if (!target.GetPropertyListLookup(false).ContainsKey(prop.GetValueType()))
                         continue;
-                    IProperty data = new ExplicitProperty(prop.GetKey(), prop.GetValue(), prop.GetValueType());
+                    IProperty data = new ParsedProperty(prop.GetKey(), prop.GetValue(), prop.GetValueType());
                     if (!target.TryAddItemProperty(data, true)) 
                     {
                         Debug.LogError($"Unable to parse item property from deserialized wrapper (key: {prop.GetKey()}) (type: {prop.GetValueType().FullName})");
