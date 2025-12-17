@@ -131,7 +131,7 @@ namespace Arctic.Gameplay.Items.Editor
                 throw new System.InvalidOperationException($"Cannot serialize <{nameof(ItemData)}> into <string>: (status: {output.Status})");
         }
 
-        private void DrawWarning(string message) => GuiHelper.DrawText(message, UnityColorDatabase.PINK);
+        private void DrawWarning(string message) => GuiHelper.DrawText(message, UnityColorDatabase.ORANGE);
 
 
         #region Debug ##########################

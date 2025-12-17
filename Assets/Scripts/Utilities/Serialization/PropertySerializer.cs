@@ -22,31 +22,10 @@ namespace Arctic.Utilities.Serialization
 
         public Output<IProperty> Deserialize(string propertySrc)
         {
-            bool success = TryDeserializeProperty(propertySrc, out IProperty p);
-            if (success) return new Output<IProperty>(p, OutputStatus.Successful);
+            bool success = TryDeserializeProperty(propertySrc, out IProperty prop);
+            if (success) return new Output<IProperty>(prop, OutputStatus.Successful);
             else return new Output<IProperty>(null, OutputStatus.ErrorDeserializing);
-        }
 
-        public virtual List<IProperty> DeserializeAsList(string listSrc) 
-        {
-            List<IProperty> properties = new List<IProperty>();
-            try
-            {
-                string[] lines = listSrc.Split("\n");
-                foreach (var line in lines) 
-                {
-                    if (!IsValidSource(line))
-                        continue;
-                    Output<IProperty> output = Deserialize(line);
-                    if (output.Status == OutputStatus.Successful)
-                        properties.Add(output.Object);
-                }
-                return properties;
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Could not deserialize as list: " + e.Message);
-            }
         }
 
         protected virtual bool TryDeserializeProperty(string propertySrc, out IProperty property) 

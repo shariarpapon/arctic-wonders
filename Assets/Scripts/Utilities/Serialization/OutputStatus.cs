@@ -7,13 +7,12 @@ namespace Arctic.Utilities.Serialization
     /// </summary>
     public enum OutputStatus
     {
-         Failed,
-         Successful,
-         ErrorDeserializing,
-         ErrorSerializing,
-         StringNotValid,
-         DataCorrupted,
-         UnableToParse,
-         ErrorParsing
+        Failed,
+        Successful,
+        ErrorDeserializing,
+        ErrorSerializing,
+        ErrorParsing,
+        StringNotValid,
+        DataCorrupted,
     }
 }

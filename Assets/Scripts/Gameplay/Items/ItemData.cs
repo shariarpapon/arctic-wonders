@@ -171,26 +171,21 @@ namespace Arctic.Gameplay.Items
 
         public bool TryAddPropperty(IProperty propertyToAdd, bool overwrite)
         {
-            IProperty itemProperty = null;
             if (propertyToAdd.GetValueType() == typeof(string))
             {
-                itemProperty = new Property<string>(propertyToAdd);
-                return TryAddPropertyOfType<string>(itemProperty, overwrite);
+                return TryAddPropertyOfType<string>(propertyToAdd, overwrite);
             }
             else if (propertyToAdd.GetValueType() == typeof(bool))
             {
-                itemProperty = new Property<bool>(propertyToAdd);
-                return TryAddPropertyOfType<bool>(itemProperty, overwrite);
+                return TryAddPropertyOfType<bool>(propertyToAdd, overwrite);
             }
             else if (propertyToAdd.GetValueType() == typeof(int))
             {
-                itemProperty = new Property<int>(propertyToAdd);
-                return TryAddPropertyOfType<int>(itemProperty, overwrite);
+                return TryAddPropertyOfType<int>(propertyToAdd, overwrite);
             }
             else if (propertyToAdd.GetValueType() == typeof(float))
             {
-                itemProperty = new Property<float>(propertyToAdd);
-                return TryAddPropertyOfType<float>(itemProperty, overwrite);
+                return TryAddPropertyOfType<float>(propertyToAdd, overwrite);
             }
             else
             {

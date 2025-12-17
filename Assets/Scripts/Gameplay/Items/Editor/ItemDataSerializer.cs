@@ -26,6 +26,7 @@ namespace Arctic.Gameplay.Items.Editor
         {  
             try
             {
+                itemData.RebuildLookups();
                 List<IProperty> properties = itemData.GetUnifiedPropertyLookup(true).Values.ToList();
                 IProperty itemGuidProperty = new Property<string>(ITEM_GUID_KEY, itemData.GUID);
                 properties.Add(itemGuidProperty);
@@ -50,7 +51,7 @@ namespace Arctic.Gameplay.Items.Editor
         public Output<ItemData> Deserialize(string serializedString)
         {
             string[] lines = serializedString.Split("\n");
-            if (!propertySerializer.TryDeserializeAll(lines, out var deserializedProperties))
+            if (!propertySerializer.TryDeserializeAll(lines, out var deserializedProperties)) //<----------------  returning false
             {
                 return new Output<ItemData>(null, OutputStatus.ErrorDeserializing);
             }
@@ -69,13 +70,14 @@ namespace Arctic.Gameplay.Items.Editor
                     Debug.LogError($"Could not parse from raw data (guid: {itemGuid})");
                     return new Output<ItemData>(null, OutputStatus.ErrorParsing);
                 }
+                itemData.RebuildLookups();
                 return new Output<ItemData>(itemData, OutputStatus.Successful);
             }
             else
                 return new Output<ItemData>(default, OutputStatus.DataCorrupted);
         }
 
-        private ItemData FromRawData(string itemGuid, List<IProperty> properties)
+        private ItemData FromRawData(string itemGuid, List<IProperty> properties) // <---- issue is likely, not reading data back correctly. 
         {
             try 
             {
