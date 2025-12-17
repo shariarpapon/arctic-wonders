@@ -14,52 +14,17 @@ namespace Arctic.Utilities.Serialization
     {
         public Output<string> Serialize(IProperty property)
         {
-            try
-            {
-                if (TrySerializeProperty(property, out string source))
-                    return new Output<string>(source, OutputStatus.Successful);
-                return new Output<string>($"ERROR: Could not serialize property of type <{property?.GetValueType()?.FullName}>", OutputStatus.Failed);
-            }
-            catch (Exception e)
-            {
-                throw new System.Exception("Could not serialize property: " + e.Message);
-            }
+
+            bool success = TrySerializeProperty(property, out string source);
+            if (success) return new Output<string>(source, OutputStatus.Successful);
+            else return new Output<string>("Could not serialize.", OutputStatus.ErrorSerializing);
         }
 
         public Output<IProperty> Deserialize(string propertySrc)
         {
-            if (!IsValidSource(propertySrc))
-                return new Output<IProperty>(null, OutputStatus.StringNotValid);
-
-            try
-            {
-                propertySrc = propertySrc.Trim();
-                propertySrc = propertySrc.Substring(1, propertySrc.Length - 2);
-
-                int colonIndex = propertySrc.IndexOf(':');
-                if (colonIndex < 0)
-                    return new Output<IProperty>(null, OutputStatus.StringNotValid);
-                string key = propertySrc.Substring(0, colonIndex).Trim().Trim('"');
-                string rawValue = propertySrc.Substring(colonIndex + 1).Trim();
-                IProperty property = null;
-                if (rawValue.StartsWith("\""))
-                    property = new Property<string>(key, rawValue.Trim('"'));
-                else if (bool.TryParse(rawValue, out bool boolValue))
-                    property = new Property<bool>(key, boolValue);
-                else if (int.TryParse(rawValue, out int intValue))
-                    property = new Property<int>(key, intValue);
-                else if(float.TryParse(rawValue, NumberStyles.Float, CultureInfo.InvariantCulture, out float floatValue))
-                    property = new Property<float>(key, floatValue);
-                else 
-                    return new Output<IProperty>(null, OutputStatus.UnableToParse);
-
-                return new Output<IProperty>(property, OutputStatus.Successful);
-            }
-            catch (Exception ex) 
-            {
-                throw ex;
-                return new Output<IProperty>(null, OutputStatus.Failed);
-            }
+            bool success = TryDeserializeProperty(propertySrc, out IProperty p);
+            if (success) return new Output<IProperty>(p, OutputStatus.Successful);
+            else return new Output<IProperty>(null, OutputStatus.ErrorDeserializing);
         }
 
         public virtual List<IProperty> DeserializeAsList(string listSrc) 
@@ -87,6 +52,9 @@ namespace Arctic.Utilities.Serialization
         protected virtual bool TryDeserializeProperty(string propertySrc, out IProperty property) 
         {
             property = null;
+
+            if (!IsValidSource(propertySrc))
+                return false;
             try
             {
                 propertySrc = propertySrc.Trim();

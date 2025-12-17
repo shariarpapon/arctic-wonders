@@ -1,7 +1,6 @@
 using Arctic.Utilities.Serialization;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
 using UnityObject = UnityEngine.Object;
 
 namespace Arctic.Gameplay.Items

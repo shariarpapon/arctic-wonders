@@ -24,5 +24,7 @@ namespace Arctic.Utilities.Serialization
         public object GetValue() => value;
         public System.Type GetValueType() => typeof(TValue);
         public void SetValue(object value) => this.value = (TValue)value;
+
+
     }
 }

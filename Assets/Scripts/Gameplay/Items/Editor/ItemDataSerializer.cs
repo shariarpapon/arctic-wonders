@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Arctic.Gameplay.Items.Editor
@@ -53,7 +52,7 @@ namespace Arctic.Gameplay.Items.Editor
             string[] lines = serializedString.Split("\n");
             if (!propertySerializer.TryDeserializeAll(lines, out var deserializedProperties))
             {
-                return new Output<ItemData>(null, OutputStatus.CouldNotDeserialize);
+                return new Output<ItemData>(null, OutputStatus.ErrorDeserializing);
             }
 
             if (TryExtractGUIDFromDeserializedProperties(ref deserializedProperties, out string itemGuid)) 

@@ -16,7 +16,7 @@ namespace Arctic.Gameplay.Items.Editor
         private static string OutputText = string.Empty;
         private static int EditorTextFontSize = 12;
 
-        private static readonly ISerializer<ItemData, string> ActiveItemDataSerializer = new ItemDataSerializer(new PropertySerializer());
+        private static readonly ISerializer<ItemData, string> ActiveItemDataSerializer = new ItemDataSerializer();
         private ItemData sourceItemData = null;
 
         [MenuItem("Tools/" + WINDOW_TITLE)]

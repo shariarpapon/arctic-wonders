@@ -9,7 +9,8 @@ namespace Arctic.Utilities.Serialization
     {
          Failed,
          Successful,
-         CouldNotDeserialize,
+         ErrorDeserializing,
+         ErrorSerializing,
          StringNotValid,
          DataCorrupted,
          UnableToParse,
