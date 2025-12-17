@@ -1,9 +1,15 @@
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml.Serialization;
+using System.Collections.Generic;
 
 #if UNITY_2020_1_OR_NEWER
 using UnityEngine;
+
+#endif
+
+#if UNITY_EDITOR
+using UnityEditor;
 #endif
 
 namespace Arctic.Utilities.Serialization
@@ -143,6 +149,45 @@ namespace Arctic.Utilities.Serialization
             {
                 return false;
             }
+        }
+#endif
+
+#if UNITY_EDITOR
+        public static bool TryLoadAssetsOfType<T>(out List<T> assetList) where T : UnityEngine.Object
+        {
+            assetList = new List<T>();
+            string[] assetGuids = AssetDatabase.FindAssets($"t:{typeof(T).Name}");
+            if (assetGuids == null || assetGuids.Length <= 0)
+            {
+                throw new System.Exception($"No assets with sepcified type<{typeof(T).Name}> found.");
+            }
+
+            foreach (string guid in assetGuids) 
+            {
+                string path = AssetDatabase.GUIDToAssetPath(guid);
+                T asset = AssetDatabase.LoadAssetAtPath<T>(path);
+                if(asset != null)
+                    assetList.Add(asset);
+            }
+            return true;
+        }
+
+        public static bool TryFindAssetOfType<T>(out T asset, System.Func<T, bool> predicate = null) where T : UnityEngine.Object
+        {
+            asset = null;
+            string[] assetGuids = AssetDatabase.FindAssets($"t:{typeof(T).Name}");
+            if (assetGuids == null || assetGuids.Length <= 0)
+                return false;
+
+            foreach (string guid in assetGuids)
+            {
+                string path = AssetDatabase.GUIDToAssetPath(guid);
+                asset = AssetDatabase.LoadAssetAtPath<T>(path);
+                if (predicate != null)
+                    return predicate(asset);
+                return true;
+            }
+            return true;
         }
 #endif
 

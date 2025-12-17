@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Arctic.Utilities.Serialization
 {
@@ -8,8 +7,7 @@ namespace Arctic.Utilities.Serialization
     {
         public Output<TSerialized> Serialize(TDesrialized deserialized);
         public Output<TDesrialized> Deserialize(TSerialized serialized);
-
-        public virtual bool TrySerializeAll(IEnumerable<TDesrialized> enumerable, out List<TSerialized> serializedList)
+        public bool TrySerializeAll(IEnumerable<TDesrialized> enumerable, out List<TSerialized> serializedList)
         {
             serializedList = new List<TSerialized>();
             try
@@ -24,12 +22,11 @@ namespace Arctic.Utilities.Serialization
             }
             catch (Exception e)
             {
-                Debug.LogError("cant serialize all properties: " + e.Message);
-                throw e;
+                throw new System.Exception("Cannot serialize all entries in enumerable: " + e.Message);
             }
         }
 
-        public virtual bool TryDeserializeAll(IEnumerable<TSerialized> enumerable, out List<TDesrialized> deserializedList)
+        public bool TryDeserializeAll(IEnumerable<TSerialized> enumerable, out List<TDesrialized> deserializedList)
         {
             deserializedList = new List<TDesrialized>();
             try
@@ -44,8 +41,7 @@ namespace Arctic.Utilities.Serialization
             }
             catch(Exception e)
             {
-                Debug.LogError("cant deserialize all properties: " + e.Message);
-                throw e;
+                throw new System.Exception("Cannot deserialize all entries in enumerable: " + e.Message);
             }
         }
     }

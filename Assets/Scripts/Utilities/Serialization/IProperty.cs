@@ -5,10 +5,9 @@ namespace Arctic.Utilities.Serialization
         public string GetKey();
         public object GetValue();
         public System.Type GetValueType();
-        
-        //public void SetKey(string key);
+        public void SetValue(object newValue);
 
-        public T ValueAs<T>() 
+        public T GetValueAs<T>() 
         {
             try
             {

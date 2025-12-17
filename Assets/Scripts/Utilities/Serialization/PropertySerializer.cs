@@ -1,0 +1,146 @@
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Text;
+
+namespace Arctic.Utilities.Serialization
+{
+    /// <summary>
+    /// A primitive serializer that converts an <see cref="IProperty"/> into a simple
+    /// string representation of the form { "key": value }.
+    /// This format is not full JSON and is intended for basic, editor-only use.
+    /// </summary>
+    public class PropertySerializer : ISerializer<IProperty, string>
+    {
+        public Output<string> Serialize(IProperty property)
+        {
+            try
+            {
+                if (TrySerializeProperty(property, out string source))
+                    return new Output<string>(source, OutputStatus.Successful);
+                return new Output<string>($"ERROR: Could not serialize property of type <{property?.GetValueType()?.FullName}>", OutputStatus.Failed);
+            }
+            catch (Exception e)
+            {
+                throw new System.Exception("Could not serialize property: " + e.Message);
+            }
+        }
+
+        public Output<IProperty> Deserialize(string propertySrc)
+        {
+            if (!IsValidSource(propertySrc))
+                return new Output<IProperty>(null, OutputStatus.StringNotValid);
+
+            try
+            {
+                propertySrc = propertySrc.Trim();
+                propertySrc = propertySrc.Substring(1, propertySrc.Length - 2);
+
+                int colonIndex = propertySrc.IndexOf(':');
+                if (colonIndex < 0)
+                    return new Output<IProperty>(null, OutputStatus.StringNotValid);
+                string key = propertySrc.Substring(0, colonIndex).Trim().Trim('"');
+                string rawValue = propertySrc.Substring(colonIndex + 1).Trim();
+                IProperty property = null;
+                if (rawValue.StartsWith("\""))
+                    property = new Property<string>(key, rawValue.Trim('"'));
+                else if (bool.TryParse(rawValue, out bool boolValue))
+                    property = new Property<bool>(key, boolValue);
+                else if (int.TryParse(rawValue, out int intValue))
+                    property = new Property<int>(key, intValue);
+                else if(float.TryParse(rawValue, NumberStyles.Float, CultureInfo.InvariantCulture, out float floatValue))
+                    property = new Property<float>(key, floatValue);
+                else 
+                    return new Output<IProperty>(null, OutputStatus.UnableToParse);
+
+                return new Output<IProperty>(property, OutputStatus.Successful);
+            }
+            catch (Exception ex) 
+            {
+                throw ex;
+                return new Output<IProperty>(null, OutputStatus.Failed);
+            }
+        }
+
+        public virtual List<IProperty> DeserializeAsList(string listSrc) 
+        {
+            List<IProperty> properties = new List<IProperty>();
+            try
+            {
+                string[] lines = listSrc.Split("\n");
+                foreach (var line in lines) 
+                {
+                    if (!IsValidSource(line))
+                        continue;
+                    Output<IProperty> output = Deserialize(line);
+                    if (output.Status == OutputStatus.Successful)
+                        properties.Add(output.Object);
+                }
+                return properties;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Could not deserialize as list: " + e.Message);
+            }
+        }
+
+        protected virtual bool TryDeserializeProperty(string propertySrc, out IProperty property) 
+        {
+            property = null;
+            try
+            {
+                propertySrc = propertySrc.Trim();
+                propertySrc = propertySrc.Substring(1, propertySrc.Length - 2);
+
+                int colonIndex = propertySrc.IndexOf(':');
+                if (colonIndex < 0)
+                    throw new System.Exception("Error: Cannot deserialize: invalid syntax");
+
+                string key = propertySrc.Substring(0, colonIndex).Trim().Trim('"');
+                string rawValue = propertySrc.Substring(colonIndex + 1).Trim();
+                if (rawValue.StartsWith("\""))
+                    property = new Property<string>(key, rawValue.Trim('"'));
+                else if (bool.TryParse(rawValue, out bool boolValue))
+                    property = new Property<bool>(key, boolValue);
+                else if (int.TryParse(rawValue, out int intValue))
+                    property = new Property<int>(key, intValue);
+                else if (float.TryParse(rawValue, NumberStyles.Float, CultureInfo.InvariantCulture, out float floatValue))
+                    property = new Property<float>(key, floatValue);
+                else return false;
+                return true;
+            }
+            catch (Exception e)
+            {
+                throw new System.Exception($"Cannot deserialize using <{GetType().FullName}> : " + e.Message);
+            }
+        }
+
+        protected virtual bool TrySerializeProperty(IProperty property, out string propertySrc) 
+        {
+            propertySrc = null;
+            StringBuilder sb = new StringBuilder();
+            sb.Append("{\""+property.GetKey() +"\":");
+            string value = "";
+
+            if (property.GetValueType() == typeof(string))
+                value = $"\"{property.GetValueAs<string>()}\"";
+            else if (property.GetValueType() == typeof(bool))
+                value = property.GetValueAs<bool>().ToString().ToLower();
+            else if (property.GetValueType() == typeof(int))
+                value = property.GetValueAs<int>().ToString();
+            else if (property.GetValueType() == typeof(float))
+                value = property.GetValueAs<float>().ToString(CultureInfo.InvariantCulture);
+
+            sb.Append(value + "}");
+            propertySrc = sb.ToString();
+            return true;
+        }
+
+        protected virtual bool IsValidSource(string src)
+        {
+            if (string.IsNullOrEmpty(src) || src.Length <= 2)
+                return false;
+            return true;
+        }
+    }
+}

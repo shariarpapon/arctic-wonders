@@ -1,6 +1,7 @@
 using Arctic.Utilities;
 using Arctic.Utilities.Editor;
 using Arctic.Utilities.Serialization;
+using Codice.Client.GameUI.Update;
 using System.Collections.Generic;
 using System.Text;
 using UnityEditor;
@@ -15,8 +16,8 @@ namespace Arctic.Gameplay.Items.Editor
         private static string OutputText = string.Empty;
         private static int EditorTextFontSize = 12;
 
-        private static readonly ISerializer<SerializableItemData, string> ActiveItemDataSerializer = new ItemDataSerializer(new BasicPropertySerializer());
-        private ItemData srcItemData = null;
+        private static readonly ISerializer<ItemData, string> ActiveItemDataSerializer = new ItemDataSerializer(new PropertySerializer());
+        private ItemData sourceItemData = null;
 
         [MenuItem("Tools/" + WINDOW_TITLE)]
         public static void OpenWindow() 
@@ -40,9 +41,9 @@ namespace Arctic.Gameplay.Items.Editor
                 WindowInstance = GetWindow<ItemDataEditorWindow>(WINDOW_TITLE);
 
             WindowInstance.Focus();
-            if(WindowInstance.srcItemData == null)
+            if(WindowInstance.sourceItemData == null)
             {
-                WindowInstance.srcItemData = target;
+                WindowInstance.sourceItemData = target;
             }
         }
 
@@ -53,28 +54,14 @@ namespace Arctic.Gameplay.Items.Editor
 
         private void OnGUI()
         {
-            string currentGuid = srcItemData == null ? null : srcItemData.GUID;
-            GuiHelper.DrawObjectField("Target " + nameof(ItemData), ref srcItemData);
+            string currentGuid = sourceItemData == null ? null : sourceItemData.GUID;
+            GuiHelper.DrawObjectField("Target " + nameof(ItemData), ref sourceItemData);
             GuiHelper.DrawHorizontalLine(height: 1, spaceAbove: 3.5f);
-            if ((currentGuid == null && srcItemData != null) || (srcItemData != null && currentGuid != srcItemData.GUID)) 
+            if ((currentGuid == null && sourceItemData != null) || (sourceItemData != null && currentGuid != sourceItemData.GUID)) 
                 SerializeAndUpdateText();
-            else if(srcItemData != null) 
-                UpdateTextEditor($"Item Editor<{srcItemData.GUID}>", ref OutputText);
+            else if(sourceItemData != null) 
+                UpdateTextEditor($"Item Editor<{sourceItemData.GUID}>", ref OutputText);
             else DrawWarning("Must asign a valid ItemData scriptable object.");
-        }
-
-        private T ReloadAsset<T>(T asset) where T : ScriptableObject
-        {
-            string assetPath = AssetDatabase.GetAssetPath(asset);
-            if (string.IsNullOrEmpty(assetPath)) 
-            {
-                Debug.LogError($"Could nto find asset path of <{asset.ToString()}>");
-                return null;
-            }
-            T loaded = AssetDatabase.LoadAssetAtPath<T>(assetPath);
-            if (loaded == null)
-                Debug.LogError($"Could not load asset from path. (path: {assetPath})");
-            return loaded;
         }
 
         private void UpdateTextEditor(string title, ref string textRef) 
@@ -92,13 +79,10 @@ namespace Arctic.Gameplay.Items.Editor
         {
             try
             {
-                SerializableItemData deserialized = DeserializeToItemDataWrapper(OutputText, ActiveItemDataSerializer);
-                if (!deserialized.ApplyTo(srcItemData)) 
-                    Debug.LogError("Could not apply changes to source ItemDaata.");
-
-                EditorUtility.SetDirty(srcItemData);
+                Deserialize(OutputText, ActiveItemDataSerializer);
+                EditorUtility.SetDirty(sourceItemData);
                 AssetDatabase.SaveAssets();
-                AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(srcItemData),ImportAssetOptions.ForceUpdate);
+                AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(sourceItemData),ImportAssetOptions.ForceUpdate);
                 AssetDatabase.Refresh();
             }
             catch (System.Exception e) 
@@ -108,20 +92,22 @@ namespace Arctic.Gameplay.Items.Editor
             }
         }
 
-        private SerializableItemData DeserializeToItemDataWrapper(string source, ISerializer<SerializableItemData, string> serializer)
+        private void Deserialize(string sourceString, ISerializer<ItemData, string> serializer)
         {
-            var deserialized = serializer.Deserialize(source);
-            if (deserialized.Status == OutputStatus.Successful)
+            var output = serializer.Deserialize(sourceString);
+            if (output.Status == OutputStatus.Successful)
             {
-                PrintConfirmation(false, deserialized.Object);
-                return deserialized.Object;
+                sourceItemData = output.Object;
+                PrintConfirmation(false, output.Object.GUID);
+                return;
             }
-            throw new System.InvalidOperationException($"Cannot deserialize into {nameof(SerializableItemData)}. (status: {deserialized.Status})");
+            else
+                throw new System.InvalidOperationException($"Cannot deserialize <string> into <{nameof(ItemData)}> asset (status: {output.Status})");
         }
 
         private void SerializeAndUpdateText()
         {
-            string serialized = SerializeItemDataWrapper(srcItemData, ActiveItemDataSerializer);
+            string serialized = Serialize(sourceItemData, ActiveItemDataSerializer);
             if(OutputText != serialized)
                 SetOutputText(serialized);
         }
@@ -133,35 +119,24 @@ namespace Arctic.Gameplay.Items.Editor
             Repaint();
         }
 
-        private void ReloadItemDataSource()
+        private string Serialize(ItemData source, ISerializer<ItemData, string> serializer)
         {
-            AssetDatabase.SaveAssets();
-            ItemData itemDataOnDisk = ReloadAsset(srcItemData);
-            srcItemData = itemDataOnDisk;
-        }
-
-        private string SerializeItemDataWrapper(ItemData source, ISerializer<SerializableItemData, string> serializer)
-        {
-            SerializableItemData deserializedSource = new SerializableItemData(source);
-            var serialized = serializer.Serialize(deserializedSource);
-            if (serialized.Status == OutputStatus.Successful)
+            var output = serializer.Serialize(source);
+            if (output.Status == OutputStatus.Successful)
             {
-                PrintConfirmation(true, deserializedSource);
-                return serialized.Object;
+                PrintConfirmation(true, source.GUID);
+                return output.Object;
             }
-
-            GuiHelper.ContentColorSwitch(UnityColorDatabase.ORANGE,
-              () => { EditorGUILayout.SelectableLabel($"Cannot serialize item defintion. (status: {serialized.Status})"); });
-            return null;
+            else
+                throw new System.InvalidOperationException($"Cannot serialize <{nameof(ItemData)}> into <string>: (status: {output.Status})");
         }
 
         private void DrawWarning(string message) => GuiHelper.DrawText(message, UnityColorDatabase.PINK);
 
 
         #region Debug ##########################
-        private void PrintConfirmation(bool serialized, SerializableItemData deserializedWrapper)
+        private void PrintConfirmation(bool serialized, string guid)
         {
-            string guid = deserializedWrapper.guid;
             if (serialized)
                 Debug.Log($"<color=cyan>SERIALIZED: </color> <{guid}>");
             else if (!serialized)
@@ -172,7 +147,7 @@ namespace Arctic.Gameplay.Items.Editor
         private static void PrintProperties(ItemData data, string title = "properties")
         {
             StringBuilder sb = new StringBuilder();
-            foreach (var kv in data.GetUnifiedPropertyDataLookup(true))
+            foreach (var kv in data.GetUnifiedPropertyLookup(true))
             {
                 if (kv.Value.GetValueType() == null)
                 {
