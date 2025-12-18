@@ -35,8 +35,8 @@ namespace Arctic.Gameplay.Items
         }
 
         public static string GenerateRandomGUID() => System.Guid.NewGuid().ToString("N");
-
         public void SetGUID(string guid) => this.guid = guid;
+        public void SetRandomGUID() => SetGUID(GenerateRandomGUID());
 
         public TValue GetPropertyValue<TValue>(string key)
         {

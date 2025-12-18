@@ -1,6 +1,5 @@
 using UnityEditor;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI.MessageBox;
 
 namespace Arctic.Utilities.Editor
 {
@@ -18,7 +17,7 @@ namespace Arctic.Utilities.Editor
 
             public void Reset() 
             {
-                AccumulatedHeight = 0f;
+                AccumulatedHeight = 0.0f;
             }
         }
 
@@ -28,19 +27,13 @@ namespace Arctic.Utilities.Editor
         public static readonly Color INSPECTOR_DARK = new Color(0.10196f, 0.10196f, 0.10196f, 1);
         public const float DEFAULT_SECTION_SPACING = 2f;
         public const int DEFAULT_HEADER_FONTSIZE = 12;
-
         public const float U_DEFAULT_FIELD_HEIGHT = 18;
+        public const float U_DEFAULT_BUTTON_HEIGHT = 20;
 
         public static void SetContentColor(Color color) => GUI.contentColor = color;
         public static void SetBgColor(Color color) => GUI.backgroundColor = color;
 
-        public static void DrawButton(string label, System.Action action)
-        {
-            if (GUILayout.Button(label))
-                action?.Invoke();
-        }
-
-        public static GUIStyle GetFontStyleWithSize(int fontSize) 
+        public static GUIStyle GetLabelStyleWithSize(int fontSize) 
         {
             var style = new GUIStyle(EditorStyles.label);
             style.fontSize = fontSize;
@@ -49,9 +42,19 @@ namespace Arctic.Utilities.Editor
             return style;
         }
 
-        public static void DrawButton(string label, Color contColor, Color bgColor, System.Action action)
+        public static void DrawButton(string label, System.Action action, float height = U_DEFAULT_BUTTON_HEIGHT)
         {
-            ColorSwitch(contColor, bgColor, () => DrawButton(label, action));   
+            if (GUILayout.Button(label, GUILayout.Height(height)))
+                action?.Invoke();
+        }
+
+        public static void DrawButton(string label, Color contentColor, Color bgColor, System.Action action, float height = U_DEFAULT_BUTTON_HEIGHT) 
+        {
+            ColorSwitch(contentColor, bgColor, 
+                () => 
+                { 
+                    DrawButton(label, action, height); 
+                });
         }
 
         /// <returns>Accumulated vertical height of the drawn elements.</returns>
@@ -114,7 +117,7 @@ namespace Arctic.Utilities.Editor
         /// <returns>Accumulated vertical height of the drawn elements.</returns>
         public static float DrawTextEditorWindowArea(ref string text, int fontSize = 18, float paddingX = 4f, float paddingY = 4f)
         {
-            GUIStyle style = GetFontStyleWithSize(fontSize);
+            GUIStyle style = GetLabelStyleWithSize(fontSize);
             Rect fullArea = GUILayoutUtility.GetRect(
                 GUIContent.none,
                 style,

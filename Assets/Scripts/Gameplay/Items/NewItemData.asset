@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60b2ade33a4996c44a2a5a08557fadba, type: 3}
   m_Name: NewItemData
   m_EditorClassIdentifier: Assembly-CSharp::Arctic.Gameplay.Items.ItemData
-  guid: asd
+  guid: 2c95bfc990544aaab3d3c50fe7873053
   randomGuid: 0
   stringProperties:
-  - key: ab
-    value: asd1
-  - key: b
-    value: bbb
-  boolProperties: []
+  - key: key1
+    value: value1
+  boolProperties:
+  - key: key2
+    value: 0
   intProperties: []
   floatProperties: []
   prefabProperties: []
