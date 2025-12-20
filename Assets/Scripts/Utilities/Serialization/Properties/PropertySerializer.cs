@@ -1,31 +1,29 @@
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 
-namespace Arctic.Utilities.Serialization
+namespace Arctic.Utilities.Serialization.Properties
 {
     /// <summary>
     /// A primitive serializer that converts an <see cref="IProperty"/> into a simple
     /// string representation of the form { "key": value }.
     /// This format is not full JSON and is intended for basic, editor-only use.
     /// </summary>
-    public class PropertySerializer : ISerializer<IProperty, string>
+    public class PropertySerializer : IStringFormatSerializer<IProperty>
     {
-        public Output<string> Serialize(IProperty property)
+        public Result<string> Serialize(IProperty property)
         {
 
             bool success = TrySerializeProperty(property, out string source);
-            if (success) return new Output<string>(source, OutputStatus.Successful);
-            else return new Output<string>("Could not serialize.", OutputStatus.ErrorSerializing);
+            if (success) return new Result<string>(source, OutputStatus.Successful);
+            else return new Result<string>("Could not serialize.", OutputStatus.ErrorSerializing);
         }
 
-        public Output<IProperty> Deserialize(string propertySrc)
+        public Result<IProperty> Deserialize(string propertySrc)
         {
             bool success = TryDeserializeProperty(propertySrc, out IProperty prop);
-            if (success) return new Output<IProperty>(prop, OutputStatus.Successful);
-            else return new Output<IProperty>(null, OutputStatus.ErrorDeserializing);
-
+            if (success) return new Result<IProperty>(prop, OutputStatus.Successful);
+            else return new Result<IProperty>(null, OutputStatus.ErrorDeserializing);
         }
 
         protected virtual bool TryDeserializeProperty(string propertySrc, out IProperty property) 

@@ -1,4 +1,4 @@
-namespace Arctic.Utilities.Serialization
+namespace Arctic.Utilities.Serialization.Properties
 {
     [System.Serializable]
     public class Property<TValue> : IProperty

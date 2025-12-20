@@ -1,4 +1,5 @@
 using Arctic.Utilities.Serialization;
+using Arctic.Utilities.Serialization.Properties;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,19 +11,19 @@ namespace Arctic.Gameplay.Items.Editor
     public class ItemDataSerializer : ISerializer<ItemData, string> 
     {
         private const string ITEM_GUID_KEY = "guid";
-        private ISerializer<IProperty, string> propertySerializer;
+        private IStringFormatSerializer<IProperty> propertySerializer;
 
         public ItemDataSerializer() 
         {
             this.propertySerializer = new PropertySerializer();
         }
 
-        public ItemDataSerializer(ISerializer<IProperty, string> propertySerializer) 
+        public ItemDataSerializer(IStringFormatSerializer<IProperty> propertySerializer) 
         {
             this.propertySerializer = propertySerializer;
         }
 
-        public Output<string> Serialize(ItemData itemData)
+        public Result<string> Serialize(ItemData itemData)
         {  
             try
             {
@@ -36,24 +37,24 @@ namespace Arctic.Gameplay.Items.Editor
                     StringBuilder sb = new StringBuilder();
                     foreach(string serializedProp in serializedProperties)
                         sb.AppendLine(serializedProp);
-                    return new Output<string>(sb.ToString(), OutputStatus.Successful);
+                    return new Result<string>(sb.ToString(), OutputStatus.Successful);
                 }
                 else
-                    return new Output<string>(null, OutputStatus.Failed);
+                    return new Result<string>(null, OutputStatus.Failed);
             }
             catch (System.Exception e)
             {
                 Debug.LogException(e);
-                return new Output<string>("ERROR: " + e.Message, OutputStatus.Failed);
+                return new Result<string>("ERROR: " + e.Message, OutputStatus.Failed);
             }
         }
 
-        public Output<ItemData> Deserialize(string serializedString)
+        public Result<ItemData> Deserialize(string serializedString)
         {
             string[] lines = serializedString.Split("\n");
-            if (!propertySerializer.TryDeserializeAll(lines, out var deserializedProperties)) //<----------------  returning false
+            if (!propertySerializer.TryDeserializeAll(lines, out var deserializedProperties)) 
             {
-                return new Output<ItemData>(null, OutputStatus.ErrorDeserializing);
+                return new Result<ItemData>(null, OutputStatus.ErrorDeserializing);
             }
 
             if (TryExtractGUIDFromDeserializedProperties(ref deserializedProperties, out string itemGuid)) 
@@ -61,23 +62,23 @@ namespace Arctic.Gameplay.Items.Editor
                 if (string.IsNullOrEmpty(itemGuid)) 
                 {
                     Debug.LogError($"Invalid item GUID parsed (must be a valid string)");
-                    return new Output<ItemData>(null, OutputStatus.ErrorParsing);
+                    return new Result<ItemData>(null, OutputStatus.ErrorParsing);
                 }
 
                 ItemData itemData = FromRawData(itemGuid, deserializedProperties);
                 if (itemData == null)
                 {
                     Debug.LogError($"Could not parse from raw data (guid: {itemGuid})");
-                    return new Output<ItemData>(null, OutputStatus.ErrorParsing);
+                    return new Result<ItemData>(null, OutputStatus.ErrorParsing);
                 }
                 itemData.RebuildLookups();
-                return new Output<ItemData>(itemData, OutputStatus.Successful);
+                return new Result<ItemData>(itemData, OutputStatus.Successful);
             }
             else
-                return new Output<ItemData>(default, OutputStatus.DataCorrupted);
+                return new Result<ItemData>(default, OutputStatus.DataCorrupted);
         }
 
-        private ItemData FromRawData(string itemGuid, List<IProperty> properties) // <---- issue is likely, not reading data back correctly. 
+        private ItemData FromRawData(string itemGuid, List<IProperty> properties) 
         {
             try 
             {

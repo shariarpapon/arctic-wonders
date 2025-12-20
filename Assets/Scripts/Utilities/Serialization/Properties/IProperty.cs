@@ -1,4 +1,4 @@
-namespace Arctic.Utilities.Serialization
+namespace Arctic.Utilities.Serialization.Properties
 {
     public interface IProperty
     {

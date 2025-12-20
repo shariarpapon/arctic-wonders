@@ -1,4 +1,4 @@
-using Arctic.Utilities.Serialization;
+using Arctic.Utilities.Serialization.Properties;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityObject = UnityEngine.Object;

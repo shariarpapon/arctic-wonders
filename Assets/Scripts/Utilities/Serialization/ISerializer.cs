@@ -5,8 +5,8 @@ namespace Arctic.Utilities.Serialization
 {
     public interface ISerializer<TDesrialized, TSerialized>
     {
-        public Output<TSerialized> Serialize(TDesrialized deserialized);
-        public Output<TDesrialized> Deserialize(TSerialized serialized);
+        public Result<TSerialized> Serialize(TDesrialized deserialized);
+        public Result<TDesrialized> Deserialize(TSerialized serialized);
         public bool TrySerializeAll(IEnumerable<TDesrialized> enumerable, out List<TSerialized> serializedList)
         {
             serializedList = new List<TSerialized>();

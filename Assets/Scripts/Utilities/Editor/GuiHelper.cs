@@ -25,7 +25,9 @@ namespace Arctic.Utilities.Editor
         /// For darker sections, this color matches unities default inspector very well.
         /// </summary>
         public static readonly Color INSPECTOR_DARK = new Color(0.10196f, 0.10196f, 0.10196f, 1);
+        public static readonly Color INSPECTOR_TEXT_BG = new Color(0.12f, 0.12f, 0.12f);
         public const float DEFAULT_SECTION_SPACING = 2f;
+        public const float DEFAULT_SECTION_PADDING = 4f;
         public const int DEFAULT_HEADER_FONTSIZE = 12;
         public const float U_DEFAULT_FIELD_HEIGHT = 18;
         public const float U_DEFAULT_BUTTON_HEIGHT = 20;
@@ -72,7 +74,7 @@ namespace Arctic.Utilities.Editor
         }
 
         /// <returns>Accumulated vertical height of the drawn elements.</returns>
-        public static float DrawHorizontalLine(int height = 1, float spaceAbove = DEFAULT_SECTION_SPACING, float spaceBelow = DEFAULT_SECTION_SPACING)
+        public static float HorizontalLine(int height = 1, float spaceAbove = DEFAULT_SECTION_SPACING, float spaceBelow = DEFAULT_SECTION_SPACING)
         {
             return DrawHorizontalLine(INSPECTOR_DARK, height, spaceAbove, spaceBelow);
         }
@@ -100,7 +102,7 @@ namespace Arctic.Utilities.Editor
         {
             var style = new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter, fontSize = fontSize };
             EditorGUILayout.LabelField(label, style, GUILayout.ExpandWidth(true));
-            return DrawHorizontalLine(spaceAbove: spaceAbove, spaceBelow: spaceBelow) + DEFAULT_SECTION_SPACING;
+            return HorizontalLine(spaceAbove: spaceAbove, spaceBelow: spaceBelow) + DEFAULT_SECTION_SPACING;
         }
 
         /// <returns>Accumulated vertical height of the drawn elements.</returns>
@@ -115,9 +117,16 @@ namespace Arctic.Utilities.Editor
         }
 
         /// <returns>Accumulated vertical height of the drawn elements.</returns>
-        public static float DrawTextEditorWindowArea(ref string text, int fontSize = 18, float paddingX = 4f, float paddingY = 4f)
+        public static float DrawTextEditorWindowArea(ref string text, int fontSize = 14, float paddingX = DEFAULT_SECTION_PADDING, float paddingY = DEFAULT_SECTION_PADDING)
+        {
+            return DrawTextEditorWindowArea(ref text, INSPECTOR_TEXT_BG, fontSize, paddingX, paddingY);
+        }
+
+        /// <returns>Accumulated vertical height of the drawn elements.</returns>
+        public static float DrawTextEditorWindowArea(ref string text, Color bgColor, int fontSize = 14, float paddingX = DEFAULT_SECTION_PADDING, float paddingY = DEFAULT_SECTION_PADDING)
         {
             GUIStyle style = GetLabelStyleWithSize(fontSize);
+
             Rect fullArea = GUILayoutUtility.GetRect(
                 GUIContent.none,
                 style,
@@ -125,15 +134,28 @@ namespace Arctic.Utilities.Editor
                 GUILayout.ExpandHeight(true)
             );
 
-            Rect padded = new Rect(
+            Rect paddedBgArea = new Rect(
                 fullArea.x + paddingX,
                 fullArea.y + paddingY,
                 fullArea.width - paddingX * 2f,
                 fullArea.height - paddingY * 2f
             );
-            text = EditorGUI.TextArea(padded, text, style);
-            return padded.height;
+
+            const float inputAreaPadding = 3f;
+            Rect paddedInputArea = new Rect(
+                paddedBgArea.x + inputAreaPadding,
+                paddedBgArea.y + inputAreaPadding,
+                paddedBgArea.width - inputAreaPadding * 2,
+                paddedBgArea.height - inputAreaPadding * 2
+            );
+            
+
+            EditorGUI.DrawRect(paddedBgArea, bgColor);
+            text = EditorGUI.TextArea(paddedInputArea, text, style);
+
+            return paddedInputArea.height;
         }
+
 
         /// <summary>Switches to given content color -> invokes the draw action -> switches back to original color.</summary>
         public static void ContentColorSwitch(Color contentColor, System.Action draw) 

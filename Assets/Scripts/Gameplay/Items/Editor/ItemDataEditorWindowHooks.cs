@@ -2,7 +2,7 @@ using UnityEditor;
 
 namespace Arctic.Gameplay.Items.Editor
 {
-    public static class ItemDataEditorWindowHook
+    public static class ItemDataEditorWindowHooks
     {
         private const string WINDOW_TITLE = nameof(ItemData) + " Editor";
         private static ItemDataEditorWindow WindowInstance = null;
@@ -27,8 +27,8 @@ namespace Arctic.Gameplay.Items.Editor
                 WindowInstance = EditorWindow.GetWindow<ItemDataEditorWindow>(WINDOW_TITLE);
 
             WindowInstance.Focus();
-            if (!WindowInstance.HasDataSource)
-                WindowInstance.SetDataSource(target);
+            if (!WindowInstance.controller.HasValidSource)
+                WindowInstance.controller.SetSource(target);
         }
 
     }

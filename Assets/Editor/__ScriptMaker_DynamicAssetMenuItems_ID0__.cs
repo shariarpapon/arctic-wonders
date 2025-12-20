@@ -108,10 +108,17 @@ public static class __ScriptMaker_DynamicAssetMenuItems_ID0__
     //Menu item for creating Abstract script.
   }
 
-  [MenuItem("Assets/Create/Scripts//Abstract/Arctic.Utilities.Serialization.Json", priority=-9999)]
-  public static void MENUITEM_Abstract_ArcticUtilitiesSerializationJson()
+  [MenuItem("Assets/Create/Scripts//Abstract/Arctic.Utilities.Editor.Tabs", priority=-9999)]
+  public static void MENUITEM_Abstract_ArcticUtilitiesEditorTabs()
   {
-    ScriptMaker.OnClickAction(3, "Arctic.Utilities.Serialization.Json");
+    ScriptMaker.OnClickAction(3, "Arctic.Utilities.Editor.Tabs");
+    //Menu item for creating Abstract script.
+  }
+
+  [MenuItem("Assets/Create/Scripts//Abstract/Arctic.Utilities.Serialization.Properties", priority=-9999)]
+  public static void MENUITEM_Abstract_ArcticUtilitiesSerializationProperties()
+  {
+    ScriptMaker.OnClickAction(3, "Arctic.Utilities.Serialization.Properties");
     //Menu item for creating Abstract script.
   }
 
@@ -220,10 +227,17 @@ public static class __ScriptMaker_DynamicAssetMenuItems_ID0__
     //Menu item for creating Interface script.
   }
 
-  [MenuItem("Assets/Create/Scripts//Interface/Arctic.Utilities.Serialization.Json", priority=-9999)]
-  public static void MENUITEM_Interface_ArcticUtilitiesSerializationJson()
+  [MenuItem("Assets/Create/Scripts//Interface/Arctic.Utilities.Editor.Tabs", priority=-9999)]
+  public static void MENUITEM_Interface_ArcticUtilitiesEditorTabs()
   {
-    ScriptMaker.OnClickAction(4, "Arctic.Utilities.Serialization.Json");
+    ScriptMaker.OnClickAction(4, "Arctic.Utilities.Editor.Tabs");
+    //Menu item for creating Interface script.
+  }
+
+  [MenuItem("Assets/Create/Scripts//Interface/Arctic.Utilities.Serialization.Properties", priority=-9999)]
+  public static void MENUITEM_Interface_ArcticUtilitiesSerializationProperties()
+  {
+    ScriptMaker.OnClickAction(4, "Arctic.Utilities.Serialization.Properties");
     //Menu item for creating Interface script.
   }
 
@@ -332,10 +346,17 @@ public static class __ScriptMaker_DynamicAssetMenuItems_ID0__
     //Menu item for creating Struct script.
   }
 
-  [MenuItem("Assets/Create/Scripts//Struct/Arctic.Utilities.Serialization.Json", priority=-9999)]
-  public static void MENUITEM_Struct_ArcticUtilitiesSerializationJson()
+  [MenuItem("Assets/Create/Scripts//Struct/Arctic.Utilities.Editor.Tabs", priority=-9999)]
+  public static void MENUITEM_Struct_ArcticUtilitiesEditorTabs()
   {
-    ScriptMaker.OnClickAction(2, "Arctic.Utilities.Serialization.Json");
+    ScriptMaker.OnClickAction(2, "Arctic.Utilities.Editor.Tabs");
+    //Menu item for creating Struct script.
+  }
+
+  [MenuItem("Assets/Create/Scripts//Struct/Arctic.Utilities.Serialization.Properties", priority=-9999)]
+  public static void MENUITEM_Struct_ArcticUtilitiesSerializationProperties()
+  {
+    ScriptMaker.OnClickAction(2, "Arctic.Utilities.Serialization.Properties");
     //Menu item for creating Struct script.
   }
 
@@ -444,10 +465,17 @@ public static class __ScriptMaker_DynamicAssetMenuItems_ID0__
     //Menu item for creating Class script.
   }
 
-  [MenuItem("Assets/Create/Scripts//Class/Arctic.Utilities.Serialization.Json", priority=-9999)]
-  public static void MENUITEM_Class_ArcticUtilitiesSerializationJson()
+  [MenuItem("Assets/Create/Scripts//Class/Arctic.Utilities.Editor.Tabs", priority=-9999)]
+  public static void MENUITEM_Class_ArcticUtilitiesEditorTabs()
   {
-    ScriptMaker.OnClickAction(1, "Arctic.Utilities.Serialization.Json");
+    ScriptMaker.OnClickAction(1, "Arctic.Utilities.Editor.Tabs");
+    //Menu item for creating Class script.
+  }
+
+  [MenuItem("Assets/Create/Scripts//Class/Arctic.Utilities.Serialization.Properties", priority=-9999)]
+  public static void MENUITEM_Class_ArcticUtilitiesSerializationProperties()
+  {
+    ScriptMaker.OnClickAction(1, "Arctic.Utilities.Serialization.Properties");
     //Menu item for creating Class script.
   }
 
@@ -556,10 +584,17 @@ public static class __ScriptMaker_DynamicAssetMenuItems_ID0__
     //Menu item for creating Enum script.
   }
 
-  [MenuItem("Assets/Create/Scripts//Enum/Arctic.Utilities.Serialization.Json", priority=-9999)]
-  public static void MENUITEM_Enum_ArcticUtilitiesSerializationJson()
+  [MenuItem("Assets/Create/Scripts//Enum/Arctic.Utilities.Editor.Tabs", priority=-9999)]
+  public static void MENUITEM_Enum_ArcticUtilitiesEditorTabs()
   {
-    ScriptMaker.OnClickAction(5, "Arctic.Utilities.Serialization.Json");
+    ScriptMaker.OnClickAction(5, "Arctic.Utilities.Editor.Tabs");
+    //Menu item for creating Enum script.
+  }
+
+  [MenuItem("Assets/Create/Scripts//Enum/Arctic.Utilities.Serialization.Properties", priority=-9999)]
+  public static void MENUITEM_Enum_ArcticUtilitiesSerializationProperties()
+  {
+    ScriptMaker.OnClickAction(5, "Arctic.Utilities.Serialization.Properties");
     //Menu item for creating Enum script.
   }
 
@@ -668,10 +703,17 @@ public static class __ScriptMaker_DynamicAssetMenuItems_ID0__
     //Menu item for creating MonoBehaviour script.
   }
 
-  [MenuItem("Assets/Create/Scripts//MonoBehaviour/Arctic.Utilities.Serialization.Json", priority=-9999)]
-  public static void MENUITEM_MonoBehaviour_ArcticUtilitiesSerializationJson()
+  [MenuItem("Assets/Create/Scripts//MonoBehaviour/Arctic.Utilities.Editor.Tabs", priority=-9999)]
+  public static void MENUITEM_MonoBehaviour_ArcticUtilitiesEditorTabs()
   {
-    ScriptMaker.OnClickAction(0, "Arctic.Utilities.Serialization.Json");
+    ScriptMaker.OnClickAction(0, "Arctic.Utilities.Editor.Tabs");
+    //Menu item for creating MonoBehaviour script.
+  }
+
+  [MenuItem("Assets/Create/Scripts//MonoBehaviour/Arctic.Utilities.Serialization.Properties", priority=-9999)]
+  public static void MENUITEM_MonoBehaviour_ArcticUtilitiesSerializationProperties()
+  {
+    ScriptMaker.OnClickAction(0, "Arctic.Utilities.Serialization.Properties");
     //Menu item for creating MonoBehaviour script.
   }
 
