@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60b2ade33a4996c44a2a5a08557fadba, type: 3}
   m_Name: NewItemData
   m_EditorClassIdentifier: Assembly-CSharp::Arctic.Gameplay.Items.ItemData
-  guid: 0f928ed1dcd6438692a56a676ef84b94
+  guid: test_guid
   randomGuid: 0
   stringProperties:
   - key: key1
@@ -20,12 +20,6 @@ MonoBehaviour:
   - key: key2
     value: val2
   boolProperties:
-  - key: key3
-    value: 1
-  - key: canAdd
-    value: 1
-  - key: canNest
-    value: 0
   - key: test
     value: 1
   - key: isDestroyable
@@ -35,6 +29,8 @@ MonoBehaviour:
     value: 100
   - key: hunger
     value: 35
-  floatProperties: []
+  floatProperties:
+  - key: gravity
+    value: 9.81
   prefabProperties: []
   unityObjectProperties: []
