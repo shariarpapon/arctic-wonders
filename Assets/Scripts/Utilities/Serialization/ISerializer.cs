@@ -14,9 +14,9 @@ namespace Arctic.Utilities.Serialization
             {
                 foreach (TDesrialized deserialized in enumerable)
                 {
-                    var output = Serialize(deserialized);
-                    if (output.Status == OutputStatus.Successful)
-                        serializedList.Add(output.Object);
+                    var result = Serialize(deserialized);
+                    if (result.Status == OutputStatus.Successful)
+                        serializedList.Add(result.Object);
                 }
                 return true;
             }
@@ -33,9 +33,9 @@ namespace Arctic.Utilities.Serialization
             {
                 foreach (TSerialized serialized in enumerable) 
                 {
-                    var output = Deserialize(serialized);
-                    if (output.Status == OutputStatus.Successful)
-                        deserializedList.Add(output.Object);
+                    var result = Deserialize(serialized);
+                    if (result.Status == OutputStatus.Successful)
+                        deserializedList.Add(result.Object);
                 }
                 return true;
             }

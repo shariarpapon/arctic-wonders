@@ -9,7 +9,7 @@ namespace Arctic.Utilities.Serialization.Properties
     /// string representation of the form { "key": value }.
     /// This format is not full JSON and is intended for basic, editor-only use.
     /// </summary>
-    public class PropertySerializer : IStringFormatSerializer<IProperty>
+    public class StringFormatPropertySerializer : IStringFormatSerializer<IProperty>
     {
         public Result<string> Serialize(IProperty property)
         {

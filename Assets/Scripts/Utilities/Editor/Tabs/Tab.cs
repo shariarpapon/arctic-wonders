@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Arctic.Utilities.Editor.WindowTabs
+namespace Arctic.Utilities.Editor.Tabs
 {
     public sealed class Tab
     {

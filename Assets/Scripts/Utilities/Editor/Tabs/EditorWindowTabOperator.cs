@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace Arctic.Utilities.Editor.WindowTabs
+namespace Arctic.Utilities.Editor.Tabs
 {
     public sealed class WindowTabOperator
     {
@@ -10,7 +10,6 @@ namespace Arctic.Utilities.Editor.WindowTabs
         {
             private int m_defaultSelection;
             private readonly List<Tab> m_tabs;
-
             public Builder()
             {
                 m_defaultSelection = 0;
@@ -30,7 +29,6 @@ namespace Arctic.Utilities.Editor.WindowTabs
                 opr.SetSelection(m_defaultSelection);
                 return opr;
             }
-
 
             public Builder SetDefaultSelection(int index)
             {
@@ -73,6 +71,9 @@ namespace Arctic.Utilities.Editor.WindowTabs
 
         private List<Tab> m_tabs;
         private int m_selection;
+
+        public event System.Action<Tab> OnBeforeSelectedTabButtonRendered;
+        public event System.Action<Tab> OnAfterSelectedTabButtonRendered;
 
         private WindowTabOperator() { }
 
@@ -132,9 +133,15 @@ namespace Arctic.Utilities.Editor.WindowTabs
                     Debug.LogError("Resgistered tab is null at index: " + i);
                     continue;
                 }
+                bool selectedTabButton = m_selection == i;
+                if (selectedTabButton)
+                    OnBeforeSelectedTabButtonRendered?.Invoke(m_tabs[i]);
 
                 if (GUILayout.Button(m_tabs[i].Name))
                     SetSelection(i);
+
+                if (selectedTabButton)
+                    OnAfterSelectedTabButtonRendered?.Invoke(m_tabs[i]);
             }
             EditorGUILayout.EndHorizontal();
 

@@ -104,6 +104,22 @@ namespace Arctic.Gameplay.Items
             RebuildUnifiedPropertyLookup();
         }
 
+        public void InitPropertyLists() 
+        {
+            if(stringProperties == null)
+                stringProperties = new List<Property<string>>();
+            if (boolProperties == null)
+                boolProperties = new List<Property<bool>>();
+            if (intProperties == null)
+                intProperties = new List<Property<int>>();
+            if (floatProperties == null)
+                floatProperties = new List<Property<float>>();
+            if (prefabProperties == null)
+                prefabProperties = new List<Property<GameObject>>();
+            if (unityObjectProperties == null)
+                unityObjectProperties = new List<Property<UnityObject>>();
+        }
+
         /// <summary>
         /// Lookup dictionary for retrieving the property list given the value-type.
         /// </summary>
@@ -167,6 +183,26 @@ namespace Arctic.Gameplay.Items
                 Debug.LogException(e);
                 return null;
             }
+        }
+
+        public void ClearAllProperties()
+        {
+            stringProperties?.Clear();
+            boolProperties?.Clear();
+            intProperties?.Clear();
+            floatProperties?.Clear();
+            prefabProperties?.Clear();
+            unityObjectProperties?.Clear();
+            RebuildLookups();
+        }
+
+        public void SetData(string guid, IEnumerable<IProperty> properties) 
+        {
+            InitPropertyLists();
+            SetGUID(guid);
+            foreach (var prop in properties)
+                TryAddPropperty(prop, true);
+            RebuildLookups();
         }
 
         public bool TryAddPropperty(IProperty propertyToAdd, bool overwrite)

@@ -156,7 +156,6 @@ namespace Arctic.Utilities.Editor
             return paddedInputArea.height;
         }
 
-
         /// <summary>Switches to given content color -> invokes the draw action -> switches back to original color.</summary>
         public static void ContentColorSwitch(Color contentColor, System.Action draw) 
         {

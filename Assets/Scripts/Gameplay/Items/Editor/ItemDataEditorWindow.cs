@@ -1,7 +1,6 @@
 using Arctic.Utilities;
 using Arctic.Utilities.Editor;
-using Arctic.Utilities.Editor.WindowTabs;
-using Codice.CM.Common;
+using Arctic.Utilities.Editor.Tabs;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -16,17 +15,26 @@ namespace Arctic.Gameplay.Items.Editor
         private WindowTabOperator tabOperator;
 
         private string editorText = string.Empty;
-        private string sourceGuidInput;
         private int fontSize = 14;
 
-        private string loadPath;
+
+        private bool autoCreateIfNotFound = true;
+        private string loadPath = null;
+        private string autoCreatePath = null;
+
+        private static readonly Color SelectedTabButtonColor = new Color(0.32f, 0.32f, 0.55f, .5f);
+        private Color defBackgroundColor;
 
         private void OnEnable()
         {
-            loadPath = string.Empty;
-
+            defBackgroundColor = GUI.backgroundColor;
             InitializeController();
             IntializeTabs();
+        }
+
+        private void OnDisable()
+        {
+            DisposeTabOperator();    
         }
 
         private void InitializeController() 
@@ -43,7 +51,7 @@ namespace Arctic.Gameplay.Items.Editor
             Tab[] tabs = new Tab[]
             {
                 new Tab("Text Editor", DrawTextEditorTab),
-                new Tab("Load Text File", DrawLoadTextFileTab),
+                new Tab("Options", DrawOptionsTab),
             };
 
             tabOperator = WindowTabOperator
@@ -52,6 +60,17 @@ namespace Arctic.Gameplay.Items.Editor
                 .RegisterTabs(tabs)
                 .SetDefaultSelection(0)
                 .Build();
+
+
+            Color defaultColor = GUI.backgroundColor;
+            tabOperator.OnBeforeSelectedTabButtonRendered += SetSelectedTabButtonColor;
+            tabOperator.OnAfterSelectedTabButtonRendered += SetDefaultTabButtonColor;
+        }
+
+        private void DisposeTabOperator() 
+        {
+            tabOperator.OnBeforeSelectedTabButtonRendered -= SetSelectedTabButtonColor;
+            tabOperator.OnAfterSelectedTabButtonRendered -= SetDefaultTabButtonColor;
         }
 
         private void OnGUI()
@@ -59,46 +78,78 @@ namespace Arctic.Gameplay.Items.Editor
             tabOperator.Operate();
         }
 
-        private void DrawTextEditorTab() 
+        private void SetSelectedTabButtonColor(Tab tab) 
         {
-            DrawSourceField();
-            DrawTextEditorInputSection();
-            if(controller.HasValidSource)
-                DrawSerializeButtons();
+            GUI.backgroundColor = SelectedTabButtonColor; 
         }
 
-        private void DrawLoadTextFileTab() 
+        private void SetDefaultTabButtonColor(Tab tab) 
         {
+            GUI.backgroundColor = defBackgroundColor;
+        }
+
+        private void DrawTextEditorTab() 
+        {
+            GuiHelper.HorizontalLine(spaceAbove: 2f);
+            DrawSourceField();
+            DrawTextEditorInputSection();
+            DrawSerializeButtons();
+        }
+        private void DrawOptionsTab() 
+        {
+            GuiHelper.HorizontalLine(spaceAbove: 2f);
+            DrawAutoCreationPathSection();
             GuiHelper.HorizontalLine();
-            loadPath = EditorGUILayout.TextField("Load From: ", loadPath);
-            GuiHelper.HorizontalLine();
-            bool selected = false;
-            if(GUILayout.Button("Browse"))
-                selected = Helper.BrowseFilesystem(ref loadPath, Helper.BrowseFilter.All);
-            if (selected) 
+            DrawLoadTextFileSection();
+        }
+        private void DrawAutoCreationPathSection() 
+        {
+            autoCreateIfNotFound = EditorGUILayout.Toggle("Auto Create If Not Found", autoCreateIfNotFound, GUILayout.ExpandWidth(false));
+            if (autoCreateIfNotFound)
             {
+                autoCreatePath = EditorGUILayout.TextField("Auto Create Path", autoCreatePath);
+                controller.SetAutoCreationPath(autoCreatePath);
+            }
+        }
+
+        private void DrawLoadTextFileSection()
+        {
+            bool fileSelected = false;
+            if (GUILayout.Button("Load Text File"))
+                fileSelected = Helper.BrowseFilesystem(ref loadPath, Helper.BrowseFilter.All);
+            
+            if(fileSelected)
+                LoadFileContentIntoEditor(loadPath);
+        }
+
+        private void LoadFileContentIntoEditor(string path) 
+        {
+            if (string.IsNullOrEmpty(path))
+            {
+                Debug.LogError("Invalid load path.");
+                return;
+            }
+
+            try
+            {
+                string loaded = File.ReadAllText(loadPath);
                 controller.SetSource(null);
                 tabOperator.TrySetSelection("Text Editor");
-                try 
-                {
-                    string loaded = File.ReadAllText(loadPath);
-                    SetEdtiorText(loaded);
-                }
-                catch(System.Exception e) 
-                {
-                    Debug.LogError("Could not load file content: " + e.Message);
-                    return; 
-                }
+                SetEdtiorText(loaded);
             }
-            Repaint();
+            catch (System.Exception e)
+            {
+                Debug.LogError("Could not load file content: " + e.Message);
+                return;
+            }
+            Repaint();   
         }
 
         private void DrawSerializeButtons() 
         {
-            GUILayout.BeginHorizontal();
-            GuiHelper.DrawButton("Serialize", controller.Serialize, height: DEFAULT_BUTTON_HEIGHT);
-            GuiHelper.DrawButton("Deserialize", () => controller.Deserialize(editorText), height: DEFAULT_BUTTON_HEIGHT);
-            GUILayout.EndHorizontal();
+            if(controller.HasValidSource)
+                GuiHelper.DrawButton("Serialize", controller.Serialize, height: DEFAULT_BUTTON_HEIGHT);
+            GuiHelper.DrawButton("Deserialize", () => controller.Deserialize(editorText, autoCreateIfNotFound), height: DEFAULT_BUTTON_HEIGHT);
             GuiHelper.HorizontalLine();
         }
 
@@ -107,12 +158,10 @@ namespace Arctic.Gameplay.Items.Editor
             fontSize = EditorGUILayout.IntSlider("Font Size", fontSize, 1, 100);
             GuiHelper.HorizontalLine();
             GuiHelper.DrawTextEditorWindowArea(ref editorText, fontSize : fontSize, paddingX : 3f, paddingY : 3f);
-            GuiHelper.HorizontalLine();
         }
 
         private void DrawSourceField()
         {
-            GuiHelper.HorizontalLine(spaceAbove: 2f);
             var source = controller.Source;
             GuiHelper.DrawObjectField("Target ItemData", ref source);
             controller.SetSource(source);
@@ -120,6 +169,7 @@ namespace Arctic.Gameplay.Items.Editor
         }
 
         //GUID prompt not needed atm but its functional
+        //privat estring sourceGuidInput = null;
         //private void DrawInvalidSourceGuid()
         //{
         //    DrawWarning(
@@ -165,11 +215,6 @@ namespace Arctic.Gameplay.Items.Editor
         private void OnDeserialized(ItemData item)
         {
             Repaint();
-        }
-
-        private void DrawWarning(string message)
-        {
-            GuiHelper.DrawText(message, UnityColorDatabase.gentle_yellow);
         }
     }
 }
