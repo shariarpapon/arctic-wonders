@@ -80,40 +80,13 @@ namespace Arctic.Gameplay.Items.Editor
             }
         }
 
-
-        //TODO: Refactor to detect when ItemData asset with deserialized GUID does not exist in project, and create new ItemData asset in that case.
-        //      Create a seperate DeserializeOrCreate method for that.
-        //      (i dont think its possible to make it contained within ISerializer unless the return status <OutputStatus> is generic)
-        //    ** actually better idea is to create a DeserializeDetailed method that returns more detailed info about the deserialization process.
-        //       (allowing us to access intermediate processes)
-        //
-        //TODO_LATER: handle property diffs, handle nested properties, add parser injection.
         public virtual Result<ItemData> Deserialize(string serializedString)
         {
-            string[] lines = serializedString.Split("\n");
-            if (!propertySerializer.TryDeserializeAll(lines, out var deserializedProperties)) 
-            {
-                return new Result<ItemData>(null, OutputStatus.ErrorDeserializing);
-            }
-
-            if (TryExtractGUIDFromDeserializedProperties(ref deserializedProperties, out string itemGuid)) 
-            {
-                if (string.IsNullOrEmpty(itemGuid)) 
-                {
-                    Debug.LogError($"Invalid item GUID parsed (must be a valid string)");
-                    return new Result<ItemData>(null, OutputStatus.ErrorParsing);
-                }
-
-                ItemData itemData = ParseItemData(itemGuid, deserializedProperties);
-                if (itemData == null)
-                {
-                    Debug.LogError($"Could not parse from raw data (guid: {itemGuid})");
-                    return new Result<ItemData>(null, OutputStatus.ErrorParsing);
-                }
-                return new Result<ItemData>(itemData, OutputStatus.Successful);
-            }
+            DeserializeDetails details = DeserializeDetailed(serializedString);
+            if(details.status == DeserializeStatus.Successful)
+                return new Result<ItemData>(details.deserializedItemData, OutputStatus.Successful);
             else
-                return new Result<ItemData>(default, OutputStatus.DataCorrupted);
+                return new Result<ItemData>(null, OutputStatus.Failed);
         }
 
         public virtual DeserializeDetails DeserializeDetailed(string serializedString) 

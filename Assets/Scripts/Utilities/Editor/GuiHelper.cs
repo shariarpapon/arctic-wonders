@@ -9,13 +9,13 @@ namespace Arctic.Utilities.Editor
         {
             public float AccumulatedHeight { get; private set; }
 
-            public void Add(float spaceHeight) 
+            public void Add(float spaceHeight)
             {
                 GUILayout.Space(spaceHeight);
                 AccumulatedHeight += spaceHeight;
             }
 
-            public void Reset() 
+            public void Reset()
             {
                 AccumulatedHeight = 0.0f;
             }
@@ -31,6 +31,20 @@ namespace Arctic.Utilities.Editor
         public const int DEFAULT_HEADER_FONTSIZE = 12;
         public const float U_DEFAULT_FIELD_HEIGHT = 18;
         public const float U_DEFAULT_BUTTON_HEIGHT = 20;
+
+        public static InfoBoxGui DrawInfoBox(string text, float heightPadding) 
+        {
+            InfoBoxGui infoBox = new InfoBoxGui(text);
+            infoBox.Draw(heightPadding);
+            return infoBox;
+        }
+
+        public static InfoBoxGui DrawInfoBox(string text, Color bgColor, Color fontColor) 
+        {
+            InfoBoxGui infoBox = new InfoBoxGui(text, bgColor, fontColor);
+            infoBox.Draw(10);
+            return infoBox;
+        }
 
         public static void SetContentColor(Color color) => GUI.contentColor = color;
         public static void SetBgColor(Color color) => GUI.backgroundColor = color;
@@ -186,4 +200,5 @@ namespace Arctic.Utilities.Editor
         }
 
     }
+
 }

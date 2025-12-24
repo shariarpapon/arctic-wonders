@@ -13,7 +13,7 @@ namespace Arctic.Gameplay.Items.Editor
         private readonly System.Action<string> onSerialized;
         private readonly System.Action<ItemData> onDeserialized;
 
-        public string AutoCreationPath { get; private set; } = "Assets";
+        public string AutoCreationPath { get; private set; } = "Assets/Resouces/Items";
 
         public ItemDataEditorController(
             ItemDataSerializer itemDataSerializer,
@@ -79,8 +79,8 @@ namespace Arctic.Gameplay.Items.Editor
             string path = AutoCreationPath;
             if (string.IsNullOrEmpty(AutoCreationPath))
             {
-                path = "Assets/";
-                Debug.LogWarning("Invalid auto creation path. ItemData asset will be created in the Assets folder.");
+                path = "Resources/";
+                Debug.LogWarning("Invalid auto creation path. ItemData asset will be created in the Assets/Resources folder.");
             }
 
             ItemData newItemData = ScriptableObject.CreateInstance<ItemData>();
@@ -91,7 +91,7 @@ namespace Arctic.Gameplay.Items.Editor
                 assetName = displayName;
             try
             {
-                Helper.CreateAssetAtPath(newItemData, $"{path}/{assetName}.asset");
+                Helper.CreateAssetAtPath(newItemData, $"{assetName}.asset", path);
                 OnDeserializeSuccess(newItemData);
                 Debug.Log($"<color=green>Successfully created new ItemData asset at path: {path}/{assetName}.asset</color>");
             }
@@ -99,7 +99,6 @@ namespace Arctic.Gameplay.Items.Editor
             {
                 Debug.LogException(e);
             }
-            onDeserialized.Invoke(newItemData);
         }
 
         private void OnDeserializeSuccess(ItemData itemData)

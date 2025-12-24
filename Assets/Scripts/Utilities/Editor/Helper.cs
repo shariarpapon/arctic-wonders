@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Windows;
 
 namespace Arctic.Utilities.Editor
 {
@@ -65,11 +67,66 @@ namespace Arctic.Utilities.Editor
             return true;
         }
         
-        public static void CreateAssetAtPath<T>(T asset, string pathLocation) where T : UnityEngine.Object
+        public static void CreateAssetAtPath<T>(T asset, string assetFileName, string directory, bool createDirIfMissing = true) where T : UnityEngine.Object
         {
-            AssetDatabase.CreateAsset(asset, pathLocation);
+            if (!AssetDatabase.IsValidFolder(directory))
+            {
+                if (createDirIfMissing)
+                    CreateDirectoryInAssets(directory);
+                else 
+                {
+                    Debug.LogError("Could not create asset at path: "  + directory);
+                    return;
+                }
+            }
+
+            string finalPath = directory + "/" + assetFileName;
+            AssetDatabase.CreateAsset(asset, finalPath);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
+        }
+
+        public static void CreateDirectoryInAssets(string path) 
+        {
+            path = SanitizeUnityPath(path);
+            if (string.IsNullOrEmpty(path))
+            {
+                Debug.LogWarning("Invalid asset path provided.");
+                return;
+            }
+
+            const string ROOT = "Assets/";
+            if (path.StartsWith(ROOT))
+                path = path.Remove(0, ROOT.Length);
+
+            string[] folders = path.Split('/');
+            path = "Assets";
+            foreach (string folder in folders) 
+            {
+                if (string.IsNullOrEmpty(folder))
+                {
+                    Debug.LogError("Invalid folder name");
+                    return;
+                }
+                string combinedPath = Path.Combine(path, folder);
+                if (!AssetDatabase.IsValidFolder(combinedPath)) 
+                { 
+                    AssetDatabase.CreateFolder(path, folder);
+                    path = combinedPath;
+                }
+            }
+            
+        }
+
+        public static string SanitizeUnityPath(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+                return string.Empty;
+            path = path.Replace("\\", "/");
+            path = Regex.Replace(path, "/+", "/");
+            if (path.Length > 1 && path.EndsWith("/"))
+                path = path.TrimEnd('/');
+            return path;
         }
 
         public static void CommitAssetChanges(Object asset)

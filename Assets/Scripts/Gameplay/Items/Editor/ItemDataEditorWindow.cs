@@ -1,4 +1,3 @@
-using Arctic.Utilities;
 using Arctic.Utilities.Editor;
 using Arctic.Utilities.Editor.Tabs;
 using System.IO;
@@ -20,9 +19,9 @@ namespace Arctic.Gameplay.Items.Editor
 
         private bool autoCreateIfNotFound = true;
         private string loadPath = null;
-        private string autoCreatePath = null;
+        private string autoCreateDirectory = "Assets/Resources/Items";
 
-        private static readonly Color SelectedTabButtonColor = new Color(0.32f, 0.32f, 0.55f, .5f);
+        private static readonly Color SelectedTabButtonColor = new Color(0.32f, 0.32f, 0.7f, .5f);
         private Color defBackgroundColor;
 
         private void OnEnable()
@@ -30,10 +29,12 @@ namespace Arctic.Gameplay.Items.Editor
             defBackgroundColor = GUI.backgroundColor;
             InitializeController();
             IntializeTabs();
+            LoadOptions();
         }
 
         private void OnDisable()
         {
+            SaveOptions();
             DisposeTabOperator();    
         }
 
@@ -45,6 +46,7 @@ namespace Arctic.Gameplay.Items.Editor
                OnDeserialized
            );
         }
+
 
         private void IntializeTabs() 
         {
@@ -61,7 +63,7 @@ namespace Arctic.Gameplay.Items.Editor
                 .SetDefaultSelection(0)
                 .Build();
 
-
+                
             Color defaultColor = GUI.backgroundColor;
             tabOperator.OnBeforeSelectedTabButtonRendered += SetSelectedTabButtonColor;
             tabOperator.OnAfterSelectedTabButtonRendered += SetDefaultTabButtonColor;
@@ -72,10 +74,31 @@ namespace Arctic.Gameplay.Items.Editor
             tabOperator.OnBeforeSelectedTabButtonRendered -= SetSelectedTabButtonColor;
             tabOperator.OnAfterSelectedTabButtonRendered -= SetDefaultTabButtonColor;
         }
-
         private void OnGUI()
         {
             tabOperator.Operate();
+        }
+        private void SaveOptions() 
+        {
+            EditorPrefs.SetInt(GetEditorPrefKey(nameof(fontSize)), fontSize);
+            EditorPrefs.SetBool(GetEditorPrefKey(nameof(autoCreateIfNotFound)), autoCreateIfNotFound);
+            EditorPrefs.SetString(GetEditorPrefKey(nameof(autoCreateDirectory)), autoCreateDirectory);
+        }
+
+        private void LoadOptions() 
+        {
+            string fontSizeKey = GetEditorPrefKey(nameof(fontSize));
+            if (!EditorPrefs.HasKey(fontSizeKey))
+                return;
+
+            fontSize = EditorPrefs.GetInt(GetEditorPrefKey(nameof(fontSize)), fontSize);
+            autoCreateIfNotFound = EditorPrefs.GetBool(GetEditorPrefKey(nameof(autoCreateIfNotFound)), autoCreateIfNotFound);
+            autoCreateDirectory = EditorPrefs.GetString(GetEditorPrefKey(nameof(autoCreateDirectory)), autoCreateDirectory);
+        }
+
+        private string GetEditorPrefKey(string varName) 
+        {
+            return $"{nameof(ItemDataEditorWindow)}_{varName}";
         }
 
         private void SetSelectedTabButtonColor(Tab tab) 
@@ -105,10 +128,13 @@ namespace Arctic.Gameplay.Items.Editor
         private void DrawAutoCreationPathSection() 
         {
             autoCreateIfNotFound = EditorGUILayout.Toggle("Auto Create If Not Found", autoCreateIfNotFound, GUILayout.ExpandWidth(false));
+            GuiHelper.DrawInfoBox("During deserialization it attempts to retrieve an ItemData scriptable object with the deserialized GUID. " +
+                                    "If that asset is not found, should it be auto crated?", 10);
+
             if (autoCreateIfNotFound)
             {
-                autoCreatePath = EditorGUILayout.TextField("Auto Create Path", autoCreatePath);
-                controller.SetAutoCreationPath(autoCreatePath);
+                autoCreateDirectory = EditorGUILayout.TextField("Auto Create Directory", autoCreateDirectory);
+                controller.SetAutoCreationPath(autoCreateDirectory);
             }
         }
 
@@ -132,10 +158,10 @@ namespace Arctic.Gameplay.Items.Editor
 
             try
             {
-                string loaded = File.ReadAllText(loadPath);
+                string fileContent = File.ReadAllText(loadPath);
                 controller.SetSource(null);
                 tabOperator.TrySetSelection("Text Editor");
-                SetEdtiorText(loaded);
+                SetEditorText(fileContent);
             }
             catch (System.Exception e)
             {
@@ -164,7 +190,8 @@ namespace Arctic.Gameplay.Items.Editor
         {
             var source = controller.Source;
             GuiHelper.DrawObjectField("Target ItemData", ref source);
-            controller.SetSource(source);
+            if(source != controller.Source)
+                controller.SetSource(source);
             GuiHelper.HorizontalLine();
         }
 
@@ -200,7 +227,7 @@ namespace Arctic.Gameplay.Items.Editor
         //    EditorGUILayout.EndHorizontal();
         //}
 
-        private void SetEdtiorText(string text) 
+        private void SetEditorText(string text) 
         {
             GUI.FocusControl(null);
             editorText = text;
@@ -209,7 +236,7 @@ namespace Arctic.Gameplay.Items.Editor
 
         private void OnSerialized(string text)
         {
-            SetEdtiorText(text);
+            SetEditorText(text);
         }
 
         private void OnDeserialized(ItemData item)
