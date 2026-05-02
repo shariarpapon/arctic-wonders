@@ -30,7 +30,7 @@ namespace Arctic.UI.Interaction
             newTarget.TryGetComponent(out IInteractable target);
             if (target == null || string.IsNullOrEmpty(target.Prompt))
                 return;
-
+            
             focusedInteractable = target;
             canvasGroup.alpha = 1;
         }

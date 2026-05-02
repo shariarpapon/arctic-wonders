@@ -86,9 +86,6 @@ namespace Arctic.Gameplay.Items.Editor
             ItemData newItemData = ScriptableObject.CreateInstance<ItemData>();
             newItemData.SetData(details.guid, details.deserializedProperties);
             string assetName = newItemData.GUID;
-            const string DISPLAY_NAME_PROP_KEY = "display_name";
-            if (newItemData.TryGetPropertyValue(DISPLAY_NAME_PROP_KEY, out string displayName))
-                assetName = displayName;
             try
             {
                 Helper.CreateAssetAtPath(newItemData, $"{assetName}.asset", path);

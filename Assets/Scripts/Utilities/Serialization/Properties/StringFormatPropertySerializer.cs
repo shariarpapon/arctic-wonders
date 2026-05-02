@@ -1,4 +1,4 @@
-using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 
@@ -11,6 +11,18 @@ namespace Arctic.Utilities.Serialization.Properties
     /// </summary>
     public class StringFormatPropertySerializer : IStringFormatSerializer<IProperty>
     {
+        private IParser<string, IProperty> stringPropertyParser;
+
+        public StringFormatPropertySerializer() 
+        {
+            SetParser(new StringPropertyParser());
+        }
+
+        public StringFormatPropertySerializer(IParser<string, IProperty> stringPropertyParser) 
+        {
+            SetParser(stringPropertyParser); 
+        }
+
         public Result<string> Serialize(IProperty property)
         {
 
@@ -26,38 +38,16 @@ namespace Arctic.Utilities.Serialization.Properties
             else return new Result<IProperty>(null, OutputStatus.ErrorDeserializing);
         }
 
+        public void SetParser(IParser<string, IProperty> parser) => stringPropertyParser = parser;
+
         protected virtual bool TryDeserializeProperty(string propertySrc, out IProperty property) 
         {
             property = null;
 
             if (!IsValidSource(propertySrc))
                 return false;
-            try
-            {
-                propertySrc = propertySrc.Trim();
-                propertySrc = propertySrc.Substring(1, propertySrc.Length - 2);
-
-                int colonIndex = propertySrc.IndexOf(':');
-                if (colonIndex < 0)
-                    throw new System.Exception("Error: Cannot deserialize: invalid syntax");
-
-                string key = propertySrc.Substring(0, colonIndex).Trim().Trim('"');
-                string rawValue = propertySrc.Substring(colonIndex + 1).Trim();
-                if (rawValue.StartsWith("\""))
-                    property = new Property<string>(key, rawValue.Trim('"'));
-                else if (bool.TryParse(rawValue, out bool boolValue))
-                    property = new Property<bool>(key, boolValue);
-                else if (int.TryParse(rawValue, out int intValue))
-                    property = new Property<int>(key, intValue);
-                else if (float.TryParse(rawValue, NumberStyles.Float, CultureInfo.InvariantCulture, out float floatValue))
-                    property = new Property<float>(key, floatValue);
-                else return false;
-                return true;
-            }
-            catch (Exception e)
-            {
-                throw new System.Exception($"Cannot deserialize using <{GetType().FullName}> : " + e.Message);
-            }
+            bool success = stringPropertyParser.TryParse(propertySrc, out property);
+            return success;
         }
 
         protected virtual bool TrySerializeProperty(IProperty property, out string propertySrc) 

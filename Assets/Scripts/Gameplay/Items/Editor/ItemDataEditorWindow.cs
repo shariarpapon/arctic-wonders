@@ -128,8 +128,8 @@ namespace Arctic.Gameplay.Items.Editor
         private void DrawAutoCreationPathSection() 
         {
             autoCreateIfNotFound = EditorGUILayout.Toggle("Auto Create If Not Found", autoCreateIfNotFound, GUILayout.ExpandWidth(false));
-            GuiHelper.DrawInfoBox("During deserialization it attempts to retrieve an ItemData scriptable object with the deserialized GUID. " +
-                                    "If that asset is not found, should it be auto crated?", 10);
+            new InfoBoxGui("During deserialization it attempts to retrieve an ItemData scriptable object with the deserialized GUID. " +
+                                    "If that asset is not found, should it be auto crated? " + (autoCreateIfNotFound ? "YES" : "NO"));
 
             if (autoCreateIfNotFound)
             {

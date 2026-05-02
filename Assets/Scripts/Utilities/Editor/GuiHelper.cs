@@ -32,17 +32,10 @@ namespace Arctic.Utilities.Editor
         public const float U_DEFAULT_FIELD_HEIGHT = 18;
         public const float U_DEFAULT_BUTTON_HEIGHT = 20;
 
-        public static InfoBoxGui DrawInfoBox(string text, float heightPadding) 
-        {
-            InfoBoxGui infoBox = new InfoBoxGui(text);
-            infoBox.Draw(heightPadding);
-            return infoBox;
-        }
-
         public static InfoBoxGui DrawInfoBox(string text, Color bgColor, Color fontColor) 
         {
             InfoBoxGui infoBox = new InfoBoxGui(text, bgColor, fontColor);
-            infoBox.Draw(10);
+            infoBox.Draw();
             return infoBox;
         }
 

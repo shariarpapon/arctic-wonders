@@ -23,19 +23,17 @@ namespace Arctic.Utilities.Editor
 
         public InfoBoxGui(string text, Color bgColor, Color fontColor)
         {
-            h = 0;
             Text = text;
             BgColor = DEFAULT_BG_COLOR;
             FontColor = DEFAULT_FONT_COLOR;
             TextBorder = DEFAULT_TEXT_BORDER; 
             ExpandWidth = true;
             GuiStyle = GuiHelper.GetLabelStyleWithSize(DEFAULT_FONT_SIZE);
+            Draw();
         }
 
-        public void Draw(float heightPadding)
+        public void Draw()
         {
-            h = heightPadding;
-
             Color bgColor = BgColor;
             string text = Text;
             GUIStyle style = GuiStyle;
@@ -48,7 +46,6 @@ namespace Arctic.Utilities.Editor
             });
         }
 
-        float h;
         private Rect GetBgRect() 
         {
             EditorGUILayout.Space(5);

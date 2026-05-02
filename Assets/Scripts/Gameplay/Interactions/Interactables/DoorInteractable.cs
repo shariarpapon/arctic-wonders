@@ -42,8 +42,11 @@ namespace Arctic.Gameplay.Interaction.Interactables
             openRotation = closedRotation * Quaternion.Euler(swingAngle, 0f, 0f);
         }
 
-        public override void Interact(InteractionInvoker invoker)
+        public override bool Interact(InteractionInvoker invoker)
         {
+            if (inTransition)
+                return false;
+
             switch (state) 
             {
                 case DoorState.Locked:
@@ -56,6 +59,7 @@ namespace Arctic.Gameplay.Interaction.Interactables
                     MakeTransitionToTargetState(DoorState.Closed);
                     break;
             }
+            return true;
         }
 
         private void Unlock() 

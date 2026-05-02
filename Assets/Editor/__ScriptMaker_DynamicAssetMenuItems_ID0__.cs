@@ -31,6 +31,13 @@ public static class __ScriptMaker_DynamicAssetMenuItems_ID0__
     //Menu item for creating Abstract script.
   }
 
+  [MenuItem("Assets/Create/Scripts//Abstract/Arctic.ScriptableBindings", priority=-9999)]
+  public static void MENUITEM_Abstract_ArcticScriptableBindings()
+  {
+    ScriptMaker.OnClickAction(3, "Arctic.ScriptableBindings");
+    //Menu item for creating Abstract script.
+  }
+
   [MenuItem("Assets/Create/Scripts//Abstract/Arctic.Utilities", priority=-9999)]
   public static void MENUITEM_Abstract_ArcticUtilities()
   {
@@ -147,6 +154,13 @@ public static class __ScriptMaker_DynamicAssetMenuItems_ID0__
   public static void MENUITEM_Interface_ArcticRendering()
   {
     ScriptMaker.OnClickAction(4, "Arctic.Rendering");
+    //Menu item for creating Interface script.
+  }
+
+  [MenuItem("Assets/Create/Scripts//Interface/Arctic.ScriptableBindings", priority=-9999)]
+  public static void MENUITEM_Interface_ArcticScriptableBindings()
+  {
+    ScriptMaker.OnClickAction(4, "Arctic.ScriptableBindings");
     //Menu item for creating Interface script.
   }
 
@@ -269,6 +283,13 @@ public static class __ScriptMaker_DynamicAssetMenuItems_ID0__
     //Menu item for creating Struct script.
   }
 
+  [MenuItem("Assets/Create/Scripts//Struct/Arctic.ScriptableBindings", priority=-9999)]
+  public static void MENUITEM_Struct_ArcticScriptableBindings()
+  {
+    ScriptMaker.OnClickAction(2, "Arctic.ScriptableBindings");
+    //Menu item for creating Struct script.
+  }
+
   [MenuItem("Assets/Create/Scripts//Struct/Arctic.Utilities", priority=-9999)]
   public static void MENUITEM_Struct_ArcticUtilities()
   {
@@ -385,6 +406,13 @@ public static class __ScriptMaker_DynamicAssetMenuItems_ID0__
   public static void MENUITEM_Class_ArcticRendering()
   {
     ScriptMaker.OnClickAction(1, "Arctic.Rendering");
+    //Menu item for creating Class script.
+  }
+
+  [MenuItem("Assets/Create/Scripts//Class/Arctic.ScriptableBindings", priority=-9999)]
+  public static void MENUITEM_Class_ArcticScriptableBindings()
+  {
+    ScriptMaker.OnClickAction(1, "Arctic.ScriptableBindings");
     //Menu item for creating Class script.
   }
 
@@ -507,6 +535,13 @@ public static class __ScriptMaker_DynamicAssetMenuItems_ID0__
     //Menu item for creating Enum script.
   }
 
+  [MenuItem("Assets/Create/Scripts//Enum/Arctic.ScriptableBindings", priority=-9999)]
+  public static void MENUITEM_Enum_ArcticScriptableBindings()
+  {
+    ScriptMaker.OnClickAction(5, "Arctic.ScriptableBindings");
+    //Menu item for creating Enum script.
+  }
+
   [MenuItem("Assets/Create/Scripts//Enum/Arctic.Utilities", priority=-9999)]
   public static void MENUITEM_Enum_ArcticUtilities()
   {
@@ -623,6 +658,13 @@ public static class __ScriptMaker_DynamicAssetMenuItems_ID0__
   public static void MENUITEM_MonoBehaviour_ArcticRendering()
   {
     ScriptMaker.OnClickAction(0, "Arctic.Rendering");
+    //Menu item for creating MonoBehaviour script.
+  }
+
+  [MenuItem("Assets/Create/Scripts//MonoBehaviour/Arctic.ScriptableBindings", priority=-9999)]
+  public static void MENUITEM_MonoBehaviour_ArcticScriptableBindings()
+  {
+    ScriptMaker.OnClickAction(0, "Arctic.ScriptableBindings");
     //Menu item for creating MonoBehaviour script.
   }
 

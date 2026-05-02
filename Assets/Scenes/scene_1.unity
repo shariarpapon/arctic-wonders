@@ -2275,7 +2275,7 @@ GameObject:
   - component: {fileID: 173117909}
   - component: {fileID: 173117908}
   - component: {fileID: 173117907}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: icebed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9221,7 +9221,7 @@ Transform:
   m_GameObject: {fileID: 921844329}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 67.5, y: 40.78, z: -14.4}
+  m_LocalPosition: {x: 67.5, y: 39.55, z: -14.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -9234,6 +9234,70 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1833970382160700038, guid: 7fec1f6eef13af34c919066208914816, type: 3}
   m_PrefabInstance: {fileID: 1347531306}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &928610799
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 928610801}
+  - component: {fileID: 928610800}
+  m_Layer: 0
+  m_Name: NavSurface 100x10x100
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &928610800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 928610799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.AI.Navigation::Unity.AI.Navigation.NavMeshSurface
+  m_SerializedVersion: 0
+  m_AgentTypeID: 0
+  m_CollectObjects: 1
+  m_Size: {x: 100, y: 10, z: 100}
+  m_Center: {x: 0, y: 0, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_UseGeometry: 0
+  m_DefaultArea: 0
+  m_GenerateLinks: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 0.16666667
+  m_MinRegionArea: 2
+  m_NavMeshData: {fileID: 23800000, guid: 09e061aad828b9847b06a842ff2321bb, type: 2}
+  m_BuildHeightMesh: 0
+--- !u!4 &928610801
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 928610799}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 71.63375, y: 40.69, z: -20.07609}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &929277698 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4137104612946305234, guid: 8329679a18bdbf0408d985a4d44b2ce1, type: 3}
@@ -22647,7 +22711,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Arctic.Player.Interaction.PlayerInteractionInvoker
   invokeKey: 323
-  invoker: {fileID: 1398904547017190}
   interactableTracker:
     targetLayers:
       serializedVersion: 2
@@ -22767,3 +22830,4 @@ SceneRoots:
   - {fileID: 848166897}
   - {fileID: 832575519}
   - {fileID: 2096274744}
+  - {fileID: 928610801}

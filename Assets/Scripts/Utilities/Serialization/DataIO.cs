@@ -1,7 +1,6 @@
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml.Serialization;
-using System.Collections.Generic;
 
 #if UNITY_2020_1_OR_NEWER
 using UnityEngine;
@@ -9,7 +8,6 @@ using UnityEngine;
 #endif
 
 #if UNITY_EDITOR
-using UnityEditor;
 #endif
 
 namespace Arctic.Utilities.Serialization

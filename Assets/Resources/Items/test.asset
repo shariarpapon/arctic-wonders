@@ -10,21 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 60b2ade33a4996c44a2a5a08557fadba, type: 3}
-  m_Name: test_guid
+  m_Name: test
   m_EditorClassIdentifier: Assembly-CSharp::Arctic.Gameplay.Items.ItemData
-  guid: test_guid
+  guid: test
   randomGuid: 0
-  stringProperties: []
+  stringProperties:
+  - key: status
+    value: ready
   boolProperties:
-  - key: test
-    value: 1
-  - key: isDestroyable
+  - key: active
     value: 1
   intProperties:
-  - key: health
-    value: 100
-  - key: hunger
-    value: 35
-  floatProperties: []
+  - key: number
+    value: 2331
+  floatProperties:
+  - key: rate
+    value: 2.71
   prefabProperties: []
   unityObjectProperties: []
