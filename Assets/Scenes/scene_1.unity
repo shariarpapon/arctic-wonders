@@ -1344,7 +1344,9 @@ MonoBehaviour:
   worldSize: {x: 2000, y: 2000}
   worldCenter: {x: -11.87627, y: 36.5, z: 24.96418}
   chunkSize: {x: 256, y: 16, z: 256}
-  _createInstances: 1
+  createInstances: 1
+  enableChunkCulling: 1
+  viewer: {fileID: 921844329}
 --- !u!4 &117500198
 Transform:
   m_ObjectHideFlags: 0

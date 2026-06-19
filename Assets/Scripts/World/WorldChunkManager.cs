@@ -25,9 +25,15 @@ namespace Arctic.World
         public Vector2 worldSize = new Vector2(128f, 128f);
         public Vector3 worldCenter = Vector3.zero;
         public Vector3 chunkSize = new Vector3(256, 16, 256);
+
+        [Space]
+        public bool createInstances = true;
+
+        [HideInInspector]
+        public bool enableChunkCulling = true;
         
-        [SerializeField]
-        private bool _createInstances = true;
+        [HideInInspector]
+        public GameObject viewer = null;
 
         private ChunkGrid _chunkGrid;
 
@@ -42,7 +48,7 @@ namespace Arctic.World
 
         private void CreateChunkGrid() 
         {
-            _chunkGrid = new ChunkGrid(worldSize, chunkSize, worldCenter, _createInstances);
+            _chunkGrid = new ChunkGrid(worldSize, chunkSize, worldCenter, createInstances);
             _chunkGrid.SetInstanceParent(transform);
             _chunkGrid.AddComponentsToChunkInstances(typeof(NavMeshSurface));
             InitChunkNavMeshSurface();

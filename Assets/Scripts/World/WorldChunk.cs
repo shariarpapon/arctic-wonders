@@ -49,5 +49,10 @@ namespace Arctic.World
                 ChunkInstance.AddComponent(type);
             }
         }
+
+        public void SetActive(bool active) 
+        {
+            ChunkInstance.SetActive(active);
+        }
     }
 }

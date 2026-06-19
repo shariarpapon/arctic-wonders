@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 using Arctic.World;
+using UnityEngine.Rendering;
 
 namespace Arctic.Woirld.CustomEditors
 {
@@ -15,12 +16,29 @@ namespace Arctic.Woirld.CustomEditors
             DrawDefaultInspector();
             _manager = (WorldChunkManager)target;
 
+            DrawChunkCullingVariables();
+            DrawHelperTools();
+        }
+
+        private void DrawChunkCullingVariables() 
+        {
+            if (!_manager.createInstances)
+                return;
+
+            _manager.enableChunkCulling = EditorGUILayout.Toggle("Enable Chunk Culling", _manager.enableChunkCulling);
+            if (!_manager.enableChunkCulling)
+                return;
+
+            _manager.viewer = EditorGUILayout.ObjectField("Viewer", _manager.viewer, typeof(GameObject), true) as GameObject;
+        }
+
+        private void DrawHelperTools() 
+        {
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Helper Tools", EditorStyles.boldLabel);
             _worldMeshFilter = EditorGUILayout.ObjectField("World Terrain Mesh", _worldMeshFilter, typeof(MeshFilter), true) as MeshFilter;
-            if (_worldMeshFilter == null)
-                return;
-            OnMeshFilterExists();
+            if (_worldMeshFilter)
+                OnMeshFilterExists();
         }
 
         private void OnMeshFilterExists() 
