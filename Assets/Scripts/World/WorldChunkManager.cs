@@ -1,6 +1,6 @@
-using Arctic.DebugTools;
 using Arctic.Utilities.Generics;
-using System.Collections.Generic;
+using System.Linq;
+using Unity.AI.Navigation;
 using UnityEngine;
 
 // Runtime Navmesh Generation Snippet
@@ -23,65 +23,54 @@ namespace Arctic.World
     public class WorldChunkManager : PersistentSingletonMonobehaviour<WorldChunkManager>
     {
         public Vector2 worldSize = new Vector2(128f, 128f);
-        public Vector3 worldOffset = Vector3.zero;
-        public float chunkSize = 64f;
+        public Vector3 worldCenter = Vector3.zero;
+        public Vector3 chunkSize = new Vector3(256, 16, 256);
+        
+        [SerializeField]
+        private bool _createInstances = true;
 
-        private Dictionary<Vector3Int, WorldChunk> chunkGrid = new Dictionary<Vector3Int, WorldChunk>();
+        private ChunkGrid _chunkGrid;
 
-        private void OnValidate()
+        
+        protected override void OnSingletonEvaluated()
         {
-            const float minChunkSize = 0.01f;
-            if (chunkSize < minChunkSize)
-                chunkSize = minChunkSize;
+            base.OnSingletonEvaluated();
+            CreateChunkGrid();
+
+            WorldChunk[] chunks = _chunkGrid.GetAllChunks().ToArray();
         }
 
-        public void GenerateChunks() 
+        private void CreateChunkGrid() 
         {
-            if(chunkGrid != null) 
+            _chunkGrid = new ChunkGrid(worldSize, chunkSize, worldCenter, _createInstances);
+            _chunkGrid.SetInstanceParent(transform);
+            _chunkGrid.AddComponentsToChunkInstances(typeof(NavMeshSurface));
+            InitChunkNavMeshSurface();
+        }
+
+        private void InitChunkNavMeshSurface() 
+        {
+            foreach (WorldChunk chunk in _chunkGrid.GetAllChunks())
             {
-                Debugc.LogEmphasis("chunk grid is alreeady initialized, clearing existing chunks before generation...");
-                chunkGrid.Clear();
-            }
-            chunkGrid = GenerateChunkGrid();
-        }
-
-        private Dictionary<Vector3Int, WorldChunk> GenerateChunkGrid()
-        {
-            int chunkCountX = Mathf.CeilToInt(worldSize.x / chunkSize);
-            int chunkCountZ = Mathf.CeilToInt(worldSize.y / chunkSize);
-            Dictionary<Vector3Int, WorldChunk> chunks = new Dictionary<Vector3Int, WorldChunk>(chunkCountX * chunkCountZ);
-            Vector3 worldPosition = Vector3.zero;
-            Vector3Int gridLocation = Vector3Int.zero;
-            for (int x = 0; x < chunkCountX; x++)
-                for (int z = 0; z < chunkCountZ; z++)
+                if (!chunk.HasInstance)
                 {
-                    gridLocation = new(x, 0, z);
-                    worldPosition = GetWorldPositionFromGridLocation(gridLocation);
-                    chunks.Add(gridLocation, new WorldChunk(worldPosition, chunkSize));
-                }   
-            return chunks;
-        }
+                    Debug.LogWarning($"Chunk at position {chunk.position} does not have an instance.");
+                    continue;
+                }
 
-        public WorldChunk GetChunkByWorldPosition(Vector3 worldPosition)
-        {
-            Vector3Int gridLocation = GetGridLocationFromWorldPosition(worldPosition);
-            if (chunkGrid.TryGetValue(gridLocation, out WorldChunk chunk))
-                return chunk;
-            return null;
-        }
+                NavMeshSurface nms = chunk.ChunkInstance.GetComponent<NavMeshSurface>();
+                if (!nms)
+                {
+                    Debug.LogWarning($"Chunk at position {chunk.position} does not have a NavMeshSurface component.");
+                    continue;
+                }
 
-        public Vector3Int GetGridLocationFromWorldPosition(Vector3 worldPosition)
-        {
-            int x = Mathf.FloorToInt((worldPosition.x - worldOffset.x) / chunkSize);
-            int z = Mathf.FloorToInt((worldPosition.z - worldOffset.z) / chunkSize);
-            return new Vector3Int(x, 0, z);
+                nms.collectObjects = CollectObjects.Volume;
+                nms.center = new Vector3(chunk.size.x / 2f, 0, chunk.size.z / 2f);
+                nms.size = chunk.size;
+                nms.BuildNavMesh();
+            }
         }
-
-        public Vector3 GetWorldPositionFromGridLocation(Vector3Int gridLocation)
-        {
-            return (Vector3)gridLocation * chunkSize + worldOffset;
-        }
-
     }
 }
 

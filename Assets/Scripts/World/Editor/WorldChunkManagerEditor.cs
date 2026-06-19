@@ -8,15 +8,23 @@ namespace Arctic.Woirld.CustomEditors
     public class WorldChunkManagerEditor : Editor
     {
         private MeshFilter _worldMeshFilter;
+        private WorldChunkManager _manager;
 
         public override void OnInspectorGUI()
         {
             DrawDefaultInspector();
+            _manager = (WorldChunkManager)target;
+
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Helper Tools", EditorStyles.boldLabel);
-            _worldMeshFilter = EditorGUILayout.ObjectField("World Mesh", _worldMeshFilter, typeof(MeshFilter), true) as MeshFilter;
+            _worldMeshFilter = EditorGUILayout.ObjectField("World Terrain Mesh", _worldMeshFilter, typeof(MeshFilter), true) as MeshFilter;
             if (_worldMeshFilter == null)
                 return;
+            OnMeshFilterExists();
+        }
+
+        private void OnMeshFilterExists() 
+        {
             if (GUILayout.Button("Extract Data From Mesh"))
                 ExtractDataFromMesh();
         }
@@ -38,11 +46,10 @@ namespace Arctic.Woirld.CustomEditors
 
             Vector3 meshSizeXYZ = mesh.bounds.size;
             Vector2 meshSizeXZ = new Vector2(meshSizeXYZ.x, meshSizeXYZ.z);
-            WorldChunkManager manager = (WorldChunkManager)target;
-            manager.worldSize = meshSizeXZ;
-            manager.worldOffset = _worldMeshFilter.transform.position;
+            _manager.worldSize = meshSizeXZ;
+            _manager.worldCenter = _worldMeshFilter.transform.position;
 
-            EditorUtility.SetDirty(manager);
+            EditorUtility.SetDirty(_manager);
         }
     }
 }
