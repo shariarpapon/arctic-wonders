@@ -20,6 +20,8 @@ MonoBehaviour:
   boolProperties:
   - key: active
     value: 1
+  - key: active2
+    value: 1
   intProperties:
   - key: number
     value: 2331

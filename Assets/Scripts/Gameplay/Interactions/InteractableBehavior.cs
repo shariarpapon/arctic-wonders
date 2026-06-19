@@ -8,10 +8,10 @@ namespace Arctic.Gameplay.Interaction
     /// </summary>
     public abstract class InteractableBehavior : MonoBehaviour, IInteractable
     {
-        public virtual string Prompt => "Interact";
+        public virtual string HoverPrompt => "Interact";
         public virtual bool Interact(InteractionInvoker source) 
         {
-            Debug.Log("Interacting with " + name);
+            Debug.Log("Player interacting with " + name);
             return true;
         }
     }

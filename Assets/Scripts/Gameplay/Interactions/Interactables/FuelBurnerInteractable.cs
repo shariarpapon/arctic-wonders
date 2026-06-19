@@ -6,7 +6,7 @@ namespace Arctic.Gameplay.Interaction.Interactables
     [RequireComponent(typeof(FuelBurner))]
     public sealed class FuelBurnerInteractable : InteractableBehavior
     {
-        public override string Prompt => "Fuel: " + Mathf.RoundToInt(fuelBurner.CurrentFuel);
+        public override string HoverPrompt => "Fuel: " + Mathf.RoundToInt(fuelBurner.CurrentFuel);
 
         private FuelBurner fuelBurner;
 

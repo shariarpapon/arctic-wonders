@@ -5,7 +5,7 @@ namespace Arctic.Gameplay.Interaction
     /// </summary>
     public interface IInteractable
     {
-        string Prompt => "Interact";
+        string HoverPrompt => "Interact";
         bool Interact(InteractionInvoker invoker);
     }
 }

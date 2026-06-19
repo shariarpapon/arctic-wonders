@@ -22,13 +22,13 @@ namespace Arctic.UI.Interaction
         private void Update()
         {
             if (focusedInteractable != null)
-                promptText.text = focusedInteractable.Prompt;
+                promptText.text = focusedInteractable.HoverPrompt;
         }
 
         private void OnFound(GameObject newTarget)
         {
             newTarget.TryGetComponent(out IInteractable target);
-            if (target == null || string.IsNullOrEmpty(target.Prompt))
+            if (target == null || string.IsNullOrEmpty(target.HoverPrompt))
                 return;
             
             focusedInteractable = target;

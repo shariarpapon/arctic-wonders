@@ -17,14 +17,14 @@ namespace Arctic.Gameplay.Interaction.Interactables
         private Quaternion openRotation;
         private Quaternion closedRotation;
 
-        public override string Prompt 
+        public override string HoverPrompt 
         { 
             get 
             {
                 switch (state) 
                 {
                     default:
-                        return base.Prompt;
+                        return base.HoverPrompt;
                     case DoorState.Locked:
                         return "Unlock";
                     case DoorState.Open:

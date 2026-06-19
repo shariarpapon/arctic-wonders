@@ -3,6 +3,13 @@ using UnityEditor;
 
 public static class __ScriptMaker_DynamicAssetMenuItems_ID0__
 {
+  [MenuItem("Assets/Create/Scripts//Abstract/Arctic.AI", priority=-9999)]
+  public static void MENUITEM_Abstract_ArcticAI()
+  {
+    ScriptMaker.OnClickAction(3, "Arctic.AI");
+    //Menu item for creating Abstract script.
+  }
+
   [MenuItem("Assets/Create/Scripts//Abstract/Arctic.Core", priority=-9999)]
   public static void MENUITEM_Abstract_ArcticCore()
   {
@@ -31,17 +38,17 @@ public static class __ScriptMaker_DynamicAssetMenuItems_ID0__
     //Menu item for creating Abstract script.
   }
 
-  [MenuItem("Assets/Create/Scripts//Abstract/Arctic.ScriptableBindings", priority=-9999)]
-  public static void MENUITEM_Abstract_ArcticScriptableBindings()
-  {
-    ScriptMaker.OnClickAction(3, "Arctic.ScriptableBindings");
-    //Menu item for creating Abstract script.
-  }
-
   [MenuItem("Assets/Create/Scripts//Abstract/Arctic.Utilities", priority=-9999)]
   public static void MENUITEM_Abstract_ArcticUtilities()
   {
     ScriptMaker.OnClickAction(3, "Arctic.Utilities");
+    //Menu item for creating Abstract script.
+  }
+
+  [MenuItem("Assets/Create/Scripts//Abstract/Arctic.World", priority=-9999)]
+  public static void MENUITEM_Abstract_ArcticWorld()
+  {
+    ScriptMaker.OnClickAction(3, "Arctic.World");
     //Menu item for creating Abstract script.
   }
 
@@ -101,6 +108,13 @@ public static class __ScriptMaker_DynamicAssetMenuItems_ID0__
     //Menu item for creating Abstract script.
   }
 
+  [MenuItem("Assets/Create/Scripts//Abstract/Arctic.Woirld.CustomEditors", priority=-9999)]
+  public static void MENUITEM_Abstract_ArcticWoirldCustomEditors()
+  {
+    ScriptMaker.OnClickAction(3, "Arctic.Woirld.CustomEditors");
+    //Menu item for creating Abstract script.
+  }
+
   [MenuItem("Assets/Create/Scripts//Abstract/Arctic.Gameplay.Interaction.Interactables", priority=-9999)]
   public static void MENUITEM_Abstract_ArcticGameplayInteractionInteractables()
   {
@@ -127,6 +141,13 @@ public static class __ScriptMaker_DynamicAssetMenuItems_ID0__
   {
     ScriptMaker.OnClickAction(3, "Arctic.Utilities.Serialization.Properties");
     //Menu item for creating Abstract script.
+  }
+
+  [MenuItem("Assets/Create/Scripts//Interface/Arctic.AI", priority=-9999)]
+  public static void MENUITEM_Interface_ArcticAI()
+  {
+    ScriptMaker.OnClickAction(4, "Arctic.AI");
+    //Menu item for creating Interface script.
   }
 
   [MenuItem("Assets/Create/Scripts//Interface/Arctic.Core", priority=-9999)]
@@ -157,17 +178,17 @@ public static class __ScriptMaker_DynamicAssetMenuItems_ID0__
     //Menu item for creating Interface script.
   }
 
-  [MenuItem("Assets/Create/Scripts//Interface/Arctic.ScriptableBindings", priority=-9999)]
-  public static void MENUITEM_Interface_ArcticScriptableBindings()
-  {
-    ScriptMaker.OnClickAction(4, "Arctic.ScriptableBindings");
-    //Menu item for creating Interface script.
-  }
-
   [MenuItem("Assets/Create/Scripts//Interface/Arctic.Utilities", priority=-9999)]
   public static void MENUITEM_Interface_ArcticUtilities()
   {
     ScriptMaker.OnClickAction(4, "Arctic.Utilities");
+    //Menu item for creating Interface script.
+  }
+
+  [MenuItem("Assets/Create/Scripts//Interface/Arctic.World", priority=-9999)]
+  public static void MENUITEM_Interface_ArcticWorld()
+  {
+    ScriptMaker.OnClickAction(4, "Arctic.World");
     //Menu item for creating Interface script.
   }
 
@@ -227,6 +248,13 @@ public static class __ScriptMaker_DynamicAssetMenuItems_ID0__
     //Menu item for creating Interface script.
   }
 
+  [MenuItem("Assets/Create/Scripts//Interface/Arctic.Woirld.CustomEditors", priority=-9999)]
+  public static void MENUITEM_Interface_ArcticWoirldCustomEditors()
+  {
+    ScriptMaker.OnClickAction(4, "Arctic.Woirld.CustomEditors");
+    //Menu item for creating Interface script.
+  }
+
   [MenuItem("Assets/Create/Scripts//Interface/Arctic.Gameplay.Interaction.Interactables", priority=-9999)]
   public static void MENUITEM_Interface_ArcticGameplayInteractionInteractables()
   {
@@ -253,6 +281,13 @@ public static class __ScriptMaker_DynamicAssetMenuItems_ID0__
   {
     ScriptMaker.OnClickAction(4, "Arctic.Utilities.Serialization.Properties");
     //Menu item for creating Interface script.
+  }
+
+  [MenuItem("Assets/Create/Scripts//Struct/Arctic.AI", priority=-9999)]
+  public static void MENUITEM_Struct_ArcticAI()
+  {
+    ScriptMaker.OnClickAction(2, "Arctic.AI");
+    //Menu item for creating Struct script.
   }
 
   [MenuItem("Assets/Create/Scripts//Struct/Arctic.Core", priority=-9999)]
@@ -283,17 +318,17 @@ public static class __ScriptMaker_DynamicAssetMenuItems_ID0__
     //Menu item for creating Struct script.
   }
 
-  [MenuItem("Assets/Create/Scripts//Struct/Arctic.ScriptableBindings", priority=-9999)]
-  public static void MENUITEM_Struct_ArcticScriptableBindings()
-  {
-    ScriptMaker.OnClickAction(2, "Arctic.ScriptableBindings");
-    //Menu item for creating Struct script.
-  }
-
   [MenuItem("Assets/Create/Scripts//Struct/Arctic.Utilities", priority=-9999)]
   public static void MENUITEM_Struct_ArcticUtilities()
   {
     ScriptMaker.OnClickAction(2, "Arctic.Utilities");
+    //Menu item for creating Struct script.
+  }
+
+  [MenuItem("Assets/Create/Scripts//Struct/Arctic.World", priority=-9999)]
+  public static void MENUITEM_Struct_ArcticWorld()
+  {
+    ScriptMaker.OnClickAction(2, "Arctic.World");
     //Menu item for creating Struct script.
   }
 
@@ -353,6 +388,13 @@ public static class __ScriptMaker_DynamicAssetMenuItems_ID0__
     //Menu item for creating Struct script.
   }
 
+  [MenuItem("Assets/Create/Scripts//Struct/Arctic.Woirld.CustomEditors", priority=-9999)]
+  public static void MENUITEM_Struct_ArcticWoirldCustomEditors()
+  {
+    ScriptMaker.OnClickAction(2, "Arctic.Woirld.CustomEditors");
+    //Menu item for creating Struct script.
+  }
+
   [MenuItem("Assets/Create/Scripts//Struct/Arctic.Gameplay.Interaction.Interactables", priority=-9999)]
   public static void MENUITEM_Struct_ArcticGameplayInteractionInteractables()
   {
@@ -379,6 +421,13 @@ public static class __ScriptMaker_DynamicAssetMenuItems_ID0__
   {
     ScriptMaker.OnClickAction(2, "Arctic.Utilities.Serialization.Properties");
     //Menu item for creating Struct script.
+  }
+
+  [MenuItem("Assets/Create/Scripts//Class/Arctic.AI", priority=-9999)]
+  public static void MENUITEM_Class_ArcticAI()
+  {
+    ScriptMaker.OnClickAction(1, "Arctic.AI");
+    //Menu item for creating Class script.
   }
 
   [MenuItem("Assets/Create/Scripts//Class/Arctic.Core", priority=-9999)]
@@ -409,17 +458,17 @@ public static class __ScriptMaker_DynamicAssetMenuItems_ID0__
     //Menu item for creating Class script.
   }
 
-  [MenuItem("Assets/Create/Scripts//Class/Arctic.ScriptableBindings", priority=-9999)]
-  public static void MENUITEM_Class_ArcticScriptableBindings()
-  {
-    ScriptMaker.OnClickAction(1, "Arctic.ScriptableBindings");
-    //Menu item for creating Class script.
-  }
-
   [MenuItem("Assets/Create/Scripts//Class/Arctic.Utilities", priority=-9999)]
   public static void MENUITEM_Class_ArcticUtilities()
   {
     ScriptMaker.OnClickAction(1, "Arctic.Utilities");
+    //Menu item for creating Class script.
+  }
+
+  [MenuItem("Assets/Create/Scripts//Class/Arctic.World", priority=-9999)]
+  public static void MENUITEM_Class_ArcticWorld()
+  {
+    ScriptMaker.OnClickAction(1, "Arctic.World");
     //Menu item for creating Class script.
   }
 
@@ -479,6 +528,13 @@ public static class __ScriptMaker_DynamicAssetMenuItems_ID0__
     //Menu item for creating Class script.
   }
 
+  [MenuItem("Assets/Create/Scripts//Class/Arctic.Woirld.CustomEditors", priority=-9999)]
+  public static void MENUITEM_Class_ArcticWoirldCustomEditors()
+  {
+    ScriptMaker.OnClickAction(1, "Arctic.Woirld.CustomEditors");
+    //Menu item for creating Class script.
+  }
+
   [MenuItem("Assets/Create/Scripts//Class/Arctic.Gameplay.Interaction.Interactables", priority=-9999)]
   public static void MENUITEM_Class_ArcticGameplayInteractionInteractables()
   {
@@ -505,6 +561,13 @@ public static class __ScriptMaker_DynamicAssetMenuItems_ID0__
   {
     ScriptMaker.OnClickAction(1, "Arctic.Utilities.Serialization.Properties");
     //Menu item for creating Class script.
+  }
+
+  [MenuItem("Assets/Create/Scripts//Enum/Arctic.AI", priority=-9999)]
+  public static void MENUITEM_Enum_ArcticAI()
+  {
+    ScriptMaker.OnClickAction(5, "Arctic.AI");
+    //Menu item for creating Enum script.
   }
 
   [MenuItem("Assets/Create/Scripts//Enum/Arctic.Core", priority=-9999)]
@@ -535,17 +598,17 @@ public static class __ScriptMaker_DynamicAssetMenuItems_ID0__
     //Menu item for creating Enum script.
   }
 
-  [MenuItem("Assets/Create/Scripts//Enum/Arctic.ScriptableBindings", priority=-9999)]
-  public static void MENUITEM_Enum_ArcticScriptableBindings()
-  {
-    ScriptMaker.OnClickAction(5, "Arctic.ScriptableBindings");
-    //Menu item for creating Enum script.
-  }
-
   [MenuItem("Assets/Create/Scripts//Enum/Arctic.Utilities", priority=-9999)]
   public static void MENUITEM_Enum_ArcticUtilities()
   {
     ScriptMaker.OnClickAction(5, "Arctic.Utilities");
+    //Menu item for creating Enum script.
+  }
+
+  [MenuItem("Assets/Create/Scripts//Enum/Arctic.World", priority=-9999)]
+  public static void MENUITEM_Enum_ArcticWorld()
+  {
+    ScriptMaker.OnClickAction(5, "Arctic.World");
     //Menu item for creating Enum script.
   }
 
@@ -605,6 +668,13 @@ public static class __ScriptMaker_DynamicAssetMenuItems_ID0__
     //Menu item for creating Enum script.
   }
 
+  [MenuItem("Assets/Create/Scripts//Enum/Arctic.Woirld.CustomEditors", priority=-9999)]
+  public static void MENUITEM_Enum_ArcticWoirldCustomEditors()
+  {
+    ScriptMaker.OnClickAction(5, "Arctic.Woirld.CustomEditors");
+    //Menu item for creating Enum script.
+  }
+
   [MenuItem("Assets/Create/Scripts//Enum/Arctic.Gameplay.Interaction.Interactables", priority=-9999)]
   public static void MENUITEM_Enum_ArcticGameplayInteractionInteractables()
   {
@@ -631,6 +701,13 @@ public static class __ScriptMaker_DynamicAssetMenuItems_ID0__
   {
     ScriptMaker.OnClickAction(5, "Arctic.Utilities.Serialization.Properties");
     //Menu item for creating Enum script.
+  }
+
+  [MenuItem("Assets/Create/Scripts//MonoBehaviour/Arctic.AI", priority=-9999)]
+  public static void MENUITEM_MonoBehaviour_ArcticAI()
+  {
+    ScriptMaker.OnClickAction(0, "Arctic.AI");
+    //Menu item for creating MonoBehaviour script.
   }
 
   [MenuItem("Assets/Create/Scripts//MonoBehaviour/Arctic.Core", priority=-9999)]
@@ -661,17 +738,17 @@ public static class __ScriptMaker_DynamicAssetMenuItems_ID0__
     //Menu item for creating MonoBehaviour script.
   }
 
-  [MenuItem("Assets/Create/Scripts//MonoBehaviour/Arctic.ScriptableBindings", priority=-9999)]
-  public static void MENUITEM_MonoBehaviour_ArcticScriptableBindings()
-  {
-    ScriptMaker.OnClickAction(0, "Arctic.ScriptableBindings");
-    //Menu item for creating MonoBehaviour script.
-  }
-
   [MenuItem("Assets/Create/Scripts//MonoBehaviour/Arctic.Utilities", priority=-9999)]
   public static void MENUITEM_MonoBehaviour_ArcticUtilities()
   {
     ScriptMaker.OnClickAction(0, "Arctic.Utilities");
+    //Menu item for creating MonoBehaviour script.
+  }
+
+  [MenuItem("Assets/Create/Scripts//MonoBehaviour/Arctic.World", priority=-9999)]
+  public static void MENUITEM_MonoBehaviour_ArcticWorld()
+  {
+    ScriptMaker.OnClickAction(0, "Arctic.World");
     //Menu item for creating MonoBehaviour script.
   }
 
@@ -728,6 +805,13 @@ public static class __ScriptMaker_DynamicAssetMenuItems_ID0__
   public static void MENUITEM_MonoBehaviour_ArcticUtilitiesTrackers()
   {
     ScriptMaker.OnClickAction(0, "Arctic.Utilities.Trackers");
+    //Menu item for creating MonoBehaviour script.
+  }
+
+  [MenuItem("Assets/Create/Scripts//MonoBehaviour/Arctic.Woirld.CustomEditors", priority=-9999)]
+  public static void MENUITEM_MonoBehaviour_ArcticWoirldCustomEditors()
+  {
+    ScriptMaker.OnClickAction(0, "Arctic.Woirld.CustomEditors");
     //Menu item for creating MonoBehaviour script.
   }
 

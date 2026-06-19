@@ -26,7 +26,7 @@ namespace Arctic.Gameplay.Interaction
 
             interactableTracker.Tick();
             if (Input.GetKeyDown(invokeKey))
-                if (interactableTracker.TargetComponent != null)
+                if (interactableTracker.HasTarget)
                 {
                     OnAttempted?.Invoke(this, interactableTracker.TargetComponent);
                     if (interactableTracker.TargetComponent.Interact(this))
