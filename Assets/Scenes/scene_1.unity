@@ -7328,6 +7328,56 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4137104612946305234, guid: 8329679a18bdbf0408d985a4d44b2ce1, type: 3}
   m_PrefabInstance: {fileID: 2009353550}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &740026786
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 740026787}
+  - component: {fileID: 740026788}
+  m_Layer: 0
+  m_Name: WorldClimateManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &740026787
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 740026786}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &740026788
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 740026786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57f80beb299539241adf414d8c5aff79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Arctic.World.WorldClimateManager
+  _currentSeason: 0
+  globalBaseTempF: 5
+  summerModF: 20
+  winterModF: -20
+  autumnModF: 0
+  springModF: 0
 --- !u!4 &741634094 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3177875786856949396, guid: 7dbaf0cfcc6abf34f91daca594df7015, type: 3}
@@ -23053,6 +23103,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 117500198}
+  - {fileID: 740026787}
   - {fileID: 5492886665059188798}
   - {fileID: 362159526175912925}
   - {fileID: 3518780063414921574}
