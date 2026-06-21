@@ -24,6 +24,13 @@ public static class __ScriptMaker_DynamicAssetMenuItems_ID0__
     //Menu item for creating Abstract script.
   }
 
+  [MenuItem("Assets/Create/Scripts//Abstract/Arctic.Environment", priority=-9999)]
+  public static void MENUITEM_Abstract_ArcticEnvironment()
+  {
+    ScriptMaker.OnClickAction(3, "Arctic.Environment");
+    //Menu item for creating Abstract script.
+  }
+
   [MenuItem("Assets/Create/Scripts//Abstract/Arctic.InputManagement", priority=-9999)]
   public static void MENUITEM_Abstract_ArcticInputManagement()
   {
@@ -161,6 +168,13 @@ public static class __ScriptMaker_DynamicAssetMenuItems_ID0__
   public static void MENUITEM_Interface_ArcticDebugTools()
   {
     ScriptMaker.OnClickAction(4, "Arctic.DebugTools");
+    //Menu item for creating Interface script.
+  }
+
+  [MenuItem("Assets/Create/Scripts//Interface/Arctic.Environment", priority=-9999)]
+  public static void MENUITEM_Interface_ArcticEnvironment()
+  {
+    ScriptMaker.OnClickAction(4, "Arctic.Environment");
     //Menu item for creating Interface script.
   }
 
@@ -304,6 +318,13 @@ public static class __ScriptMaker_DynamicAssetMenuItems_ID0__
     //Menu item for creating Struct script.
   }
 
+  [MenuItem("Assets/Create/Scripts//Struct/Arctic.Environment", priority=-9999)]
+  public static void MENUITEM_Struct_ArcticEnvironment()
+  {
+    ScriptMaker.OnClickAction(2, "Arctic.Environment");
+    //Menu item for creating Struct script.
+  }
+
   [MenuItem("Assets/Create/Scripts//Struct/Arctic.InputManagement", priority=-9999)]
   public static void MENUITEM_Struct_ArcticInputManagement()
   {
@@ -441,6 +462,13 @@ public static class __ScriptMaker_DynamicAssetMenuItems_ID0__
   public static void MENUITEM_Class_ArcticDebugTools()
   {
     ScriptMaker.OnClickAction(1, "Arctic.DebugTools");
+    //Menu item for creating Class script.
+  }
+
+  [MenuItem("Assets/Create/Scripts//Class/Arctic.Environment", priority=-9999)]
+  public static void MENUITEM_Class_ArcticEnvironment()
+  {
+    ScriptMaker.OnClickAction(1, "Arctic.Environment");
     //Menu item for creating Class script.
   }
 
@@ -584,6 +612,13 @@ public static class __ScriptMaker_DynamicAssetMenuItems_ID0__
     //Menu item for creating Enum script.
   }
 
+  [MenuItem("Assets/Create/Scripts//Enum/Arctic.Environment", priority=-9999)]
+  public static void MENUITEM_Enum_ArcticEnvironment()
+  {
+    ScriptMaker.OnClickAction(5, "Arctic.Environment");
+    //Menu item for creating Enum script.
+  }
+
   [MenuItem("Assets/Create/Scripts//Enum/Arctic.InputManagement", priority=-9999)]
   public static void MENUITEM_Enum_ArcticInputManagement()
   {
@@ -721,6 +756,13 @@ public static class __ScriptMaker_DynamicAssetMenuItems_ID0__
   public static void MENUITEM_MonoBehaviour_ArcticDebugTools()
   {
     ScriptMaker.OnClickAction(0, "Arctic.DebugTools");
+    //Menu item for creating MonoBehaviour script.
+  }
+
+  [MenuItem("Assets/Create/Scripts//MonoBehaviour/Arctic.Environment", priority=-9999)]
+  public static void MENUITEM_MonoBehaviour_ArcticEnvironment()
+  {
+    ScriptMaker.OnClickAction(0, "Arctic.Environment");
     //Menu item for creating MonoBehaviour script.
   }
 

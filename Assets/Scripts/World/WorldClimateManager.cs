@@ -19,28 +19,28 @@ namespace Arctic.World
 
         [Space]
         [SerializeField]
-        private float globalBaseTempF = 5f;
+        private float baseAmbientTempF = 5f;
         [Header("Seasonal Temp Modifiers (F)")]
         [SerializeField]
-        private float summerModF = 20f;
+        private float summerTempOffsetF = 20f;
         [SerializeField]
-        private float winterModF = -20f;
+        private float winterTempOffsetF = -20f;
         [SerializeField]
-        private float autumnModF = 0f;
+        private float autumnTempOffsetF = 0f;
         [SerializeField]
-        private float springModF = 0f;
+        private float springTempOffsetF = 0f;
 
-        public float GlobalTempF => globalBaseTempF + GetSeasonTempModifier(_currentSeason);
+        public float CurrentAmbientTempF => baseAmbientTempF + GetSeasonalTempOffset(_currentSeason);
     
     
-        private float GetSeasonTempModifier(Season season)
+        private float GetSeasonalTempOffset(Season season)
         {
             return season switch
             {
-                Season.Summer => summerModF,
-                Season.Winter => winterModF,
-                Season.Autumn => autumnModF,
-                Season.Spring => springModF,
+                Season.Summer => summerTempOffsetF,
+                Season.Winter => winterTempOffsetF,
+                Season.Autumn => autumnTempOffsetF,
+                Season.Spring => springTempOffsetF,
                 _ => 0f
             };
         }
