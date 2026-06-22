@@ -7373,11 +7373,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Arctic.World.WorldClimateManager
   _currentSeason: 0
-  globalBaseTempF: 5
-  summerModF: 20
-  winterModF: -20
-  autumnModF: 0
-  springModF: 0
+  baseAmbientTempF: 5
+  summerTempOffsetF: 20
+  winterTempOffsetF: -20
+  autumnTempOffsetF: 0
+  springTempOffsetF: 0
 --- !u!4 &741634094 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3177875786856949396, guid: 7dbaf0cfcc6abf34f91daca594df7015, type: 3}
@@ -21699,6 +21699,7 @@ GameObject:
   - component: {fileID: 114565867365606164}
   - component: {fileID: 114967587910983316}
   - component: {fileID: 6177337246075506779}
+  - component: {fileID: 6177337246075506780}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -22814,6 +22815,23 @@ MonoBehaviour:
       m_Bits: 4294967295
     maxReach: 3
     viewCamera: {fileID: 20127478314715879}
+--- !u!114 &6177337246075506780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1398904547017190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ab2250627c1e334b9acd02b2a0be781, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Arctic.World.ThermalReactor
+  queryRadius: 1
+  queryLayers:
+    serializedVersion: 2
+    m_Bits: 128
+  drawGizmos: 1
 --- !u!114 &6427615520694938834
 MonoBehaviour:
   m_ObjectHideFlags: 0

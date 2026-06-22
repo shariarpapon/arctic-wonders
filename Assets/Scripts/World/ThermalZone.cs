@@ -7,9 +7,9 @@ namespace Arctic.World
     {
         [SerializeField]
         private float tempOffsetF = 0f;
-        
+
         [SerializeField]
-        private float radius = 1f;
+        private float effectRadius = 10f;
 
         [SerializeField, Tooltip("0 = closest, 1 = farthest")]
         private AnimationCurve tempOffsetByDist = AnimationCurve.Linear(0f, 1f, 1f, 0f);
@@ -17,22 +17,25 @@ namespace Arctic.World
         private void Awake()
         {
             SphereCollider collider = GetComponent<SphereCollider>();
-            if(!collider)
+            if (!collider)
                 collider = gameObject.AddComponent<SphereCollider>();
             collider.isTrigger = true;
-            collider.radius = radius;
+            collider.radius = effectRadius;
         }
 
         public float GetTemperatureOffset(Vector3 position)
         {
             float distance = Vector3.Distance(transform.position, position);
-            if (distance > radius)
-            {
+            if (distance > effectRadius)
                 return 0f;
-            }
-            float normalizedDistance = distance / radius;
+            float normalizedDistance = distance / effectRadius;
             float curveValue = tempOffsetByDist.Evaluate(normalizedDistance);
             return tempOffsetF * curveValue;
+        }
+
+        public bool InEffectRadius(Vector3 position) 
+        {
+            return (position - transform.position).sqrMagnitude <= effectRadius * effectRadius;
         }
     }
 } 
