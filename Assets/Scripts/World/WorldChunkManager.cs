@@ -1,22 +1,6 @@
 using Arctic.Utilities.Generics;
-using System.Linq;
 using Unity.AI.Navigation;
 using UnityEngine;
-
-// Runtime Navmesh Generation Snippet
-/*
-            using Unity.AI.Navigation;
-
-            Debugc.LogInfo("Runtime NavMesh testing...");
-            GameObject g = GameObject.Find("test_rt_navmesh");
-            NavMeshSurface nms = g.AddComponent<NavMeshSurface>();
-            nms.collectObjects = CollectObjects.Volume; //needed for volume collection
-            nms.center = Vector3.zero; /relative to attached object
-            nms.size = new Vector3(10, 1, 10);
-            nms.BuildNavMesh();
-            Debugc.LogConfirm("navmesh built.");
- */
-
 
 namespace Arctic.World
 {
@@ -42,13 +26,12 @@ namespace Arctic.World
         {
             base.OnSingletonEvaluated();
             CreateChunkGrid();
-
-            WorldChunk[] chunks = _chunkGrid.GetAllChunks().ToArray();
         }
 
         private void CreateChunkGrid() 
         {
-            _chunkGrid = new ChunkGrid(worldSize, chunkSize, worldCenter, createInstances);
+            _chunkGrid = new ChunkGrid(worldSize, chunkSize, worldCenter);
+            _chunkGrid.GenerateChunks(createInstances); 
             _chunkGrid.SetInstanceParent(transform);
             _chunkGrid.AddComponentsToChunkInstances(typeof(NavMeshSurface));
             InitChunkNavMeshSurface();
@@ -56,7 +39,7 @@ namespace Arctic.World
 
         private void InitChunkNavMeshSurface() 
         {
-            foreach (WorldChunk chunk in _chunkGrid.GetAllChunks())
+            foreach (Chunk chunk in _chunkGrid.GetAllChunks())
             {
                 if (!chunk.HasInstance)
                 {
@@ -76,6 +59,28 @@ namespace Arctic.World
                 nms.size = chunk.size;
                 nms.BuildNavMesh();
             }
+        }
+
+        public bool RegisterChunkObject(ChunkObject chunkObject, bool setParent) 
+        {
+            Chunk chunk = _chunkGrid.GetChunkByWorldPosition(chunkObject.transform.position);
+            if (chunk != null)
+            {
+                chunk.RegisterChunkObject(chunkObject, setParent);
+                return true;
+            }
+            return false;
+        }
+
+        public bool UnregisterChunkObject(ChunkObject chunkObject, bool clearParent) 
+        {
+            Chunk chunk = _chunkGrid.GetChunkByWorldPosition(chunkObject.transform.position);
+            if (chunk != null)
+            {
+                chunk.UnregisterChunkObject(chunkObject, clearParent);
+                return true;
+            }
+            return false;
         }
     }
 }

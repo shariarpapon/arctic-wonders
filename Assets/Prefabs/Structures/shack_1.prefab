@@ -14,31 +14,31 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: ae1031a646412e747aeea576ed15acc4, type: 2}
     - target: {fileID: -8679921383154817045, guid: 5a34f42d608ebde4b90f75e81da2dc2b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 61.2
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5a34f42d608ebde4b90f75e81da2dc2b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 38.25
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5a34f42d608ebde4b90f75e81da2dc2b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -15.2
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5a34f42d608ebde4b90f75e81da2dc2b, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: -0.9984801
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5a34f42d608ebde4b90f75e81da2dc2b, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5a34f42d608ebde4b90f75e81da2dc2b, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 0.055114068
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5a34f42d608ebde4b90f75e81da2dc2b, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5a34f42d608ebde4b90f75e81da2dc2b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -46,7 +46,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5a34f42d608ebde4b90f75e81da2dc2b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 353.681
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5a34f42d608ebde4b90f75e81da2dc2b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -220,10 +220,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78e6cb76f22403143a346d06bdba3635, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Arctic.Interaction.Interactables.DoorInteractable
-  prompt: Interact
   state: 1
   swingAngle: 90
   swingSpeed: 5
+  swingAxis: 0
 --- !u!65 &7754816889144761797
 BoxCollider:
   m_ObjectHideFlags: 0

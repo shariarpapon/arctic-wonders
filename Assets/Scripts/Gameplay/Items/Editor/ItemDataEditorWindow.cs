@@ -158,7 +158,7 @@ namespace Arctic.Gameplay.Items.Editor
 
             try
             {
-                string fileContent = File.ReadAllText(loadPath);
+                string fileContent = File.ReadAllText(path);
                 controller.SetSource(null);
                 tabOperator.TrySetSelection("Text Editor");
                 SetEditorText(fileContent);
@@ -196,7 +196,7 @@ namespace Arctic.Gameplay.Items.Editor
         }
 
         //GUID prompt not needed atm but its functional
-        //privat estring sourceGuidInput = null;
+        //private string sourceGuidInput = null;
         //private void DrawInvalidSourceGuid()
         //{
         //    DrawWarning(
@@ -229,7 +229,7 @@ namespace Arctic.Gameplay.Items.Editor
 
         private void SetEditorText(string text) 
         {
-            GUI.FocusControl(null);
+            GUI.FocusControl(null); 
             editorText = text;
             Repaint();
         }

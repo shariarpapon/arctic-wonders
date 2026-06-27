@@ -7,10 +7,14 @@ namespace Arctic.Gameplay.Interaction.Interactables
     {
         [System.Serializable]
         public enum DoorState { Locked, Closed, Open }
+        [System.Serializable]
+        public enum SwingAxis { X, Y, Z }
+
 
         [SerializeField] private DoorState state = DoorState.Closed;
         [SerializeField] private float swingAngle = 90f;
         [SerializeField] private float swingSpeed = 5.0f;
+        [SerializeField] private SwingAxis swingAxis = SwingAxis.Y;
 
         private bool inTransition = false;
         private Collider doorCollider;
@@ -38,8 +42,20 @@ namespace Arctic.Gameplay.Interaction.Interactables
         private void Awake()
         {
             doorCollider = GetComponent<Collider>();
+            if (doorCollider is MeshCollider meshCollider)
+                meshCollider.convex = true;
+
             closedRotation = transform.rotation;
-            openRotation = closedRotation * Quaternion.Euler(swingAngle, 0f, 0f);
+
+            Quaternion axisRot = swingAxis switch
+            {
+                SwingAxis.X => Quaternion.Euler(swingAngle, 0f, 0f),
+                SwingAxis.Y => Quaternion.Euler(0f, swingAngle, 0f),
+                SwingAxis.Z => Quaternion.Euler(0f, 0f, swingAngle),
+                _ => Quaternion.identity
+            };
+
+            openRotation = closedRotation * axisRot;
         }
 
         public override bool Interact(InteractionInvoker invoker)

@@ -22,7 +22,7 @@ namespace Arctic.Utilities.Serialization
             }
             catch (Exception e)
             {
-                throw new System.Exception("Cannot serialize all entries in enumerable: " + e.Message);
+                return false;
             }
         }
 
@@ -41,7 +41,7 @@ namespace Arctic.Utilities.Serialization
             }
             catch(Exception e)
             {
-                throw new System.Exception("Cannot deserialize all entries in enumerable: " + e.Message);
+                return false;
             }
         }
     }

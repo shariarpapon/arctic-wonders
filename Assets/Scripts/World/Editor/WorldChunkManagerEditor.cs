@@ -1,9 +1,7 @@
 using UnityEngine;
 using UnityEditor;
-using Arctic.World;
-using UnityEngine.Rendering;
 
-namespace Arctic.Woirld.CustomEditors
+namespace Arctic.World.CustomEditors
 {
     [CustomEditor(typeof(WorldChunkManager))]
     public class WorldChunkManagerEditor : Editor

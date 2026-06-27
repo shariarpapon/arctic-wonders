@@ -37,5 +37,17 @@ namespace Arctic.World
         {
             return (position - transform.position).sqrMagnitude <= effectRadius * effectRadius;
         }
+
+
+#if UNITY_EDITOR
+        [Space]
+        public bool drawGizmos = true;
+        private void OnDrawGizmos()
+        {
+            if (!drawGizmos) return;
+            Gizmos.color = Color.orange;
+            Gizmos.DrawWireSphere(transform.position, effectRadius);
+        }
+#endif
     }
 } 

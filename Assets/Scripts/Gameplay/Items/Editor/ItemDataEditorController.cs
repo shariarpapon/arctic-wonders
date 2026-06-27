@@ -13,7 +13,7 @@ namespace Arctic.Gameplay.Items.Editor
         private readonly System.Action<string> onSerialized;
         private readonly System.Action<ItemData> onDeserialized;
 
-        public string AutoCreationPath { get; private set; } = "Assets/Resouces/Items";
+        public string AutoCreationPath { get; private set; } = "Assets/Resources/Items";
 
         public ItemDataEditorController(
             ItemDataSerializer itemDataSerializer,
@@ -37,7 +37,7 @@ namespace Arctic.Gameplay.Items.Editor
 
         public void Serialize()
         {
-            var result = itemDataSerializer.Serialize(Source);
+            var result = itemDataSerializer.Serialize(Source); 
             if (result.Status != OutputStatus.Successful)
             {
                 Debug.LogError("Serialization failed");
@@ -55,20 +55,20 @@ namespace Arctic.Gameplay.Items.Editor
             {
                 case ItemDataSerializer.DeserializeStatus.Successful:
                     OnDeserializeSuccess(details.deserializedItemData);
+                    Source = details.deserializedItemData;
                     break;
                 case ItemDataSerializer.DeserializeStatus.CouldNotFindDeserializeTarget:
                     if (!createIfNotFound)
                     {
                         Debug.LogError("Could not find deserialize target with guid: " + details.guid);
-                        return;
+                        break;
                     }
                     CreateFromDeserializedData(details);
-                    break;
+                    return;
                 default:
                     Debug.LogError($"Deserialization failed: {details.message}");
                     return;
             }
-            Source = details.deserializedItemData;
             Debug.Log($"<color=orange>__deserialization complete (guid: {Source?.GUID})__</color>");
         }
 

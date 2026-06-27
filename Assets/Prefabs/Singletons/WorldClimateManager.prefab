@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &4786185365236382637
+--- !u!1 &3726746761147176942
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2706473511413588846}
-  - component: {fileID: 3217933287828535405}
+  - component: {fileID: 823096932020443588}
+  - component: {fileID: 829372453661876195}
   m_Layer: 0
-  m_Name: '[TimeManager]'
+  m_Name: WorldClimateManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2706473511413588846
+--- !u!4 &823096932020443588
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4786185365236382637}
+  m_GameObject: {fileID: 3726746761147176942}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -32,20 +32,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3217933287828535405
+--- !u!114 &829372453661876195
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4786185365236382637}
+  m_GameObject: {fileID: 3726746761147176942}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f350c6b9ccab4f44b6c4a7bab17f114, type: 3}
+  m_Script: {fileID: 11500000, guid: 57f80beb299539241adf414d8c5aff79, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Arctic.Core.TimeManager
-  timeScale: 1
-  dayLengthSec: 420
-  currentDaySeconds: 0
-  currentDays: 0
-  timeOfDayNormalized: 0
+  m_EditorClassIdentifier: Assembly-CSharp::Arctic.World.WorldClimateManager
+  _currentSeason: 0
+  baseAmbientTempF: 5
+  summerTempOffsetF: 20
+  winterTempOffsetF: -20
+  autumnTempOffsetF: 0
+  springTempOffsetF: 0

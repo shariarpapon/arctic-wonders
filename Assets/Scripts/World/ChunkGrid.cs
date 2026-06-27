@@ -12,9 +12,9 @@ namespace Arctic.World
         public readonly int chunkCountX;
         public readonly int chunkCountZ;
 
-        private Dictionary<Vector3Int, WorldChunk> _chunks;
+        private Dictionary<Vector3Int, Chunk> _chunks;
 
-        public ChunkGrid(Vector2 gridSize, Vector3 chunkSize, Vector3 worldCenter, bool createInstance = false)
+        public ChunkGrid(Vector2 gridSize, Vector3 chunkSize, Vector3 worldCenter)
         {
             this.worldSize = gridSize;
             this.chunkSize = chunkSize;
@@ -22,12 +22,12 @@ namespace Arctic.World
             this.worldMin = new Vector3(worldCenter.x - gridSize.x / 2.0f, worldCenter.y, worldCenter.z - gridSize.y / 2.0f);
             this.chunkCountX = Mathf.CeilToInt(worldSize.x / chunkSize.x);
             this.chunkCountZ = Mathf.CeilToInt(worldSize.y / chunkSize.z);
-            _chunks = new Dictionary<Vector3Int, WorldChunk>();
-            GenerateChunks(createInstance);
+            _chunks = new Dictionary<Vector3Int, Chunk>();
         }
 
-        private void GenerateChunks(bool createInstance) 
+        public void GenerateChunks(bool createInstance) 
         {
+            _chunks.Clear();
             Vector3Int coord;
             Vector3 worldPos = new Vector3(0, worldCenter.y, 0);
             for (int x = 0; x < chunkCountX; x++)
@@ -36,24 +36,26 @@ namespace Arctic.World
                     coord = new Vector3Int(x, 0, z);
                     worldPos.x = worldMin.x + chunkSize.x * x;
                     worldPos.z = worldMin.z + chunkSize.z * z;
-                    WorldChunk chunk = new WorldChunk(worldPos, chunkSize, createInstance);
+                    Chunk chunk = new Chunk(worldPos, chunkSize);
+                    if (createInstance)
+                        chunk.CreateInstance();
                     _chunks.Add(coord, chunk);
                 }
         }
 
-        public IEnumerable<WorldChunk> GetAllChunks() 
+        public IEnumerable<Chunk> GetAllChunks() 
         {
             return _chunks.Values;
         }
 
-        public WorldChunk GetWorldChunkByCoord(Vector3Int coord) 
+        public Chunk GetWorldChunkByCoord(Vector3Int coord) 
         {
-            if (_chunks.TryGetValue(coord, out WorldChunk chunk))
+            if (_chunks.TryGetValue(coord, out Chunk chunk))
                 return chunk;
             return null;
         }
 
-        public WorldChunk GetChunkByWorldPosition(Vector3 worldPosition)
+        public Chunk GetChunkByWorldPosition(Vector3 worldPosition)
         {
             Vector3Int coord = GridCoordFromWorldPos(worldPosition);
             return GetWorldChunkByCoord(coord);
