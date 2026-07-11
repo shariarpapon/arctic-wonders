@@ -1,7 +1,8 @@
 using System.Collections;
 using UnityEngine;
+using Arctic.Gameplay.Interaction.Core;
 
-namespace Arctic.Gameplay.Interaction.Interactables
+namespace Arctic.Gameplay.Interaction
 {
     public class DoorInteractable : InteractableBehavior
     {

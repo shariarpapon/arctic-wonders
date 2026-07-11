@@ -1,6 +1,7 @@
 using Arctic.Utilities.Editor;
 using Arctic.Utilities.Serialization;
 using UnityEngine;
+using Arctic.Gameplay.Items.Core;
 
 namespace Arctic.Gameplay.Items.Editor
 {

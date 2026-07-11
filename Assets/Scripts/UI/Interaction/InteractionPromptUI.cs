@@ -1,4 +1,4 @@
-using Arctic.Gameplay.Interaction;
+using Arctic.Gameplay.Interaction.Core;
 using UnityEngine;
 using TMPro;
 

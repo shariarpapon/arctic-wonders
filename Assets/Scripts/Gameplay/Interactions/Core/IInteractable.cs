@@ -1,4 +1,4 @@
-namespace Arctic.Gameplay.Interaction
+namespace Arctic.Gameplay.Interaction.Core
 {
     /// <summary>
     /// Defines interaction functions.

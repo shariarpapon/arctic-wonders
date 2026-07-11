@@ -1,7 +1,7 @@
 using Arctic.Utilities.Trackers;
 using UnityEngine;
 
-namespace Arctic.Gameplay.Interaction
+namespace Arctic.Gameplay.Interaction.Core
 {
     public class InteractionInvoker : MonoBehaviour
     {

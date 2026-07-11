@@ -1,12 +1,12 @@
+using Arctic.World;
 using UnityEngine;
+using Arctic.Gameplay.Survival.Core;
 
 namespace Arctic.Gameplay.Survival
 {
-    public sealed class FireSource : FuelBurner
+    public sealed class FireBurnerSource : MonoBehaviour
     {
-        [Space]
-        [SerializeField] private float maxInterpolationFuel = 100.0f;
-        [SerializeField] private bool overwriteToBurnerMax = true;
+        public FuelBurner burner;
 
         [Header("Light")]
         [SerializeField] private bool updateLight = true;
@@ -24,14 +24,42 @@ namespace Arctic.Gameplay.Survival
         [SerializeField] private AudioSource audioSource;
         [SerializeField] private AnimationCurve volumeOverFuel;
 
-
-        protected override void OnFuelUpdated(float fuel)
+        [Header("Thermal Zone")]
+        [SerializeField] bool updateThermalZone = true;
+        [SerializeField] ThermalZone thermalZone;
+        [SerializeField] AnimationCurve tempInfluenceOverFuel;
+        
+        private void OnEnable()
         {
-            float normalizedFuel = fuel / maxInterpolationFuel;
+            burner.OnFuelUpdate += OnFuelUpdated;
+        }
+
+        private void OnDisable()
+        {
+            burner.OnFuelUpdate -= OnFuelUpdated;
+        }
+
+        private void Update()
+        {
+            burner.Burn(Time.deltaTime);
+        }
+
+        private void OnFuelUpdated(float fuel)
+        {
+            float normalizedFuel = fuel / burner.MaxFuel;
             float clampedNormFuel = Mathf.Clamp01(normalizedFuel);
             UpdateLight(clampedNormFuel);
             UpdateParticle(clampedNormFuel);
             UpdateAudio(clampedNormFuel);
+            UpdateThermalZone(normalizedFuel);
+        }
+
+        private void UpdateThermalZone(float normFuel) 
+        {
+            if (!updateThermalZone || thermalZone == null)
+                return;
+            float influence = tempInfluenceOverFuel.Evaluate(normFuel);
+            thermalZone.SetInfluence(influence);
         }
 
         private void UpdateAudio(float normFuel)
@@ -51,14 +79,6 @@ namespace Arctic.Gameplay.Survival
         {
             if (!updateParticle || particleInstance == null) return;
             particleInstance.transform.localScale = scaleOverFuel.Evaluate(normFuel) * Vector3.one;
-        }
-
-        private void OnValidate()
-        {
-            if (overwriteToBurnerMax)
-                maxInterpolationFuel = Mathf.Max(0.01f, MaxFuel);
-            else
-                maxInterpolationFuel = Mathf.Max(0.01f, maxInterpolationFuel);
         }
     }
 }

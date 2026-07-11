@@ -1,6 +1,7 @@
 using Arctic.Utilities.Editor;
 using Arctic.Utilities.Serialization;
 using Arctic.Utilities.Serialization.Properties;
+using Arctic.Gameplay.Items.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Arctic.Gameplay.Interaction
+namespace Arctic.Gameplay.Interaction.Core
 {
     /// <summary>
     /// Any interactable object should inherit from this.

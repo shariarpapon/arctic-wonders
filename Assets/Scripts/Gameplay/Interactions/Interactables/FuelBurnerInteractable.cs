@@ -1,29 +1,31 @@
 using Arctic.Gameplay.Survival;
+using Arctic.Gameplay.Interaction.Core;
 using UnityEngine;
 
-namespace Arctic.Gameplay.Interaction.Interactables
+namespace Arctic.Gameplay.Interaction
 {
-    [RequireComponent(typeof(FuelBurner))]
+    [RequireComponent(typeof(FireBurnerSource))]
     public sealed class FuelBurnerInteractable : InteractableBehavior
     {
-        public override string HoverPrompt => "Fuel: " + Mathf.RoundToInt(fuelBurner.CurrentFuel);
+        public override string HoverPrompt => "Fuel: " + Mathf.RoundToInt(_burningActor.burner.CurrentFuel);
 
-        private FuelBurner fuelBurner;
+        [SerializeField]
+        private FireBurnerSource _burningActor = null;
 
         private void OnValidate()
         {
-            ValidateFuelBurner();
+            ValidateProperties();
         }
 
         private void Awake()
         {
-            ValidateFuelBurner();
+            ValidateProperties();
         }
 
-        private void ValidateFuelBurner() 
+        private void ValidateProperties() 
         {
-            if(fuelBurner == null)
-                fuelBurner = GetComponent<FuelBurner>();            
+            if(_burningActor == null)
+                _burningActor = GetComponent<FireBurnerSource>();            
         }
     }
 }

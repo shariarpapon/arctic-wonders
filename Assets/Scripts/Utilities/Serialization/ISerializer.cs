@@ -20,7 +20,7 @@ namespace Arctic.Utilities.Serialization
                 }
                 return true;
             }
-            catch (Exception e)
+            catch
             {
                 return false;
             }
@@ -39,7 +39,7 @@ namespace Arctic.Utilities.Serialization
                 }
                 return true;
             }
-            catch(Exception e)
+            catch
             {
                 return false;
             }

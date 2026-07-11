@@ -3,6 +3,7 @@ using Arctic.Utilities.Editor.Tabs;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
+using Arctic.Gameplay.Items.Core;
 
 namespace Arctic.Gameplay.Items.Editor
 {

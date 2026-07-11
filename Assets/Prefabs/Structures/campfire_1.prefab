@@ -1,5 +1,99 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &248830554365984032
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6707741131420483772}
+  - component: {fileID: 3782901415403334937}
+  - component: {fileID: 393723250405733511}
+  m_Layer: 7
+  m_Name: thermal_zone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6707741131420483772
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 248830554365984032}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 524126310728712914}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &3782901415403334937
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 248830554365984032}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &393723250405733511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 248830554365984032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d1280cc4da22594383b60b98b206544, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Arctic.World.ThermalZone
+  _tempOffsetF: 70
+  _effectRadius: 4.8
+  _influence: 1
+  tempOffsetByDist:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: -1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  drawGizmos: 0
 --- !u!1 &1268103035558914080
 GameObject:
   m_ObjectHideFlags: 0
@@ -11,7 +105,7 @@ GameObject:
   - component: {fileID: 4327821939557993061}
   - component: {fileID: 1628598320657846032}
   m_Layer: 0
-  m_Name: fire_burning_audio
+  m_Name: audio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -141,7 +235,7 @@ GameObject:
   - component: {fileID: 1799980830585962192}
   - component: {fileID: 8369587732483519735}
   m_Layer: 0
-  m_Name: Smoke
+  m_Name: smoke
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4989,7 +5083,7 @@ GameObject:
   - component: {fileID: 5961391888502946805}
   - component: {fileID: 730460337244120186}
   m_Layer: 0
-  m_Name: fire_light
+  m_Name: light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5116,7 +5210,7 @@ GameObject:
   - component: {fileID: 7539357467446570465}
   - component: {fileID: 575128242771358198}
   m_Layer: 0
-  m_Name: fire_particle
+  m_Name: particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9965,9 +10059,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -3475754749967494419, guid: 0ad546820d9068c4b8dd3afcafa4c23b, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: ae1031a646412e747aeea576ed15acc4, type: 2}
+    - target: {fileID: -1718032744271887828, guid: 0ad546820d9068c4b8dd3afcafa4c23b, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 30068eab87b09f840868607f5b8259eb, type: 2}
     - target: {fileID: 919132149155446097, guid: 0ad546820d9068c4b8dd3afcafa4c23b, type: 3}
       propertyPath: m_Name
       value: campfire_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0ad546820d9068c4b8dd3afcafa4c23b, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3371288060151182768, guid: 0ad546820d9068c4b8dd3afcafa4c23b, type: 3}
       propertyPath: m_LocalScale.x
@@ -9983,11 +10089,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3518898885274446990, guid: 0ad546820d9068c4b8dd3afcafa4c23b, type: 3}
       propertyPath: m_Name
-      value: campfire_base
+      value: source
+      objectReference: {fileID: 0}
+    - target: {fileID: 3518898885274446990, guid: 0ad546820d9068c4b8dd3afcafa4c23b, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5816368506733997433, guid: 0ad546820d9068c4b8dd3afcafa4c23b, type: 3}
+      propertyPath: m_Name
+      value: fuel
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 0ad546820d9068c4b8dd3afcafa4c23b, type: 3}
+      insertIndex: 1
+      addedObject: {fileID: 6707741131420483772}
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 0ad546820d9068c4b8dd3afcafa4c23b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8728343028229953768}
@@ -10051,12 +10168,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6c0c83405cea9f44ad60f5b9666268b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Arctic.Environment.Survival.Campfire
-  fuelBurner:
-    fuel: 100
-    maxFuel: 0
-    burnRate: 0.25
-  interpolateWithVisualFuel: 1
-  maxVisualFuel: 100
+  fuel: 100
+  maxFuel: 100
+  burnRate: 0.25
+  maxInterpolationFuel: 100
+  overwriteToBurnerMax: 1
   updateLight: 1
   lightSource: {fileID: 5961391888502946805}
   intensityOverFuel:
@@ -10065,12 +10181,12 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 0
-      outSlope: 0
+      inSlope: 11.109589
+      outSlope: 11.109589
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0
+      outWeight: 0.054156173
     - serializedVersion: 3
       time: 1
       value: 4
@@ -10085,8 +10201,8 @@ MonoBehaviour:
     m_RotationOrder: 4
   colorOverFuel:
     serializedVersion: 2
-    key0: {r: 1, g: 0.41007113, b: 0.2320754, a: 1}
-    key1: {r: 1, g: 0.72065014, b: 0.14117646, a: 1}
+    key0: {r: 0.6509804, g: 0.23921569, b: 0.105882354, a: 1}
+    key1: {r: 0.9647059, g: 0.6313726, b: 0.36078432, a: 1}
     key2: {r: 0, g: 0, b: 0, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
@@ -10121,12 +10237,82 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0
+      inSlope: 1.4295746
+      outSlope: 1.4295746
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.035264485
+    - serializedVersion: 3
+      time: 1
+      value: 0.5
       inSlope: 0
       outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  updateAudio: 1
+  audioSource: {fileID: 1628598320657846032}
+  volumeOverFuel:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.10874152
+      outSlope: 0.10874152
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.11020151
+    - serializedVersion: 3
+      time: 0.8
+      value: 0.2
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0.2
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  updateThermalZone: 1
+  thermalZone: {fileID: 393723250405733511}
+  tempInfluenceOverFuel:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.75
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
       value: 1

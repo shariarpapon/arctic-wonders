@@ -1,9 +1,9 @@
 using Arctic.Utilities.Generics;
 using UnityEngine;
 
-namespace Arctic.Core
+namespace Arctic.World
 {
-    public class TimeManager : PersistentSingletonMonobehaviour<TimeManager>
+    public class WorldTimeManager : PersistentSingletonMonobehaviour<WorldTimeManager>
     {
         [SerializeField]
         private float timeScale = 1.0f;

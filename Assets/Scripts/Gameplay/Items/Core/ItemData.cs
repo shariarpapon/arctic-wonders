@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityObject = UnityEngine.Object;
 
-namespace Arctic.Gameplay.Items
+namespace Arctic.Gameplay.Items.Core
 {
     [CreateAssetMenu(fileName = "NewItemData", menuName = "Items/Item Data", order = -999)]
     public class ItemData : ScriptableObject
