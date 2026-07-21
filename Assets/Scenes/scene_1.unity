@@ -23598,6 +23598,7 @@ GameObject:
   - component: {fileID: 114967587910983316}
   - component: {fileID: 6177337246075506779}
   - component: {fileID: 6177337246075506780}
+  - component: {fileID: 6177337246075506781}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -23786,7 +23787,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 75
+  field of view: 65
   orthographic: 0
   orthographic size: 5
   m_Depth: 1
@@ -23979,7 +23980,7 @@ MonoBehaviour:
   AirAccelerationSpeed: 0
   Drag: 1
   AllowJumpingWhenSliding: 0
-  JumpUpSpeed: 4
+  JumpUpSpeed: 7
   JumpScalableForwardSpeed: 0
   JumpPreGroundingGraceTime: 0
   JumpPostGroundingGraceTime: 0
@@ -24751,6 +24752,33 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   drawGizmos: 1
+--- !u!114 &6177337246075506781
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1398904547017190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e535aa1a3b103e49b699f605170b1b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Arctic.Gameplay.Survival.VitalSystemActor
+  _initOnStart: 1
+  _vitalSystem:
+    _health: 100
+    _hunger: 0
+    _thirst: 0
+    _bodyTempF: 97.6
+    _maxHealth: 100
+    _maxHunger: 100
+    _maxThirst: 100
+    _minBodyTempF: 95
+    _starvingHealthDecayRate: 0.5555556
+    _dehydrationHealthDecayRate: 0.8333333
+    _coldHealthDecayRate: 1.6666666
+    _hungerIncreaseRate: 0.104166664
+    _thirstIncreaseRate: 0.1388889
 --- !u!114 &6427615520694938834
 MonoBehaviour:
   m_ObjectHideFlags: 0

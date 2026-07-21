@@ -1,9 +1,9 @@
-using Arctic.Utilities.Editor;
-using Arctic.Utilities.Editor.Tabs;
+using Arctic.Foundation.Editor;
+using Arctic.Foundation.Editor.Tabs;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
-using Arctic.Gameplay.Items.Core;
+using Arctic.Gameplay.Item;
 
 namespace Arctic.Gameplay.Items.Editor
 {
@@ -143,7 +143,7 @@ namespace Arctic.Gameplay.Items.Editor
         {
             bool fileSelected = false;
             if (GUILayout.Button("Load Text File"))
-                fileSelected = Helper.BrowseFilesystem(ref loadPath, Helper.BrowseFilter.All);
+                fileSelected = ReasourceHelper.BrowseFilesystem(ref loadPath, ReasourceHelper.BrowseFilter.All);
             
             if(fileSelected)
                 LoadFileContentIntoEditor(loadPath);

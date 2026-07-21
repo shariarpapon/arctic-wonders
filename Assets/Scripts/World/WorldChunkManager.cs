@@ -1,4 +1,4 @@
-using Arctic.Utilities.Generics;
+using Arctic.Foundation.Generics;
 using Unity.AI.Navigation;
 using UnityEngine;
 

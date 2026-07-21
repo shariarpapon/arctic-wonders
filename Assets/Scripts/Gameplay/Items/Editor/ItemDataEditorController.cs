@@ -1,7 +1,7 @@
-using Arctic.Utilities.Editor;
-using Arctic.Utilities.Serialization;
+using Arctic.Foundation.Editor;
+using Arctic.Serialization;
 using UnityEngine;
-using Arctic.Gameplay.Items.Core;
+using Arctic.Gameplay.Item;
 
 namespace Arctic.Gameplay.Items.Editor
 {
@@ -89,7 +89,7 @@ namespace Arctic.Gameplay.Items.Editor
             string assetName = newItemData.GUID;
             try
             {
-                Helper.CreateAssetAtPath(newItemData, $"{assetName}.asset", path);
+                ReasourceHelper.CreateAssetAtPath(newItemData, $"{assetName}.asset", path);
                 OnDeserializeSuccess(newItemData);
                 Debug.Log($"<color=green>Successfully created new ItemData asset at path: {path}/{assetName}.asset</color>");
             }
@@ -102,7 +102,7 @@ namespace Arctic.Gameplay.Items.Editor
         private void OnDeserializeSuccess(ItemData itemData)
         {
             Source = itemData;
-            Helper.CommitAssetChanges(Source);
+            ReasourceHelper.CommitAssetChanges(Source);
             onDeserialized.Invoke(Source);
         }
     }

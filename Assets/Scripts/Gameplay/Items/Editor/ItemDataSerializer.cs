@@ -1,7 +1,7 @@
-using Arctic.Utilities.Editor;
-using Arctic.Utilities.Serialization;
-using Arctic.Utilities.Serialization.Properties;
-using Arctic.Gameplay.Items.Core;
+using Arctic.Foundation.Editor;
+using Arctic.Serialization;
+using Arctic.Serialization.Properties;
+using Arctic.Gameplay.Item;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -124,7 +124,7 @@ namespace Arctic.Gameplay.Items.Editor
         {
             try 
             {
-                bool sourceFound = Helper.TryFindAssetOfType(out ItemData source, c => c.GUID == itemGuid);
+                bool sourceFound = ReasourceHelper.TryFindAssetOfType(out ItemData source, c => c.GUID == itemGuid);
                 if (!sourceFound)
                     return null;
                 source.SetGUID(itemGuid);

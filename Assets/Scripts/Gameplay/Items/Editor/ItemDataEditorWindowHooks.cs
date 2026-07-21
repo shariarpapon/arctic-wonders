@@ -1,5 +1,5 @@
 using UnityEditor;
-using Arctic.Gameplay.Items.Core;
+using Arctic.Gameplay.Item;
 
 namespace Arctic.Gameplay.Items.Editor
 {
