@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Arctic.Gameplay.Survival
+namespace Arctic.Gameplay.Survival.Actors
 {
     public class VitalSystemView
     {
