@@ -2,15 +2,20 @@ using UnityEngine;
 
 namespace Arctic.Foundation.Actor
 {
-    public abstract class MonoActor<T> : MonoBehaviour where T : MonoActor<T>
+    public abstract class MonoActor<V> : MonoBehaviour where V : ActorView
     {
         [SerializeField]
-        protected ActorView<T> _view;
-        public ActorView<T> View => _view;
+        protected V _view;
+        public V View => _view;
 
-        private void Update()
+        protected virtual void Update()
         {
-            _view?.Update(Time.deltaTime);
+            UpdateView(Time.deltaTime);
+        }
+
+        public void UpdateView(float deltaTime) 
+        {
+            _view?.Update(deltaTime);
         }
     }
 }

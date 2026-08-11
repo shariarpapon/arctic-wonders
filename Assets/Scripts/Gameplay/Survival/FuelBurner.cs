@@ -1,3 +1,4 @@
+using Arctic.World;
 using UnityEngine;
 
 namespace Arctic.Gameplay.Survival
@@ -8,6 +9,10 @@ namespace Arctic.Gameplay.Survival
         [SerializeField] private float _fuel = 100.0f;
         [SerializeField] private float _maxFuel = 100.0f;
         [SerializeField] private float _burnRate = 0.25f;
+
+        [Header("Thermal Zone")]
+        [SerializeField] private ThermalZone thermalZone;
+        [SerializeField] private AnimationCurve tempInfluenceOverFuel;
 
         public float CurrentFuel => _fuel;
         public float MaxFuel => _maxFuel;
@@ -32,6 +37,7 @@ namespace Arctic.Gameplay.Survival
 
         private void OnFuelUpdated(float fuelValue)
         {
+            UpdateThermalZone(fuelValue);
             OnFuelUpdate?.Invoke(fuelValue);
         }
 
@@ -46,6 +52,14 @@ namespace Arctic.Gameplay.Survival
                 OnEmpty?.Invoke();
             else if (_fuel >= _maxFuel)
                 OnFull?.Invoke();
+        }
+
+        private void UpdateThermalZone(float fuel)
+        {
+            if (thermalZone == null) return;
+            float normFuel = Mathf.Clamp01(fuel / _maxFuel);    
+            float influence = tempInfluenceOverFuel.Evaluate(normFuel);
+            thermalZone.SetInfluence(influence);
         }
 
     } 
