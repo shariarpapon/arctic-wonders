@@ -1,13 +1,8 @@
-using UnityEngine;
+using Arctic.Foundation.Actor;
 
 namespace Arctic.Gameplay.Survival.Actors
 {
-    public class VitalSystemView
+    public class VitalSystemView : MonoActorView<VitalSystem>
     {
-        private VitalSystem _vitalSystem;
-        public void Init(VitalSystem vitalSystem) 
-        { 
-            _vitalSystem = vitalSystem;
-        }
     }
 }

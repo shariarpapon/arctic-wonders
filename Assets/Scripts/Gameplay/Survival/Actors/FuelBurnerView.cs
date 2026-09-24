@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Arctic.Gameplay.Survival.Actors
 {
     [System.Serializable]
-    public class FuelBurnerView : ActorView
+    public class FuelBurnerView : MonoActorView<FuelBurner>
     {
         [Header("Light")]
         [SerializeField] protected Light lightSource;
@@ -20,26 +20,9 @@ namespace Arctic.Gameplay.Survival.Actors
         [SerializeField] protected AnimationCurve volumeOverFuel;
         [SerializeField] protected float _maxVolume = 0.2f;
 
-        private FuelBurner _burner;
-
-        public void Init(FuelBurner burner)
+        public override void UpdateView(FuelBurner burner, float deltaTime)
         {
-            _burner = burner;
-        }
-
-        public override void Enable()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override void Disable()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override void Update(float deltaTime)
-        {
-            float normalizedFuel = _burner.CurrentFuel / _burner.MaxFuel;
+            float normalizedFuel = burner.CurrentFuel / burner.MaxFuel;
             float clampedNormFuel = Mathf.Clamp01(normalizedFuel);
             UpdateLight(clampedNormFuel);
             UpdateParticle(clampedNormFuel);

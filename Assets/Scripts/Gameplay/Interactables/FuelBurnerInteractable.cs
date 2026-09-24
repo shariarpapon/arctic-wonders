@@ -7,10 +7,10 @@ namespace Arctic.Gameplay.Interactables
     [RequireComponent(typeof(FuelBurnerActor))]
     public sealed class FuelBurnerInteractable : InteractableBehavior
     {
-        public override string HoverPrompt => "Fuel: " + Mathf.RoundToInt(_burningActor.burner.CurrentFuel);
+        public override string HoverPrompt => "Fuel: " + Mathf.RoundToInt(_burnerActor.Burner.CurrentFuel);
 
         [SerializeField]
-        private FuelBurnerActor _burningActor = null;
+        private FuelBurnerActor _burnerActor = null;
 
         private void OnValidate()
         {
@@ -24,8 +24,8 @@ namespace Arctic.Gameplay.Interactables
 
         private void ValidateProperties() 
         {
-            if(_burningActor == null)
-                _burningActor = GetComponent<FuelBurnerActor>();            
+            if(_burnerActor == null)
+                _burnerActor = GetComponent<FuelBurnerActor>();            
         }
     }
 }

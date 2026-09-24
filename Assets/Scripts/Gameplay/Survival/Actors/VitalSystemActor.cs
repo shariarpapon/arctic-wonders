@@ -1,8 +1,9 @@
+using Arctic.Foundation.Actor;
 using UnityEngine;
 
 namespace Arctic.Gameplay.Survival.Actors
 {
-    public class VitalSystemActor : MonoBehaviour
+    public class VitalSystemActor : MonoActor<VitalSystem, VitalSystemView>
     {
         [SerializeField] protected bool _initOnStart = true;
         [SerializeField] protected VitalSystem _vitalSystem;
@@ -11,13 +12,20 @@ namespace Arctic.Gameplay.Survival.Actors
 
         protected virtual void Start()
         {
-            if(_initOnStart)
+            if (_initOnStart)
                 _vitalSystem.Init();
         }
 
-        protected virtual void Update()
+        public override VitalSystem GetViewContext()
         {
-            _vitalSystem.UpdateVitals(Time.deltaTime);
+            return _vitalSystem;
         }
+
+        protected override void Simulate(float deltaTime)
+        {
+            _vitalSystem.UpdateVitals(deltaTime);
+        }
+
+       
     }
 }

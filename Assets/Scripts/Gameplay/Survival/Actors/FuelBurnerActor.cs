@@ -3,14 +3,20 @@ using UnityEngine;
 
 namespace Arctic.Gameplay.Survival.Actors
 {
-    public class FuelBurnerActor : MonoActor<FuelBurnerView>
+    public class FuelBurnerActor : MonoActor<FuelBurner, FuelBurnerView>
     {
-        public FuelBurner burner;
+        [SerializeField]
+        protected FuelBurner burner;
+        public FuelBurner Burner => burner;
 
-        protected override void Update()
+        public override FuelBurner GetViewContext()
         {
-            burner.Update(Time.deltaTime);
-            base.Update();
+            return burner;
+        }
+
+        protected override void Simulate(float deltaTime)
+        {
+            burner.Update(deltaTime);
         }
     }
 }
